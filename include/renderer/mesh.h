@@ -19,18 +19,18 @@ public:
 	Mesh(unsigned int width, unsigned int depth, float resolution, unsigned int shaderProgram);
 	~Mesh();
 
+	void createMesh(unsigned int width, unsigned int depth, float resolution);
 	std::vector<Vertex>& GetVertices();
 	std::vector<unsigned int>& GetIndices();
 	void Draw(unsigned int& shaderProgram);
 	void UpdateBuffers();
-	void reMesh(unsigned int width, unsigned int depth, float resolution);
+	void recalculateNormals(unsigned int width, unsigned int depth, float resolution);
+	float GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution);
 private:
 	bool finished;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	unsigned int VAO, VBO, EBO;
-
-	bool createMesh(unsigned int width, unsigned int depth, float resolution);
 };
 
 #endif

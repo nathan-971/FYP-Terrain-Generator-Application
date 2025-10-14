@@ -1,4 +1,4 @@
-#include "noise/perlinNoise.h"
+#include "noise/perlinnoise.h"
 
 //Ken perlin's permutation table
 const int PerlinNoise::permutation[256] = {
@@ -48,46 +48,39 @@ void PerlinNoise::initPermTable()
     initialized = true;
 }
 
-float PerlinNoise::perlin2D(float x, float y, float scale)
+float PerlinNoise::Get(float x, float y, float freq)
 {
     initPermTable();
 
-    // Scale input
-    float xf = x * scale;
-    float yf = y * scale;
+    float xf = x * freq;
+    float yf = y * freq;
 
-    // Grid cell corners
     int x0 = (int)floor(xf);
     int y0 = (int)floor(yf);
     int x1 = x0 + 1;
     int y1 = y0 + 1;
 
-    // Gradients
     Vector g00 = getGradient(x0, y0);
     Vector g10 = getGradient(x1, y0);
     Vector g01 = getGradient(x0, y1);
     Vector g11 = getGradient(x1, y1);
 
-    // Distance vectors
     Vector d00(xf - x0, yf - y0);
     Vector d10(xf - x1, yf - y0);
     Vector d01(xf - x0, yf - y1);
     Vector d11(xf - x1, yf - y1);
 
-    // Dot products
     float s = dotProduct(g00, d00);
     float t = dotProduct(g10, d10);
     float u = dotProduct(g01, d01);
     float v = dotProduct(g11, d11);
 
-    // Fade curves
     float fadeX = fade(xf - x0);
     float fadeY = fade(yf - y0);
 
-    // Interpolate
     float lerpX1 = lerp(s, t, fadeX);
     float lerpX2 = lerp(u, v, fadeX);
-    float result = lerp(lerpX1, lerpX2, fadeY);
+	float result = lerp(lerpX1, lerpX2, fadeY);
 
     return result;
 }

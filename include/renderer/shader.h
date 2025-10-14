@@ -16,6 +16,7 @@ public:
 	void Activate() const;
 	void setUniformFloat(const char* name, float f);
 	void setUniformInt(const char* name, int i);
+	void setUniformVec3(const char* name, glm::vec3 vec);
 	void setUniformMat(const char* name, glm::mat4 mat);
 private:
 	void compileErrors(GLuint ID, const char* type) const;

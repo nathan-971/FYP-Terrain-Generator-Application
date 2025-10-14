@@ -5,22 +5,15 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-#include <iostream>
+#include "INoise.h"
+
 #include <cmath>
 
-struct Vector
-{
-    float x;
-    float y;
-
-    Vector(float x, float y) : x(x), y(y) {}
-    Vector() : x(0.0f), y(0.0f) {}
-};
-
-class PerlinNoise
+class PerlinNoise : public INoise
 {
 public:
-    static float perlin2D(float x, float y, float scale);
+    PerlinNoise() = default;
+    float Get(float x, float y, float freq) override;
 
 private:
     static float lerp(float a, float b, float t);

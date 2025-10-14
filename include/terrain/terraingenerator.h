@@ -8,7 +8,7 @@
 #define TERRAIN_MAX_DEPTH 100
 
 #include "renderer/mesh.h"
-#include "noise/perlinNoise.h"
+#include "noise/perlinnoise.h"
 
 struct TerrainConfig
 {
@@ -34,6 +34,7 @@ public:
 	void Apply() const;
 private:
 	TerrainConfig config;
+	INoise* noise;
 	Mesh* terrainMesh;
 	unsigned int shaderProgram;
 };

@@ -4,11 +4,8 @@
 Mesh::Mesh(unsigned int width, unsigned int depth, float resolution, unsigned int shaderProgram) :
 	VAO(0), VBO(0), EBO(0), finished(false)
 {
-	this->finished = createMesh(width, depth, resolution);
-	if (finished)
-	{
-		UpdateBuffers();
-	}
+	createMesh(width, depth, resolution);
+	UpdateBuffers();
 }
 
 Mesh::~Mesh()
@@ -67,7 +64,7 @@ void Mesh::UpdateBuffers()
 	glBindVertexArray(0);
 }
 
-bool Mesh::createMesh(unsigned int width, unsigned int depth, float resolution)
+void Mesh::createMesh(unsigned int width, unsigned int depth, float resolution)
 {
 	vertices.clear();
 	indices.clear();
@@ -80,9 +77,9 @@ bool Mesh::createMesh(unsigned int width, unsigned int depth, float resolution)
 	float xSpacing = static_cast<float>(width) / (vertCountX - 1);
 	float zSpacing = static_cast<float>(depth) / (vertCountZ - 1);
 
-	for (int z = 0; z < vertCountZ; z++)
+	for (int x = 0; x < vertCountX; x++)
 	{
-		for (int x = 0; x < vertCountX; x++)
+		for (int z = 0; z < vertCountZ; z++)
 		{
 			Vertex v;
 			v.position = glm::vec3(x * xSpacing, 0.0f, z * zSpacing);
@@ -92,13 +89,13 @@ bool Mesh::createMesh(unsigned int width, unsigned int depth, float resolution)
 		}
 	}
 
-	for (int z = 0; z < vertCountZ - 1; z++)
+	for (int x = 0; x < vertCountX - 1; x++)
 	{
-		for (int x = 0; x < vertCountX - 1; x++)
+		for (int z = 0; z < vertCountZ - 1; z++)
 		{
-			unsigned int topLeft = z * vertCountX + x;
+			unsigned int topLeft = x * vertCountZ + z;
 			unsigned int topRight = topLeft + 1;
-			unsigned int bottomLeft = (z + 1) * vertCountX + x;
+			unsigned int bottomLeft = (x + 1) * vertCountZ + z;
 			unsigned int bottomRight = bottomLeft + 1;
 
 			indices.push_back(topLeft);
@@ -110,13 +107,47 @@ bool Mesh::createMesh(unsigned int width, unsigned int depth, float resolution)
 			indices.push_back(bottomRight);
 		}
 	}
-	return true;
 }
 
-void Mesh::reMesh(unsigned int width, unsigned int depth, float resolution)
+void Mesh::recalculateNormals(unsigned int width, unsigned int depth, float resolution)
 {
-	if (createMesh(width, depth, resolution))
+	unsigned int vertCountX = static_cast<unsigned int>(width / resolution) + 1;
+	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
+	std::cout << "Recalculating normals for mesh with " << vertCountX << " x " << vertCountZ << " vertices." << std::endl;
+
+	for (int x = 0; x < vertCountX; x++)
 	{
-		return;
+		for (int z = 0; z < vertCountZ; z++)
+		{
+			int xLeft = (x - 1 < 0) ? 0 : x - 1;
+			int xRight = (x + 1 >= vertCountX) ? vertCountX - 1 : x + 1;
+			int zDown = (z - 1 < 0) ? 0 : z - 1;
+			int zUp = (z + 1 >= vertCountZ) ? vertCountZ - 1 : z + 1;
+
+			float heightLeft = vertices[xLeft * vertCountZ + z].position.y;
+			if(xRight * vertCountZ + z >= vertices.size())
+			{
+				std::cout << "Index out of bounds: " << (xRight * vertCountZ + z) << " >= " << vertices.size() << std::endl;
+			}
+			float heightRight = vertices[xRight * vertCountZ + z].position.y;
+			float heightDown = vertices[x * vertCountZ + zDown].position.y;
+			float heightUp = vertices[x * vertCountZ + zUp].position.y;
+
+			glm::vec3 normal;
+			normal.x = heightLeft - heightRight;
+			normal.y = 1.0f;
+			normal.z = heightDown - heightUp;
+
+			vertices[x * vertCountZ + z].normal = glm::normalize(normal);
+		}
 	}
+}
+
+float Mesh::GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution)
+{
+	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
+	glm::vec3 normal = vertices[x * vertCountZ + z].normal;
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	float slopeRadians = acos(glm::clamp(glm::dot(normal, up), -1.0f, 1.0f));
+	return glm::degrees(slopeRadians);
 }

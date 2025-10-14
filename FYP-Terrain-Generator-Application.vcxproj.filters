@@ -19,6 +19,33 @@
     <Filter Include="Source Files\ThirdParty">
       <UniqueIdentifier>{7ab7dae8-5bad-4d0c-96ed-dcfd14b1f179}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Noise">
+      <UniqueIdentifier>{ed725bed-f5f9-4263-b0b8-1db5f9fa9839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{058305b2-7c3e-4e81-897e-48eb7e667036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{a04b91b8-e905-4578-8ea9-a6c4e4e8077f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain">
+      <UniqueIdentifier>{b71f3f83-8f54-47ce-9bbb-6ad73b5dd376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{acd22d1c-e11f-4779-9c2c-027b039d7ed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Terrain">
+      <UniqueIdentifier>{6f22d874-8722-4b37-9c00-5fffbd90493e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Noise">
+      <UniqueIdentifier>{acce894a-2698-44d8-85ac-460b6251d28a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Renderer">
+      <UniqueIdentifier>{21ef1450-2323-411d-bc97-9262d80820a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{cac855a1-9e66-4fe3-b905-741ee2097eb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -51,37 +78,60 @@
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp">
       <Filter>Source Files\ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\camera.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\noise\simplexnoise.cpp">
+      <Filter>Source Files\Noise</Filter>
     </ClCompile>
     <ClCompile Include="src\noise\perlinnoise.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\camera.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\mesh.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\shader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\terrain\terraingenerator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\core\camera.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\noise\INoise.h">
+      <Filter>Header Files\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="include\noise\simplexnoise.h">
+      <Filter>Header Files\Noise</Filter>
     </ClInclude>
     <ClInclude Include="include\noise\perlinnoise.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\camera.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer\mesh.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer\shader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="include\terrain\terraingenerator.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Terrain</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\fragment.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\vertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\depthFragment.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\depthVertex.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

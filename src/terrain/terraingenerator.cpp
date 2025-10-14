@@ -1,9 +1,17 @@
 #include "terrain/terraingenerator.h"
+#include <iostream>
 
 TerrainGenerator::TerrainGenerator(const TerrainConfig& config) 
-	: config(config), terrainMesh(nullptr), shaderProgram(0) { }
+	: config(config), noise(nullptr), terrainMesh(nullptr), shaderProgram(0) 
+{
+	noise = new PerlinNoise();
+}
 
-TerrainGenerator::~TerrainGenerator() { }
+TerrainGenerator::~TerrainGenerator() 
+{
+	delete noise;
+	noise = nullptr;
+}
 
 void TerrainGenerator::setMesh(Mesh& mesh)
 {
@@ -23,7 +31,6 @@ TerrainConfig& TerrainGenerator::getConfig()
 void TerrainGenerator::Apply() const
 {
 	int octaves = this->config.octaves;
-
 	float lacunarity = this->config.lacunarity;
 	float persistence = this->config.persistence;
 
@@ -35,37 +42,38 @@ void TerrainGenerator::Apply() const
 
 		for(int i = 0; i < octaves; i++)
 		{
-			totalNoise += PerlinNoise::perlin2D(vertex.position.x, vertex.position.z, frequency) * amplitude;
+			totalNoise += noise->Get(vertex.position.x, vertex.position.z, frequency) * amplitude;
 			
-			frequency *= lacunarity; //Increase frequency as layers increase
-			amplitude *= persistence; //Decrease amplitude as layers increase
+			frequency *= lacunarity;
+			amplitude *= persistence;
 		}
 
 		float vertHeight = totalNoise;
-		vertex.position.y = vertHeight;	
-		if (vertHeight < 0.05f)
+		vertex.position.y = vertHeight;
+	}
+	terrainMesh->recalculateNormals(this->config.width, this->config.depth, this->config.resolution);
+
+	for(auto& vertex : terrainMesh->GetVertices())
+	{
+		float slope = terrainMesh->GetSlopeAt(
+			vertex.position.x,
+			vertex.position.z,
+			this->config.width,
+			this->config.depth,
+			this->config.resolution
+		);
+
+		if (slope < 0.45f)
 		{
-			vertex.color = glm::vec3(0.1f, 0.5f, 1.0f); //Deep Water
+			vertex.color = glm::vec3(0.85f, 0.7f, 0.3f);
 		}
-		else if (vertHeight < 0.1f)
+		else if (slope > 0.60f)
 		{
-			vertex.color = glm::vec3(0.2f, 0.7f, 1.0f); //Water
-		}
-		else if (vertHeight < 0.5f)
-		{
-			vertex.color = glm::vec3(0.8f, 0.8f, 0.6f); //Sand
-		}
-		else if (vertHeight < 3.0f)
-		{
-			vertex.color = glm::vec3(0.1f, 0.8f, 0.1f); //Grass
-		}
-		else if (vertHeight < 6.0f)
-		{
-			vertex.color = glm::vec3(0.5f, 0.5f, 0.5f); //Rock
+			vertex.color = glm::vec3(0.5f, 0.4f, 0.3f);
 		}
 		else
 		{
-			vertex.color = glm::vec3(0.8f, 0.8f, 0.8f); //Snow
+			vertex.color = glm::vec3(0.35f, 0.33f, 0.3f);
 		}
 	}
 	terrainMesh->UpdateBuffers();

@@ -22,6 +22,7 @@
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\noise\perlinnoise.cpp" />
+    <ClCompile Include="src\noise\simplexnoise.cpp" />
     <ClCompile Include="src\renderer\mesh.cpp" />
     <ClCompile Include="src\renderer\shader.cpp" />
     <ClCompile Include="src\terrain\terraingenerator.cpp" />
@@ -37,10 +38,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core\camera.h" />
+    <ClInclude Include="include\noise\INoise.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
+    <ClInclude Include="include\noise\simplexnoise.h" />
     <ClInclude Include="include\renderer\mesh.h" />
     <ClInclude Include="include\renderer\shader.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\depthFragment.glsl" />
+    <None Include="assets\shaders\depthVertex.glsl" />
+    <None Include="assets\shaders\fragment.glsl" />
+    <None Include="assets\shaders\vertex.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
