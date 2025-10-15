@@ -166,18 +166,21 @@ int main()
         if (ImGui::SliderInt("Terrain Width", (int*)&config.width, TERRAIN_MIN_WIDTH, TERRAIN_MAX_WIDTH))
         {
             mesh.createMesh(config.width, config.depth, config.resolution);
+            tg.getConfig().width = config.width;
             tg.Apply();
         }
 
         if (ImGui::SliderInt("Terrain Depth", (int*)&config.depth, TERRAIN_MIN_DEPTH, TERRAIN_MAX_DEPTH))
         {
             mesh.createMesh(config.width, config.depth, config.resolution);
+            tg.getConfig().depth = config.depth;
             tg.Apply();
         }
 
         if (ImGui::SliderFloat("Terrain Resolution", (float*)&config.resolution, 1.0f, 0.5f))
         {
             mesh.createMesh(config.width, config.depth, config.resolution);
+            tg.getConfig().resolution = config.resolution;
             tg.Apply();
         }
 
@@ -255,12 +258,9 @@ int main()
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         //SECOND PASS - RENDER NORMAL SCENE USING THE GENERATED DEPTH MAP
-        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+		framebuffer_size_callback(window, camera.width, camera.height);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
-        camera.Inputs(window);
 
         terrainShader.Activate();
         terrainShader.setUniformMat("lightSpaceMatrix", lightSpaceMatrix);
@@ -272,6 +272,9 @@ int main()
         terrainShader.setUniformInt("shadowMap", 0);
 
         mesh.Draw(terrainShader.progID);
+
+        camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
+        camera.Inputs(window);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

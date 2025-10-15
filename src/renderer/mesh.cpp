@@ -113,7 +113,6 @@ void Mesh::recalculateNormals(unsigned int width, unsigned int depth, float reso
 {
 	unsigned int vertCountX = static_cast<unsigned int>(width / resolution) + 1;
 	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
-	std::cout << "Recalculating normals for mesh with " << vertCountX << " x " << vertCountZ << " vertices." << std::endl;
 
 	for (int x = 0; x < vertCountX; x++)
 	{
@@ -125,10 +124,6 @@ void Mesh::recalculateNormals(unsigned int width, unsigned int depth, float reso
 			int zUp = (z + 1 >= vertCountZ) ? vertCountZ - 1 : z + 1;
 
 			float heightLeft = vertices[xLeft * vertCountZ + z].position.y;
-			if(xRight * vertCountZ + z >= vertices.size())
-			{
-				std::cout << "Index out of bounds: " << (xRight * vertCountZ + z) << " >= " << vertices.size() << std::endl;
-			}
 			float heightRight = vertices[xRight * vertCountZ + z].position.y;
 			float heightDown = vertices[x * vertCountZ + zDown].position.y;
 			float heightUp = vertices[x * vertCountZ + zUp].position.y;
