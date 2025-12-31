@@ -2,55 +2,26 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 
+#include "core/window.h"
 #include "renderer/shader.h"
 #include "core/camera.h"
 #include "renderer/mesh.h"
 #include "terrain/terraingenerator.h"
-
-#define GL_VERSION_NUM 3
-
-#define VSYNC 1
-#define NOVSYNC 0
 
 #define SCR_WIDTH 1920
 #define SCR_HEIGHT 1080
 
 #define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void enableWireFrame(GLFWwindow* window);
+void enableWireFrame(Window& window);
 
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_VERSION_NUM);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_VERSION_NUM);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "FYP-Prototype", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(VSYNC);
-
+	Window window(SCR_HEIGHT, SCR_WIDTH, std::string("FYP-Prototype"), true);
     Camera camera(SCR_WIDTH, SCR_HEIGHT, WORLD_ORIGIN);
-    glfwSetWindowUserPointer(window, &camera);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -63,7 +34,7 @@ int main()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(window.getNativeWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
     float deltaTime = 0.0f;
@@ -117,8 +88,6 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
 
     int swizzleMask[] = { GL_RED, GL_RED, GL_RED, GL_ONE };
     glTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_RGBA, swizzleMask);
@@ -134,9 +103,9 @@ int main()
     tg.setMesh(mesh);
     tg.Apply();
 
-    while (!glfwWindowShouldClose(window))
+    while (!window.shouldClose())
     {
-        glfwPollEvents();
+        window.pollEvents();
         enableWireFrame(window);
 
         //ImGui Frame
@@ -258,7 +227,8 @@ int main()
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         //SECOND PASS - RENDER NORMAL SCENE USING THE GENERATED DEPTH MAP
-		framebuffer_size_callback(window, camera.width, camera.height);
+        window.updateViewport(window.getWidth(), window.getHeight());
+        camera.onResize(window.getWidth(), window.getHeight());
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -274,11 +244,11 @@ int main()
         mesh.Draw(terrainShader.progID);
 
         camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
-        camera.Inputs(window);
+        camera.Inputs(window.getNativeWindow());
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(window);
+		window.swapBuffers();
     }
 
     ImGui_ImplOpenGL3_Shutdown();
@@ -289,23 +259,12 @@ int main()
     return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-
-    Camera* camera = (Camera*)glfwGetWindowUserPointer(window);
-    if (camera)
-    {
-        camera->onResize(width, height);
-    }
-}
-
-void enableWireFrame(GLFWwindow* window)
+void enableWireFrame(Window& window)
 {
     static bool enabled = false;
     static bool lastFramePressed = false;
 
-    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+    if (glfwGetKey(window.getNativeWindow(), GLFW_KEY_M) == GLFW_PRESS)
     {
         if (!lastFramePressed)
         {

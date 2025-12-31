@@ -78,9 +78,6 @@
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp">
       <Filter>Source Files\ImGUI</Filter>
     </ClCompile>
-    <ClCompile Include="src\noise\simplexnoise.cpp">
-      <Filter>Source Files\Noise</Filter>
-    </ClCompile>
     <ClCompile Include="src\noise\perlinnoise.cpp">
       <Filter>Source Files\Noise</Filter>
     </ClCompile>
@@ -96,12 +93,12 @@
     <ClCompile Include="src\terrain\terraingenerator.cpp">
       <Filter>Source Files\Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\window.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\noise\INoise.h">
-      <Filter>Header Files\Noise</Filter>
-    </ClInclude>
-    <ClInclude Include="include\noise\simplexnoise.h">
       <Filter>Header Files\Noise</Filter>
     </ClInclude>
     <ClInclude Include="include\noise\perlinnoise.h">
@@ -118,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="include\terrain\terraingenerator.h">
       <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\window.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

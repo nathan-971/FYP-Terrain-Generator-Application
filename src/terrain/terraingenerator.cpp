@@ -63,17 +63,21 @@ void TerrainGenerator::Apply() const
 			this->config.resolution
 		);
 
-		if (slope < 0.25f)
+		if (slope < 20.0f)
 		{
-			vertex.color = glm::vec3(0.85f, 0.7f, 0.3f);
+			vertex.color = glm::vec3(0.1f, 0.6f, 0.1f);
 		}
-		else if (slope > 0.45f)
+		else if (slope < 35.0f)
 		{
-			vertex.color = glm::vec3(0.5f, 0.4f, 0.3f);
+			vertex.color = glm::vec3(0.45f, 0.35f, 0.2f);
+		}
+		else if (slope < 65.0f)
+		{
+			vertex.color = glm::vec3(0.5f, 0.5f, 0.5f);
 		}
 		else
 		{
-			vertex.color = glm::vec3(0.35f, 0.33f, 0.3f);
+			vertex.color = glm::vec3(0.9f, 0.9f, 0.9f);
 		}
 	}
 	terrainMesh->UpdateBuffers();
