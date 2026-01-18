@@ -16,17 +16,20 @@ struct Vertex
 class Mesh
 {
 public:
-	Mesh(unsigned int width, unsigned int depth, float resolution, unsigned int shaderProgram);
+	Mesh();
 	~Mesh();
 
-	void createMesh(unsigned int width, unsigned int depth, float resolution);
-	std::vector<Vertex>& GetVertices();
-	std::vector<unsigned int>& GetIndices();
-	void Draw(unsigned int& shaderProgram);
 	void UpdateBuffers();
+	void Create(unsigned int width, unsigned int depth, float resolution);
+	void Draw(unsigned int& shaderProgram);
 	void recalculateNormals(unsigned int width, unsigned int depth, float resolution);
 	float GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution);
+	
+	std::vector<Vertex>& GetVertices();
+	std::vector<unsigned int>& GetIndices();
 private:
+	void buildMesh(unsigned int width, unsigned int depth, float resolution);
+
 	bool finished;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;

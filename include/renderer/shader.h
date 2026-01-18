@@ -11,8 +11,10 @@ class Shader
 public:
 	GLuint progID;
 
-	Shader(const char* vertexSource, const char* fragmentSource);
+	Shader();
 	~Shader();
+
+	void Load(const char* vertexSource, const char* fragmentSource);
 	void Activate() const;
 	void setUniformFloat(const char* name, float f);
 	void setUniformInt(const char* name, int i);

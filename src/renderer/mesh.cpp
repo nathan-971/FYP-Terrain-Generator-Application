@@ -1,12 +1,7 @@
 #include "renderer/mesh.h"
-#include <iostream>
 
-Mesh::Mesh(unsigned int width, unsigned int depth, float resolution, unsigned int shaderProgram) :
-	VAO(0), VBO(0), EBO(0), finished(false)
-{
-	createMesh(width, depth, resolution);
-	UpdateBuffers();
-}
+Mesh::Mesh() 
+	: VAO(0), VBO(0), EBO(0), finished(false) { }
 
 Mesh::~Mesh()
 {
@@ -23,6 +18,12 @@ std::vector<Vertex>& Mesh::GetVertices()
 std::vector<unsigned int>& Mesh::GetIndices()
 {
 	return this->indices;
+}
+
+void Mesh::Create(unsigned int width, unsigned int depth, float resolution)
+{
+	buildMesh(width, depth, resolution);
+	UpdateBuffers();
 }
 
 void Mesh::Draw(unsigned int& shaderProgram)
@@ -64,7 +65,7 @@ void Mesh::UpdateBuffers()
 	glBindVertexArray(0);
 }
 
-void Mesh::createMesh(unsigned int width, unsigned int depth, float resolution)
+void Mesh::buildMesh(unsigned int width, unsigned int depth, float resolution)
 {
 	vertices.clear();
 	indices.clear();

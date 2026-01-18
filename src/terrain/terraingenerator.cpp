@@ -1,8 +1,8 @@
 #include "terrain/terraingenerator.h"
 #include <iostream>
 
-TerrainGenerator::TerrainGenerator(const TerrainConfig& config) 
-	: config(config), noise(nullptr), terrainMesh(nullptr), shaderProgram(0) 
+TerrainGenerator::TerrainGenerator(TerrainConfig& config)
+	: config(config), noise(nullptr), terrainMesh(nullptr), shaderProgram(0)
 {
 	noise = new PerlinNoise();
 }
@@ -12,7 +12,7 @@ TerrainGenerator::~TerrainGenerator()
 	delete noise;
 	noise = nullptr;
 }
-
+	
 void TerrainGenerator::setMesh(Mesh& mesh)
 {
 	terrainMesh = &mesh;

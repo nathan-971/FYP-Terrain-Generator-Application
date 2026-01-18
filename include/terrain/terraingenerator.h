@@ -9,31 +9,21 @@
 
 #include "renderer/mesh.h"
 #include "noise/perlinnoise.h"
-
-struct TerrainConfig
-{
-	unsigned int width;
-	unsigned int depth;
-	float resolution;
-	int octaves;
-	float amplitude;
-	float frequency;
-	float persistence;
-	float lacunarity;
-};
+#include "terrain/terrainconfig.h"
 
 class TerrainGenerator
 {
 public:
-	TerrainGenerator(const TerrainConfig& config);
+	TerrainGenerator(TerrainConfig& config);
 	~TerrainGenerator();
 
 	void setMesh(Mesh& terrainMesh);
 	void setShaderProgram(unsigned int shaderProgram);
-	TerrainConfig& getConfig();
 	void Apply() const;
+
+	TerrainConfig& getConfig();
 private:
-	TerrainConfig config;
+	TerrainConfig& config;
 	INoise* noise;
 	Mesh* terrainMesh;
 	unsigned int shaderProgram;

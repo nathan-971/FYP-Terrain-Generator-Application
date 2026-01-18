@@ -1,0 +1,65 @@
+#ifndef _SCENE_H_
+#define _SCENE_H_
+
+#define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
+
+#include "core/camera.h"
+#include "core/window.h"
+#include "renderer/shader.h"
+#include "renderer/mesh.h"
+#include "terrain/terraingenerator.h"
+#include "terrain/terrainconfig.h"
+
+enum class SceneUpdateFlag : uint8_t
+{
+	None = 0,
+	Mesh = 1 << 0,
+	HeightMap = 1 << 1
+};
+
+class Scene
+{
+public:
+	Scene();
+	~Scene();
+
+	void Render(Window& window, Camera& camera);
+	void FlagForUpdate(SceneUpdateFlag flag);
+	void Update();
+	void Generate(); //Unused Generates Inital Terrain Upon Application Launch
+	bool isGenerated() const;
+
+	TerrainConfig& getTerrainConfig();
+
+	//Temporary Lightning Values
+	glm::vec3 lightPos;
+	glm::vec3 lightColor;
+	float ambientStrength;
+	float specularStrength;
+	int shininess;
+
+private:
+	void renderDepthPass(glm::mat4& lightSpaceMatrix);
+	void renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera);
+	void generateShadowMap();
+
+	TerrainConfig config;
+	TerrainGenerator terrainGenerator;
+	Mesh terrainMesh;
+	Shader terrainShader;
+	Shader depthShader;
+
+	uint8_t flags;
+
+	//Shadow Map Variables
+	unsigned int shadowMapWidth;
+	unsigned int shadowMapHeight;
+	unsigned int shadowMap;
+	unsigned int shadowMapFBO;
+
+	bool generated;
+
+	glm::mat4 orthgonalProjection;
+};
+
+#endif

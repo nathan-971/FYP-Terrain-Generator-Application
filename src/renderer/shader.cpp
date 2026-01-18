@@ -1,7 +1,15 @@
 #include "renderer/shader.h"
 #include <iostream>
 
-Shader::Shader(const char* vertexSource, const char* fragmentSource)
+Shader::Shader() 
+	: progID(0) { }
+
+Shader::~Shader()
+{
+	glDeleteProgram(progID);
+}
+
+void Shader::Load(const char* vertexSource, const char* fragmentSource)
 {
 	std::string vertexCode = readInShaderFromSource(vertexSource);
 	std::string fragmentCode = readInShaderFromSource(fragmentSource);
@@ -52,11 +60,6 @@ void Shader::setUniformVec3(const char* name, glm::vec3 vec)
 void Shader::setUniformMat(const char* name, glm::mat4 mat)
 {
 	glUniformMatrix4fv(glGetUniformLocation(progID, name), 1, GL_FALSE, glm::value_ptr(mat));
-}
-
-Shader::~Shader()
-{
-	glDeleteProgram(progID);
 }
 
 void Shader::compileErrors(GLuint ID, const char* type) const

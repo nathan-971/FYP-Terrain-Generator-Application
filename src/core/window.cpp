@@ -79,6 +79,11 @@ int Window::shouldClose() const
 	return glfwWindowShouldClose(this->nativeWindow);
 }
 
+double Window::getTime() const
+{
+	return glfwGetTime();
+}
+
 void Window::updateViewport(int width, int height)
 {
 	this->width = width;

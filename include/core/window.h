@@ -22,6 +22,7 @@ public:
 	void pollEvents() const;
 	void swapBuffers() const;
 	int shouldClose() const;
+	double getTime() const;
 
 	void updateViewport(int width, int height);
 	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
