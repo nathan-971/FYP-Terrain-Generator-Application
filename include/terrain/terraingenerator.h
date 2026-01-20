@@ -10,6 +10,7 @@
 #include "renderer/mesh.h"
 #include "noise/perlinnoise.h"
 #include "terrain/terrainconfig.h"
+#include <noise/noise.h>
 
 class TerrainGenerator
 {
@@ -24,7 +25,7 @@ public:
 	TerrainConfig& getConfig();
 private:
 	TerrainConfig& config;
-	INoise* noise;
+	Noise* noise;
 	Mesh* terrainMesh;
 	unsigned int shaderProgram;
 };

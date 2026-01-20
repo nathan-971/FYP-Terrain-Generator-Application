@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\core\window.cpp" />
+    <ClCompile Include="src\exporter\FBXexporter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\noise\perlinnoise.cpp" />
     <ClCompile Include="src\renderer\mesh.cpp" />
@@ -40,7 +41,9 @@
   <ItemGroup>
     <ClInclude Include="include\core\camera.h" />
     <ClInclude Include="include\core\window.h" />
-    <ClInclude Include="include\noise\INoise.h" />
+    <ClInclude Include="include\exporter\exporter.h" />
+    <ClInclude Include="include\exporter\FBXexporter.h" />
+    <ClInclude Include="include\noise\noise.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
     <ClInclude Include="include\renderer\mesh.h" />
     <ClInclude Include="include\renderer\scene.h" />
@@ -141,7 +144,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)\thirdparty;$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -149,9 +152,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib\glfw;$(ProjectDir)\lib\libfbxsdk\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(ProjectDir)lib\libfbxsdk\Debug\libfbxsdk.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

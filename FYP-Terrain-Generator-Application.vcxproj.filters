@@ -46,6 +46,12 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{cac855a1-9e66-4fe3-b905-741ee2097eb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Exporter">
+      <UniqueIdentifier>{84a57e76-a55b-48a3-aa91-504533bb83d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Exporter">
+      <UniqueIdentifier>{191489e9-68ac-4f2e-9937-3a35fcc8b796}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -99,9 +105,12 @@
     <ClCompile Include="src\renderer\scene.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\exporter\FBXexporter.cpp">
+      <Filter>Source Files\Exporter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\noise\INoise.h">
+    <ClInclude Include="include\noise\noise.h">
       <Filter>Header Files\Noise</Filter>
     </ClInclude>
     <ClInclude Include="include\noise\perlinnoise.h">
@@ -127,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="include\terrain\terrainconfig.h">
       <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="include\exporter\exporter.h">
+      <Filter>Header Files\Exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\exporter\FBXexporter.h">
+      <Filter>Header Files\Exporter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

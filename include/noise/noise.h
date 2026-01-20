@@ -1,5 +1,5 @@
-#ifndef _I_NOISE_H_
-#define _I_NOISE_H_
+#ifndef _NOISE_H_
+#define _NOISE_H_
 
 struct Vector
 {
@@ -10,10 +10,10 @@ struct Vector
     Vector() : x(0.0f), y(0.0f) {}
 };
 
-class INoise
+class Noise
 {
 public:
-	virtual ~INoise() = default;
+	virtual ~Noise() = default;
 	virtual float Get(float x, float y, float freq) = 0;
 };
 

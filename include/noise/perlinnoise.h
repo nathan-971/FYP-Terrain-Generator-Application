@@ -5,11 +5,11 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-#include "INoise.h"
+#include "noise/Noise.h"
 
 #include <cmath>
 
-class PerlinNoise : public INoise
+class PerlinNoise : public Noise
 {
 public:
     PerlinNoise() = default;

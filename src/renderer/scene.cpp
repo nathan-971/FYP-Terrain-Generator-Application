@@ -1,4 +1,6 @@
 #include "renderer/scene.h"
+#include "exporter/FBXexporter.h"
+#include <iostream>
 
 Scene::Scene() :
     generated(false),
@@ -30,21 +32,6 @@ Scene::Scene() :
 
 Scene::~Scene() { }
 
-void Scene::Render(Window& window, Camera& camera)
-{
-    glm::mat4 lightView = glm::lookAt(lightPos, WORLD_ORIGIN, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
-
-    renderDepthPass(lightSpaceMatrix);
-
-    window.updateViewport(window.getWidth(), window.getHeight());
-    camera.onResize(window.getWidth(), window.getHeight());
-
-    renderScenePass(lightSpaceMatrix, camera);
-
-    camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
-}
-
 void Scene::Generate()
 {
     if (generated)
@@ -52,21 +39,10 @@ void Scene::Generate()
         return;
     }
 
-    terrainShader.Load(
-        "assets/shaders/vertex.glsl",
-        "assets/shaders/fragment.glsl"
-    );
+    terrainShader.Load("assets/shaders/vertex.glsl","assets/shaders/fragment.glsl");
+    depthShader.Load("assets/shaders/depthVertex.glsl", "assets/shaders/depthFragment.glsl");
 
-    depthShader.Load(
-        "assets/shaders/depthVertex.glsl",
-        "assets/shaders/depthFragment.glsl"
-    );
-
-    terrainMesh.Create(
-        config.width,
-        config.depth,
-        config.resolution
-    );
+    terrainMesh.Create(config.width, config.depth, config.resolution);
 
     //TEMP LIGHT VALUES
     lightPos = glm::vec3(100.0f);
@@ -96,23 +72,37 @@ void Scene::Update()
         return;
     }
 
-    if (flags & static_cast<uint8_t>(SceneUpdateFlag::Mesh))
+    if (flags & static_cast<uint8_t>(UpdateSceneFlag::Mesh))
     {
         terrainMesh.Create(config.width, config.depth, config.resolution);
     }
 
-    if (flags & static_cast<uint8_t>(SceneUpdateFlag::HeightMap))
+    if (flags & static_cast<uint8_t>(UpdateSceneFlag::HeightMap))
     {
-        terrainGenerator.getConfig().octaves = config.octaves;
         terrainGenerator.Apply();
     }
 
     flags = 0;
 }
 
-void Scene::FlagForUpdate(SceneUpdateFlag flag)
+void Scene::FlagForUpdate(UpdateSceneFlag flag)
 {
     flags |= static_cast<uint8_t>(flag);
+}
+
+void Scene::Render(Window& window, Camera& camera)
+{
+    glm::mat4 lightView = glm::lookAt(lightPos, WORLD_ORIGIN, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
+
+    renderDepthPass(lightSpaceMatrix);
+
+    window.updateViewport(window.getWidth(), window.getHeight());
+    camera.onResize(window.getWidth(), window.getHeight());
+
+    renderScenePass(lightSpaceMatrix, camera);
+
+    camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
 }
 
 void Scene::renderDepthPass(glm::mat4& lightSpaceMatrix)
@@ -176,4 +166,26 @@ bool Scene::isGenerated() const
 TerrainConfig& Scene::getTerrainConfig()
 {
     return config;
+}
+
+//TEMPORARY FUNCTION
+void Scene::exportTerrain()
+{
+    Exporter* exporter = new FBXExporter();
+    try
+    {
+        if (exporter->Export(terrainMesh, std::string("C:/FBX-OUTPUT/terrain.fbx")))
+        {
+            std::cout << "saved FBX model file!";
+            return;
+        }
+        std::cout << "Failed to save FBX Model File!";
+    }
+    catch(const std::exception e)
+    {
+        std::cout << "ERROR EXPORTING FILE";
+        delete exporter;
+        return;
+    }
+    delete exporter;
 }

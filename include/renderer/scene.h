@@ -10,7 +10,7 @@
 #include "terrain/terraingenerator.h"
 #include "terrain/terrainconfig.h"
 
-enum class SceneUpdateFlag : uint8_t
+enum class UpdateSceneFlag : uint8_t
 {
 	None = 0,
 	Mesh = 1 << 0,
@@ -24,10 +24,11 @@ public:
 	~Scene();
 
 	void Render(Window& window, Camera& camera);
-	void FlagForUpdate(SceneUpdateFlag flag);
+	void FlagForUpdate(UpdateSceneFlag flag);
 	void Update();
 	void Generate(); //Unused Generates Inital Terrain Upon Application Launch
 	bool isGenerated() const;
+	void exportTerrain();
 
 	TerrainConfig& getTerrainConfig();
 

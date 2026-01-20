@@ -7,7 +7,6 @@
 #include "core/window.h"
 #include "core/camera.h"
 #include "renderer/scene.h"
-#include "terrain/terraingenerator.h"
 
 #define SCR_WIDTH 1920
 #define SCR_HEIGHT 1080
@@ -97,45 +96,45 @@ int main()
 #pragma region IMGUI CONTROLS
             if (ImGui::SliderInt("Terrain Width", (int*)&config.width, TERRAIN_MIN_WIDTH, TERRAIN_MAX_WIDTH))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::Mesh);
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::Mesh);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderInt("Terrain Depth", (int*)&config.depth, TERRAIN_MIN_DEPTH, TERRAIN_MAX_DEPTH))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::Mesh);
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::Mesh);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderFloat("Terrain Resolution", (float*)&config.resolution, 1.0f, 0.5f))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::Mesh);
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::Mesh);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderInt("Noise Octaves", (int*)&config.octaves, 1, 8))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderFloat("Noise Amplitude", (float*)&config.amplitude, 1.0f, 20.0f))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderFloat("Noise Frequency", (float*)&config.frequency, 0.01f, 0.1f))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderFloat("Noise Lacunarity", (float*)&config.lacunarity, 1.0f, 2.0f))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             if (ImGui::SliderFloat("Noise Persistence", (float*)&config.persistence, 0.01f, 1.0f))
             {
-                scene.FlagForUpdate(SceneUpdateFlag::HeightMap);
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
             //if (ImGui::SliderFloat3("Light Position", &lightPos.x, 0.0f, 100.0f))
@@ -163,6 +162,12 @@ int main()
             //    terrainShader.setUniformFloat("specularStrength", specularStrength);
             //}
 #pragma endregion
+
+            //TEMPORARY INPUT
+            if (glfwGetKey(window.getNativeWindow(), GLFW_KEY_P) == GLFW_PRESS)
+            {
+                scene.exportTerrain();
+            }
 
             ImGui::End();
 
