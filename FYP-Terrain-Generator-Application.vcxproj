@@ -152,11 +152,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)\lib\glfw;$(ProjectDir)\lib\libfbxsdk\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\lib\glfw;$(ProjectDir)\lib\libfbxsdk\fbx-debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)lib\libfbxsdk\Debug\libfbxsdk.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)lib\libfbxsdk\fbx-debug\libfbxsdk.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
