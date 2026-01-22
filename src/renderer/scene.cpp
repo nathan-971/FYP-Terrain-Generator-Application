@@ -14,9 +14,10 @@ Scene::Scene() :
     shadowMapHeight(2048),
     shadowMapWidth(2048),
     orthgonalProjection(glm::ortho(-75.0f, 75.0f, -75.0f, 75.0f, 10.0f, 500.0f)),
-    terrainShader{ },
-    depthShader{ },
-    terrainMesh{ },
+    terrainShader(),
+    depthShader(),
+    terrainMesh(),
+    skybox(),
     terrainGenerator(config)
 {
     //DEFAULT CONFIG VALUES
@@ -121,9 +122,6 @@ void Scene::renderDepthPass(glm::mat4& lightSpaceMatrix)
 
 void Scene::renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera)
 {
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     terrainShader.Activate();
     terrainShader.setUniformMat("lightSpaceMatrix", lightSpaceMatrix);
     terrainShader.setUniformMat("camMatrix", camera.cameraMatrix);
@@ -161,6 +159,15 @@ void Scene::generateShadowMap()
 bool Scene::isGenerated() const
 {
     return this->generated;
+}
+
+bool Scene::ChangeSkybox(SkyboxOption option) 
+{
+    if (skybox.Change(option))
+    {
+        return true;
+    }
+    return false;
 }
 
 TerrainConfig& Scene::getTerrainConfig()

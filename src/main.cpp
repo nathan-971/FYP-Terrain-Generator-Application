@@ -45,7 +45,9 @@ int main()
     while (!window.shouldClose())
     {
         window.pollEvents();
-        enableWireFrame(window);
+
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         TerrainConfig& config = scene.getTerrainConfig();
 
@@ -76,6 +78,7 @@ int main()
         }
         else
         {
+            enableWireFrame(window);
             ImGui::Begin("Terrain Configuration");
 
             float currentFrame = window.getTime();

@@ -27,11 +27,11 @@ bool FBXExporter::Export(Mesh& mesh, std::string outputPath)
 
 	int vertexCount = vertices.size();
 
-	for (unsigned int idx : indicies)
+	for (unsigned int i : indicies)
 	{
-		if (idx >= vertexCount)
+		if (i >= vertexCount)
 		{
-			std::cout << "Index out of bounds: " << idx << std::endl;
+			std::cout << "Index out of bounds: " << i << std::endl;
 			return false;
 		}
 	}

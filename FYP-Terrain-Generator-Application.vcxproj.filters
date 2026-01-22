@@ -108,6 +108,9 @@
     <ClCompile Include="src\exporter\FBXexporter.cpp">
       <Filter>Source Files\Exporter</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\skybox.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\noise\noise.h">
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="include\exporter\FBXexporter.h">
       <Filter>Header Files\Exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer\skybox.h">
+      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

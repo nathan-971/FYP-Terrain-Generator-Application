@@ -7,6 +7,7 @@
 #include "core/window.h"
 #include "renderer/shader.h"
 #include "renderer/mesh.h"
+#include "renderer/skybox.h"
 #include "terrain/terraingenerator.h"
 #include "terrain/terrainconfig.h"
 
@@ -28,6 +29,7 @@ public:
 	void Update();
 	void Generate(); //Unused Generates Inital Terrain Upon Application Launch
 	bool isGenerated() const;
+	bool ChangeSkybox(SkyboxOption option);
 	void exportTerrain();
 
 	TerrainConfig& getTerrainConfig();
@@ -49,6 +51,7 @@ private:
 	Mesh terrainMesh;
 	Shader terrainShader;
 	Shader depthShader;
+	Skybox skybox;
 
 	uint8_t flags;
 
