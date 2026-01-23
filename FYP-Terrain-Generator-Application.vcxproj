@@ -29,6 +29,7 @@
     <ClCompile Include="src\renderer\scene.cpp" />
     <ClCompile Include="src\renderer\shader.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
+    <ClCompile Include="src\renderer\skyboxmesh.cpp" />
     <ClCompile Include="src\terrain\terraingenerator.cpp" />
     <ClCompile Include="thirdparty\glad\glad.c" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="include\renderer\scene.h" />
     <ClInclude Include="include\renderer\shader.h" />
     <ClInclude Include="include\renderer\skybox.h" />
+    <ClInclude Include="include\renderer\skyboxmesh.h" />
     <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />

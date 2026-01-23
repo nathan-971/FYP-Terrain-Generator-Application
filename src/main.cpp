@@ -140,30 +140,30 @@ int main()
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            //if (ImGui::SliderFloat3("Light Position", &lightPos.x, 0.0f, 100.0f))
-            //{
-            //    terrainShader.setUniformVec3("lightPos", lightPos);
-            //}
+            if (ImGui::SliderFloat3("Light Position", &scene.lightPos.x, 0.0f, 100.0f))
+            {
+                scene.terrainShader.setUniformVec3("lightPos", scene.lightPos);
+            }
 
-            //if (ImGui::SliderFloat3("Light Color", &lightColor.x, 0.0f, 1.0f))
-            //{
-            //    terrainShader.setUniformVec3("lightColor", lightColor);
-            //}
+            if (ImGui::SliderFloat3("Light Color", &scene.lightColor.x, 0.0f, 1.0f))
+            {
+                scene.terrainShader.setUniformVec3("lightColor", scene.lightColor);
+            }
 
-            //if (ImGui::SliderFloat("Ambient Strength", (float*)&ambientStrength, 0.0f, 1.0f))
-            //{
-            //    terrainShader.setUniformFloat("ambientStrength", ambientStrength);
-            //}
+            if (ImGui::SliderFloat("Ambient Strength", (float*)&scene.ambientStrength, 0.0f, 1.0f))
+            {
+                scene.terrainShader.setUniformFloat("ambientStrength", scene.ambientStrength);
+            }
 
-            //if (ImGui::SliderInt("Shininess", (int*)&shininess, 2, 256))
-            //{
-            //    terrainShader.setUniformInt("shininess", shininess);
-            //}
+            if (ImGui::SliderInt("Shininess", (int*)&scene.shininess, 2, 256))
+            {
+                scene.terrainShader.setUniformInt("shininess", scene.shininess);
+            }
 
-            //if (ImGui::SliderFloat("Specular Strength", (float*)&specularStrength, 0.0f, 1.0f))
-            //{
-            //    terrainShader.setUniformFloat("specularStrength", specularStrength);
-            //}
+            if (ImGui::SliderFloat("Specular Strength", (float*)&scene.specularStrength, 0.0f, 1.0f))
+            {
+                scene.terrainShader.setUniformFloat("specularStrength", scene.specularStrength);
+            }
 #pragma endregion
 
             //TEMPORARY INPUT

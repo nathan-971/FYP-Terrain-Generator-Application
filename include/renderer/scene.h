@@ -8,6 +8,7 @@
 #include "renderer/shader.h"
 #include "renderer/mesh.h"
 #include "renderer/skybox.h"
+#include "renderer/skyboxmesh.h"
 #include "terrain/terraingenerator.h"
 #include "terrain/terrainconfig.h"
 
@@ -40,18 +41,21 @@ public:
 	float ambientStrength;
 	float specularStrength;
 	int shininess;
-
+	Shader terrainShader;
 private:
 	void renderDepthPass(glm::mat4& lightSpaceMatrix);
 	void renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera);
+	void renderSkyboxPass(Camera& camera);
 	void generateShadowMap();
 
 	TerrainConfig config;
 	TerrainGenerator terrainGenerator;
 	Mesh terrainMesh;
-	Shader terrainShader;
 	Shader depthShader;
+
 	Skybox skybox;
+	SkyboxMesh skyboxMesh;
+	Shader skyboxShader;
 
 	uint8_t flags;
 

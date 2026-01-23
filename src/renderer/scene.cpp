@@ -16,7 +16,9 @@ Scene::Scene() :
     orthgonalProjection(glm::ortho(-75.0f, 75.0f, -75.0f, 75.0f, 10.0f, 500.0f)),
     terrainShader(),
     depthShader(),
+    skyboxShader(),
     terrainMesh(),
+    skyboxMesh(),
     skybox(),
     terrainGenerator(config)
 {
@@ -42,6 +44,7 @@ void Scene::Generate()
 
     terrainShader.Load("assets/shaders/vertex.glsl","assets/shaders/fragment.glsl");
     depthShader.Load("assets/shaders/depthVertex.glsl", "assets/shaders/depthFragment.glsl");
+    skyboxShader.Load("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
 
     terrainMesh.Create(config.width, config.depth, config.resolution);
 
@@ -61,6 +64,8 @@ void Scene::Generate()
 
     terrainGenerator.setMesh(terrainMesh);
     terrainGenerator.Apply();
+
+    skybox.LoadTextures();
 
     generateShadowMap();
     generated = true;
@@ -102,6 +107,7 @@ void Scene::Render(Window& window, Camera& camera)
     camera.onResize(window.getWidth(), window.getHeight());
 
     renderScenePass(lightSpaceMatrix, camera);
+    renderSkyboxPass(camera);
 
     camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
 }
@@ -113,10 +119,10 @@ void Scene::renderDepthPass(glm::mat4& lightSpaceMatrix)
     glClear(GL_DEPTH_BUFFER_BIT);
 
     depthShader.Activate();
-    depthShader.setUniformMat("lightSpaceMatrix", lightSpaceMatrix);
-    depthShader.setUniformMat("model", glm::mat4(1.0f));
 
     glm::mat4 model = glm::mat4(1.0f);
+    depthShader.setUniformMat("model", model);
+
     model = glm::translate(model, glm::vec3(0.0f));
     depthShader.setUniformMat("model", model);
     terrainMesh.Draw();
@@ -128,8 +134,15 @@ void Scene::renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera)
 {
     terrainShader.Activate();
     terrainShader.setUniformMat("lightSpaceMatrix", lightSpaceMatrix);
-    terrainShader.setUniformMat("camMatrix", camera.cameraMatrix);
+    terrainShader.setUniformMat("view", camera.view);
+    terrainShader.setUniformMat("projection", camera.projection);
     terrainShader.setUniformVec3("viewPos", camera.Position);
+
+    terrainShader.setUniformVec3("lightPos", lightPos);
+    terrainShader.setUniformVec3("lightColor", lightColor);
+    terrainShader.setUniformFloat("ambientStrength", ambientStrength);
+    terrainShader.setUniformFloat("specularStrength", specularStrength);
+    terrainShader.setUniformInt("shininess", shininess);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, shadowMap);
@@ -139,6 +152,32 @@ void Scene::renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera)
     model = glm::translate(model, glm::vec3(0.0f));
     terrainShader.setUniformMat("model", model);
     terrainMesh.Draw();
+}
+
+void Scene::renderSkyboxPass(Camera& camera)
+{
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(GL_FALSE);
+
+    skyboxShader.Activate();
+
+    glm::mat4 view = glm::lookAt(camera.Position, camera.Position + camera.Orientation, camera.Up);
+    view = glm::mat4(glm::mat3(view));
+
+    glm::mat4 projection = camera.projection;
+
+    skyboxShader.setUniformMat("view", view);
+    skyboxShader.setUniformMat("projection", camera.projection);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.getActiveTextureId());
+
+    glDisable(GL_CULL_FACE);
+    skyboxMesh.Draw();
+    glEnable(GL_CULL_FACE);
+
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LESS);
 }
 
 void Scene::generateShadowMap()
@@ -197,7 +236,7 @@ void Scene::exportTerrain()
     }
     catch(const std::exception e)
     {
-        std::cout << "ERROR EXPORTING FILE";
+        std::cout << "Error Exporting Terrain to FBX File!";
         delete exporter;
         return;
     }

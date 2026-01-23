@@ -1,4 +1,5 @@
 #include "renderer/skybox.h"
+#include <iostream>
 
 Skybox::Skybox() 
 	: activeTexture(0)
@@ -31,13 +32,6 @@ Skybox::Skybox()
 	};
 
 	stbi_set_flip_vertically_on_load(false);
-
-	loadAndCacheTextures(SkyboxOption::MORNING);
-	loadAndCacheTextures(SkyboxOption::NOON);
-	loadAndCacheTextures(SkyboxOption::NIGHT);
-
-	activeTexture = skyboxCache[SkyboxOption::NOON];
-	skyboxCache[SkyboxOption::NONE] = 0;
 }
 
 Skybox::~Skybox()
@@ -49,6 +43,28 @@ Skybox::~Skybox()
 			glDeleteTextures(1, &v);
 		}
 	}
+}
+
+bool Skybox::LoadTextures()
+{
+	if (!loadAndCacheTextures(SkyboxOption::MORNING))
+	{
+		std::cout << "Error Occurred Loading Skybox MORNING textures";
+	}
+
+	if(!loadAndCacheTextures(SkyboxOption::NOON))
+	{
+		std::cout << "Error Occurred Loading Skybox NOON textures";
+	}
+
+	if(!loadAndCacheTextures(SkyboxOption::NIGHT))
+	{
+		std::cout << "Error Occurred Loading Skybox NIGHT textures";
+	}
+
+	activeTexture = skyboxCache[SkyboxOption::NOON];
+	skyboxCache[SkyboxOption::NONE] = 0;
+	return true;
 }
 
 unsigned int Skybox::getActiveTextureId()
@@ -93,6 +109,7 @@ bool Skybox::loadAndCacheTextures(SkyboxOption option)
 		texData = stbi_load(skyboxTexturePaths[option][i].c_str(), &texWidth, &texHeight, &numChannels, 0);
 		if (!texData)
 		{
+			std::cout << "Error Loading Texture: " << skyboxTexturePaths[option][i] << std::endl;
 			stbi_image_free(texData);
 			glDeleteTextures(1, &textureId);
 			return false;

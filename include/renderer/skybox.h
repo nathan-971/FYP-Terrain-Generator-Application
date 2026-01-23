@@ -24,6 +24,7 @@ public:
 	~Skybox();
 
 	bool Change(SkyboxOption option);
+	bool LoadTextures();
 	unsigned int getActiveTextureId();
 
 private:

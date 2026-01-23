@@ -1,19 +1,14 @@
 #include "core/camera.h"
 
 Camera::Camera(int width, int height, glm::vec3 position)
-	: width(width), height(height), Position(position), deltaTime(0.0f) { }
+	: width(width), height(height), Position(position), deltaTime(0.0f), projection(1.0f), view(1.0f) { }
 
 void Camera::updateCameraMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 proj = glm::mat4(1.0f);
-
-	//View and Projection Calculations
 	view = glm::lookAt(Position, Position + Orientation, Up);
-	proj = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
-
-	cameraMatrix = proj * view;
+	projection = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
 }
+
 
 void Camera::onResize(int newWidth, int newHeight)
 {
