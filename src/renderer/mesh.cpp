@@ -1,14 +1,9 @@
 #include "renderer/mesh.h"
 
 Mesh::Mesh() 
-	: VAO(0), VBO(0), EBO(0), finished(false) { }
+	: finished(false) { }
 
-Mesh::~Mesh()
-{
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteBuffers(1, &VBO);
-}
+Mesh::~Mesh() { }
 
 std::vector<Vertex>& Mesh::GetVertices()
 {
@@ -26,43 +21,16 @@ void Mesh::Create(unsigned int width, unsigned int depth, float resolution)
 	UpdateBuffers();
 }
 
-void Mesh::Draw(unsigned int& shaderProgram)
-{
-	glBindVertexArray(VAO);
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-}
-
 void Mesh::UpdateBuffers()
 {
-	if (VAO == 0)
-	{
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-		glGenBuffers(1, &EBO);
-	}
-
 	glBindVertexArray(VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), this->vertices.data(), GL_STATIC_DRAW);
+	uploadVertexData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
+	uploadIndicesData(indices.data(), indices.size(), GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), this->indices.data(), GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
+	enableAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, position));
+	enableAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, normal));
+	enableAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, color));
 }
 
 void Mesh::buildMesh(unsigned int width, unsigned int depth, float resolution)

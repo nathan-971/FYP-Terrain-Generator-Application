@@ -116,7 +116,11 @@ void Scene::renderDepthPass(glm::mat4& lightSpaceMatrix)
     depthShader.setUniformMat("lightSpaceMatrix", lightSpaceMatrix);
     depthShader.setUniformMat("model", glm::mat4(1.0f));
 
-    terrainMesh.Draw(depthShader.progID);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f));
+    depthShader.setUniformMat("model", model);
+    terrainMesh.Draw();
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -131,7 +135,10 @@ void Scene::renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera)
     glBindTexture(GL_TEXTURE_2D, shadowMap);
     terrainShader.setUniformInt("shadowMap", 0);
 
-    terrainMesh.Draw(terrainShader.progID);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f));
+    terrainShader.setUniformMat("model", model);
+    terrainMesh.Draw();
 }
 
 void Scene::generateShadowMap()

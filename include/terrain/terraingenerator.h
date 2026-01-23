@@ -7,6 +7,7 @@
 #define TERRAIN_MIN_DEPTH 2
 #define TERRAIN_MAX_DEPTH 100
 
+#include "renderer/vertex.h"
 #include "renderer/mesh.h"
 #include "noise/perlinnoise.h"
 #include "terrain/terrainconfig.h"

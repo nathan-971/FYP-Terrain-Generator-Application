@@ -1,19 +1,10 @@
 #ifndef _MESH_H_
 #define _MESH_H_
 
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <vector>
+#include "renderer/meshbase.h"
+#include "renderer/vertex.h"
 
-struct Vertex
-{
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec3 color;
-};
-
-class Mesh
+class Mesh : public MeshBase
 {
 public:
 	Mesh();
@@ -21,7 +12,6 @@ public:
 
 	void UpdateBuffers();
 	void Create(unsigned int width, unsigned int depth, float resolution);
-	void Draw(unsigned int& shaderProgram);
 	void recalculateNormals(unsigned int width, unsigned int depth, float resolution);
 	float GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution);
 	
@@ -33,7 +23,6 @@ private:
 	bool finished;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	unsigned int VAO, VBO, EBO;
 };
 
 #endif

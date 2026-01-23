@@ -25,6 +25,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\noise\perlinnoise.cpp" />
     <ClCompile Include="src\renderer\mesh.cpp" />
+    <ClCompile Include="src\renderer\meshbase.cpp" />
     <ClCompile Include="src\renderer\scene.cpp" />
     <ClCompile Include="src\renderer\shader.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
@@ -47,9 +48,11 @@
     <ClInclude Include="include\noise\noise.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
     <ClInclude Include="include\renderer\mesh.h" />
+    <ClInclude Include="include\renderer\meshbase.h" />
     <ClInclude Include="include\renderer\scene.h" />
     <ClInclude Include="include\renderer\shader.h" />
     <ClInclude Include="include\renderer\skybox.h" />
+    <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />
   </ItemGroup>

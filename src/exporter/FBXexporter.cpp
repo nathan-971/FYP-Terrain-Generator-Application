@@ -36,7 +36,6 @@ bool FBXExporter::Export(Mesh& mesh, std::string outputPath)
 		}
 	}
 
-
 	fbxMesh->InitControlPoints(vertexCount);
 
 	FbxVector4* controlPoints = fbxMesh->GetControlPoints();

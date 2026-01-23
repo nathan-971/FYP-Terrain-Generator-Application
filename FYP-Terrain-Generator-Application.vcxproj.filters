@@ -111,6 +111,9 @@
     <ClCompile Include="src\renderer\skybox.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\meshbase.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\noise\noise.h">
@@ -147,6 +150,12 @@
       <Filter>Header Files\Exporter</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer\skybox.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer\meshbase.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer\vertex.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
