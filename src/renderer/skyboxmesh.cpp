@@ -3,7 +3,7 @@
 SkyboxMesh::SkyboxMesh()
 {
     vertices.clear();
-    vertices = {
+    vertices = { //Hard coded vertiecs data for a Cube
         // Back face
         {{-1.0f,  1.0f, -1.0f}, {0,0,0}, {0,0,0}},
         {{ 1.0f,  1.0f, -1.0f}, {0,0,0}, {0,0,0}},

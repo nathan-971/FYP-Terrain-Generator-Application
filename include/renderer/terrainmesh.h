@@ -4,11 +4,11 @@
 #include "renderer/meshbase.h"
 #include "renderer/vertex.h"
 
-class Mesh : public MeshBase
+class TerrainMesh : public MeshBase
 {
 public:
-	Mesh();
-	~Mesh();
+	TerrainMesh();
+	~TerrainMesh();
 
 	void UpdateBuffers();
 	void Create(unsigned int width, unsigned int depth, float resolution);

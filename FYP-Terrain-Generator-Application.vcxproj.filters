@@ -90,7 +90,7 @@
     <ClCompile Include="src\core\camera.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\mesh.cpp">
+    <ClCompile Include="src\renderer\terrainmesh.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\shader.cpp">
@@ -128,7 +128,7 @@
     <ClInclude Include="include\core\camera.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\renderer\mesh.h">
+    <ClInclude Include="include\renderer\terrainmesh.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer\shader.h">

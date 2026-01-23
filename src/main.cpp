@@ -1,6 +1,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "IconsFontAwesome6.h"
 
 #include <iostream>
 
@@ -31,9 +32,25 @@ int main()
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.Fonts->AddFontDefault();
+
+    ImFontConfig config;
+    config.MergeMode = true;
+    config.GlyphOffset.y =+ 1.0f;
+    config.GlyphOffset.x = +1.0f;
+
+    static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+    io.Fonts->AddFontFromFileTTF("assets/fonts/fa-solid-900.ttf", 15.0f, &config, icon_ranges);
+
     ImGui::StyleColorsDark();
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+
     ImGui_ImplGlfw_InitForOpenGL(window.getNativeWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
+
+    ImVec2 buttonSize(30, 30);
 
     float deltaTime = 0.0f;
     float lastFrameTime = 0.0f;
@@ -59,6 +76,7 @@ int main()
         if (!scene.isGenerated())
         {
             ImGui::Begin("Generate Terrain");
+            ImGui::SeparatorText("Input Terrain Configuration");
 
             ImGui::SliderInt("Width", (int*)&config.width, TERRAIN_MIN_WIDTH, TERRAIN_MAX_WIDTH);
             ImGui::SliderInt("Depth", (int*)&config.depth, TERRAIN_MIN_DEPTH, TERRAIN_MAX_DEPTH);
@@ -97,6 +115,8 @@ int main()
             ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.Position.x, camera.Position.y, camera.Position.z);
             ImGui::Text("Camera Speed: %.2f", camera.speed);
 #pragma region IMGUI CONTROLS
+    #pragma region MESH CONTROLS
+            ImGui::SeparatorText("Mesh Configuration");
             if (ImGui::SliderInt("Terrain Width", (int*)&config.width, TERRAIN_MIN_WIDTH, TERRAIN_MAX_WIDTH))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::Mesh);
@@ -108,13 +128,14 @@ int main()
                 scene.FlagForUpdate(UpdateSceneFlag::Mesh);
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
-
             if (ImGui::SliderFloat("Terrain Resolution", (float*)&config.resolution, 1.0f, 0.5f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::Mesh);
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
-
+    #pragma endregion
+    #pragma region NOISE CONTROLS
+            ImGui::SeparatorText("Noise Configuration");
             if (ImGui::SliderInt("Noise Octaves", (int*)&config.octaves, 1, 8))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
@@ -139,7 +160,9 @@ int main()
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
-
+    #pragma endregion
+    #pragma region LIGHT CONTROLS
+            ImGui::SeparatorText("Lighting Configuration");
             if (ImGui::SliderFloat3("Light Position", &scene.lightPos.x, 0.0f, 100.0f))
             {
                 scene.terrainShader.setUniformVec3("lightPos", scene.lightPos);
@@ -164,6 +187,30 @@ int main()
             {
                 scene.terrainShader.setUniformFloat("specularStrength", scene.specularStrength);
             }
+    #pragma endregion
+    #pragma region SKYBOX CONTROLS
+            ImGui::SeparatorText("Skybox");
+
+            if (ImGui::Button(ICON_FA_CLOUD_SUN, buttonSize))
+            {
+                scene.ChangeSkybox(SkyboxOption::MORNING);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_SUN, buttonSize))
+            {
+                scene.ChangeSkybox(SkyboxOption::NOON);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_MOON, buttonSize))
+            {
+                scene.ChangeSkybox(SkyboxOption::NIGHT);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(ICON_FA_CIRCLE_XMARK, buttonSize))
+            {
+                scene.ChangeSkybox(SkyboxOption::NONE);
+            }
+    #pragma endregion
 #pragma endregion
 
             //TEMPORARY INPUT

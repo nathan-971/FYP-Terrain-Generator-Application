@@ -6,7 +6,7 @@
 #include "core/camera.h"
 #include "core/window.h"
 #include "renderer/shader.h"
-#include "renderer/mesh.h"
+#include "renderer/terrainmesh.h"
 #include "renderer/skybox.h"
 #include "renderer/skyboxmesh.h"
 #include "terrain/terraingenerator.h"
@@ -28,7 +28,7 @@ public:
 	void Render(Window& window, Camera& camera);
 	void FlagForUpdate(UpdateSceneFlag flag);
 	void Update();
-	void Generate(); //Unused Generates Inital Terrain Upon Application Launch
+	void Generate();
 	bool isGenerated() const;
 	bool ChangeSkybox(SkyboxOption option);
 	void exportTerrain();
@@ -41,6 +41,7 @@ public:
 	float ambientStrength;
 	float specularStrength;
 	int shininess;
+
 	Shader terrainShader;
 private:
 	void renderDepthPass(glm::mat4& lightSpaceMatrix);
@@ -50,7 +51,7 @@ private:
 
 	TerrainConfig config;
 	TerrainGenerator terrainGenerator;
-	Mesh terrainMesh;
+	TerrainMesh terrainMesh;
 	Shader depthShader;
 
 	Skybox skybox;

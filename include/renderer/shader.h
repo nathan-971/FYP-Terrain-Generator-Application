@@ -9,8 +9,6 @@
 class Shader
 {
 public:
-	GLuint progID;
-
 	Shader();
 	~Shader();
 
@@ -20,8 +18,10 @@ public:
 	void setUniformInt(const char* name, int i);
 	void setUniformVec3(const char* name, glm::vec3 vec);
 	void setUniformMat(const char* name, glm::mat4 mat);
+
+	unsigned int progID;
 private:
-	void compileErrors(GLuint ID, const char* type) const;
+	void compileErrors(unsigned int ID, const char* type) const;
 	std::string readInShaderFromSource(const char* path) const;
 };
 

@@ -13,7 +13,7 @@ TerrainGenerator::~TerrainGenerator()
 	noise = nullptr;
 }
 	
-void TerrainGenerator::setMesh(Mesh& mesh)
+void TerrainGenerator::setMesh(TerrainMesh& mesh)
 {
 	terrainMesh = &mesh;
 }

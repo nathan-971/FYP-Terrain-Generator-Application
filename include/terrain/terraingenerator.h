@@ -8,7 +8,7 @@
 #define TERRAIN_MAX_DEPTH 100
 
 #include "renderer/vertex.h"
-#include "renderer/mesh.h"
+#include "renderer/terrainmesh.h"
 #include "noise/perlinnoise.h"
 #include "terrain/terrainconfig.h"
 #include <noise/noise.h>
@@ -19,7 +19,7 @@ public:
 	TerrainGenerator(TerrainConfig& config);
 	~TerrainGenerator();
 
-	void setMesh(Mesh& terrainMesh);
+	void setMesh(TerrainMesh& terrainMesh);
 	void setShaderProgram(unsigned int shaderProgram);
 	void Apply() const;
 
@@ -27,7 +27,7 @@ public:
 private:
 	TerrainConfig& config;
 	Noise* noise;
-	Mesh* terrainMesh;
+	TerrainMesh* terrainMesh;
 	unsigned int shaderProgram;
 };
 

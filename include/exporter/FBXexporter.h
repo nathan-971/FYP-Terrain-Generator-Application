@@ -8,7 +8,7 @@
 class FBXExporter : public Exporter
 {
 public:
-	bool Export(Mesh& mesh, std::string outputPath) override;
+	bool Export(TerrainMesh& mesh, std::string outputPath) override;
 };
 
 #endif

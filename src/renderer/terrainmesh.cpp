@@ -1,27 +1,27 @@
-#include "renderer/mesh.h"
+#include "renderer/terrainmesh.h"
 
-Mesh::Mesh() 
+TerrainMesh::TerrainMesh() 
 	: finished(false) { }
 
-Mesh::~Mesh() { }
+TerrainMesh::~TerrainMesh() { }
 
-std::vector<Vertex>& Mesh::GetVertices()
+std::vector<Vertex>& TerrainMesh::GetVertices()
 {
 	return this->vertices;
 }
 
-std::vector<unsigned int>& Mesh::GetIndices()
+std::vector<unsigned int>& TerrainMesh::GetIndices()
 {
 	return this->indices;
 }
 
-void Mesh::Create(unsigned int width, unsigned int depth, float resolution)
+void TerrainMesh::Create(unsigned int width, unsigned int depth, float resolution)
 {
 	buildMesh(width, depth, resolution);
 	UpdateBuffers();
 }
 
-void Mesh::UpdateBuffers()
+void TerrainMesh::UpdateBuffers()
 {
 	glBindVertexArray(VAO);
 
@@ -33,7 +33,7 @@ void Mesh::UpdateBuffers()
 	enableAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, color));
 }
 
-void Mesh::buildMesh(unsigned int width, unsigned int depth, float resolution)
+void TerrainMesh::buildMesh(unsigned int width, unsigned int depth, float resolution)
 {
 	vertices.clear();
 	indices.clear();
@@ -78,7 +78,7 @@ void Mesh::buildMesh(unsigned int width, unsigned int depth, float resolution)
 	}
 }
 
-void Mesh::recalculateNormals(unsigned int width, unsigned int depth, float resolution)
+void TerrainMesh::recalculateNormals(unsigned int width, unsigned int depth, float resolution)
 {
 	unsigned int vertCountX = static_cast<unsigned int>(width / resolution) + 1;
 	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
@@ -107,7 +107,7 @@ void Mesh::recalculateNormals(unsigned int width, unsigned int depth, float reso
 	}
 }
 
-float Mesh::GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution)
+float TerrainMesh::GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution)
 {
 	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
 	glm::vec3 normal = vertices[x * vertCountZ + z].normal;

@@ -14,6 +14,11 @@
 class Camera
 {
 public:
+	Camera(int width, int height, glm::vec3 position);
+	void updateCameraMatrix(float FOVdeg, float nearPlane, float farPlane);
+	void Inputs(GLFWwindow* window);
+	void onResize(int newWidth, int newHeight);
+
 	glm::vec3 Position;
 	glm::vec3 Orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -27,11 +32,6 @@ public:
 	float deltaTime;
 	float speed = 5.0f;
 	float sensitivity = 100.0f;
-
-	Camera(int width, int height, glm::vec3 position);
-	void updateCameraMatrix(float FOVdeg, float nearPlane, float farPlane);
-	void Inputs(GLFWwindow* window);
-	void onResize(int newWidth, int newHeight);
 };
 
 #endif

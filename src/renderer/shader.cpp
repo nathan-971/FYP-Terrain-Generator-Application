@@ -62,7 +62,7 @@ void Shader::setUniformMat(const char* name, glm::mat4 mat)
 	glUniformMatrix4fv(glGetUniformLocation(progID, name), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
-void Shader::compileErrors(GLuint ID, const char* type) const
+void Shader::compileErrors(unsigned int ID, const char* type) const
 {
 	int hasCompiled;
 	char infoLog[1024];
