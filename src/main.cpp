@@ -111,6 +111,7 @@ int main()
                 frames = 0;
                 previousTime = currentFrame;
             }
+
             ImGui::Text("FPS: %d", fps);
             ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.Position.x, camera.Position.y, camera.Position.z);
             ImGui::Text("Camera Speed: %.2f", camera.speed);
@@ -190,7 +191,6 @@ int main()
     #pragma endregion
     #pragma region SKYBOX CONTROLS
             ImGui::SeparatorText("Skybox");
-
             if (ImGui::Button(ICON_FA_CLOUD_SUN, buttonSize))
             {
                 scene.ChangeSkybox(SkyboxOption::MORNING);
@@ -220,7 +220,7 @@ int main()
             }
 
             ImGui::End();
-
+            
             camera.Inputs(window.getNativeWindow());
             camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
 

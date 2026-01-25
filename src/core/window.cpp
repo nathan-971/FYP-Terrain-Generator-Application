@@ -84,6 +84,11 @@ double Window::getTime() const
 	return glfwGetTime();
 }
 
+void Window::getMousePosition(double& x, double& y)
+{
+	return glfwGetCursorPos(nativeWindow, &x, &y);
+}
+
 void Window::updateViewport(int width, int height)
 {
 	this->width = width;

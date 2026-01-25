@@ -23,6 +23,7 @@ public:
 	void swapBuffers() const;
 	int shouldClose() const;
 	double getTime() const;
+	void getMousePosition(double &x, double &y);
 
 	void updateViewport(int width, int height);
 	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);

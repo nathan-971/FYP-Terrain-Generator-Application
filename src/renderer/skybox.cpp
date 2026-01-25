@@ -82,8 +82,19 @@ bool Skybox::Change(SkyboxOption option)
 	return false;
 }
 
+bool Skybox::isDisabled()
+{
+	return activeTexture == skyboxCache[SkyboxOption::NONE];
+}
+
 bool Skybox::loadAndCacheTextures(SkyboxOption option)
 {
+	if (option == SkyboxOption::NONE)
+	{
+		activeTexture = skyboxCache[option];
+		return true;
+	}
+
 	if (skyboxCache[option])
 	{
 		return true;

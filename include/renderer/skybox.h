@@ -25,6 +25,7 @@ public:
 
 	bool Change(SkyboxOption option);
 	bool LoadTextures();
+	bool isDisabled();
 	unsigned int getActiveTextureId();
 
 private:

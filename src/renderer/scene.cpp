@@ -107,7 +107,10 @@ void Scene::Render(Window& window, Camera& camera)
     camera.onResize(window.getWidth(), window.getHeight());
 
     renderScenePass(lightSpaceMatrix, camera);
-    renderSkyboxPass(camera);
+    if (!skybox.isDisabled())
+    {
+        renderSkyboxPass(camera);
+    }
 
     camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
 }
