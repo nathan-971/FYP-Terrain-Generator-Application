@@ -2,10 +2,10 @@
 #define _TERRAIN_GENERATOR_H_
 
 #define TERRAIN_MIN_WIDTH 2
-#define TERRAIN_MAX_WIDTH 100
+#define TERRAIN_MAX_WIDTH 150
 
 #define TERRAIN_MIN_DEPTH 2
-#define TERRAIN_MAX_DEPTH 100
+#define TERRAIN_MAX_DEPTH 150
 
 #include "renderer/vertex.h"
 #include "renderer/terrainmesh.h"
@@ -21,10 +21,13 @@ public:
 
 	void setMesh(TerrainMesh& terrainMesh);
 	void setShaderProgram(unsigned int shaderProgram);
-	void Apply() const;
+	void Apply();
 
 	TerrainConfig& getConfig();
 private:
+	void applyNoise();
+	void applyErosion();
+
 	TerrainConfig& config;
 	Noise* noise;
 	TerrainMesh* terrainMesh;

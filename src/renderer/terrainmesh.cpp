@@ -110,8 +110,11 @@ void TerrainMesh::recalculateNormals(unsigned int width, unsigned int depth, flo
 float TerrainMesh::GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution)
 {
 	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
+	unsigned int vertCountX = static_cast<unsigned int>(width / resolution) + 1;
+
 	glm::vec3 normal = vertices[x * vertCountZ + z].normal;
-	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	normal = glm::normalize(normal);
+	glm::vec3 up(0.0f, 1.0f, 0.0f);
 	float slopeRadians = acos(glm::clamp(glm::dot(normal, up), -1.0f, 1.0f));
 	return glm::degrees(slopeRadians);
 }

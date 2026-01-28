@@ -161,6 +161,11 @@ int main()
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
+
+            if (ImGui::SliderFloat("Noise Scale", (float*)&config.scale, 0.1f, 5.0f))
+            {
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+            }
     #pragma endregion
     #pragma region LIGHT CONTROLS
             ImGui::SeparatorText("Lighting Configuration");

@@ -11,6 +11,7 @@ struct TerrainConfig
 	float frequency;
 	float persistence;
 	float lacunarity;
+	float scale;
 };
 
 #endif
