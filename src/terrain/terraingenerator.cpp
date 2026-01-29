@@ -35,43 +35,6 @@ void TerrainGenerator::Apply()
 	applyErosion();
 	terrainMesh->recalculateNormals(this->config.width, this->config.depth, this->config.resolution);
 
-    for (auto& vertex : terrainMesh->GetVertices())
-    {
-        float slope = terrainMesh->GetSlopeAt(
-            vertex.position.x,
-            vertex.position.z,
-            this->config.width,
-            this->config.depth,
-            this->config.resolution
-        );
-
-        glm::vec3 grassColor(0.1f, 0.6f, 0.1f);
-        glm::vec3 dirtColor(0.45f, 0.35f, 0.2f);
-        glm::vec3 rockColor(0.5f, 0.5f, 0.5f);
-        glm::vec3 snowColor(0.9f, 0.9f, 0.9f);
-
-        if (slope < 25.0f)
-        {
-            vertex.color = grassColor;
-        }
-        else if (slope < 45.0f)
-        {
-            float t = (slope - 25.0f) / 20.0f;
-            vertex.color = glm::mix(grassColor, dirtColor, t);
-        }
-        else if (slope < 70.0f)
-        {
-            float t = (slope - 45.0f) / 25.0f;
-            vertex.color = glm::mix(dirtColor, rockColor, t);
-        }
-        else
-        {
-            float t = (slope - 70.0f) / 20.0f;
-            t = glm::clamp(t, 0.0f, 1.0f);
-            vertex.color = glm::mix(rockColor, snowColor, t);
-        }
-    }
-
 	terrainMesh->UpdateBuffers();
 }
 
