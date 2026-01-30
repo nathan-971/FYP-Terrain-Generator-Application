@@ -31,6 +31,8 @@ Scene::Scene() :
     config.frequency = 0.04f;
     config.lacunarity = 1.5f;
     config.persistence = 0.6f;
+    config.scale = 1.0f;
+    config.warpMultiplier = 0.0f;
 }
 
 Scene::~Scene() { }
@@ -222,6 +224,11 @@ bool Scene::ChangeSkybox(SkyboxOption option)
 TerrainConfig& Scene::getTerrainConfig()
 {
     return config;
+}
+
+TerrainGenerator& Scene::getTerrainGenerator()
+{
+    return terrainGenerator;
 }
 
 //TEMPORARY FUNCTION

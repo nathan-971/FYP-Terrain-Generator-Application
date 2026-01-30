@@ -48,12 +48,12 @@ void PerlinNoise::initPermTable()
     initialized = true;
 }
 
-float PerlinNoise::Get(float x, float y, float freq)
+float PerlinNoise::Get(float x, float y)
 {
     initPermTable();
 
-    float xf = x * freq;
-    float yf = y * freq;
+    float xf = x;
+    float yf = y;
 
     int x0 = (int)floor(xf);
     int y0 = (int)floor(yf);

@@ -13,6 +13,19 @@
 #include "terrain/terrainconfig.h"
 #include <noise/noise.h>
 
+enum class NoiseConfiguration
+{
+	BaseNoise,
+	RidgedNoise
+};
+
+enum class WarpMode
+{
+	None,
+	Single,
+	Double
+};
+
 class TerrainGenerator
 {
 public:
@@ -21,12 +34,18 @@ public:
 
 	void setMesh(TerrainMesh& terrainMesh);
 	void setShaderProgram(unsigned int shaderProgram);
+	void setNoiseConfiguration(NoiseConfiguration& noiseConfig);
+	void setWarpMode(WarpMode& warpMode);
 	void Apply();
 
 	TerrainConfig& getConfig();
 private:
-	void applyNoise();
+	void applyBaseNoise();
+	void applyRidgedNoise();
 	void applyErosion();
+
+	NoiseConfiguration noiseConfig;
+	WarpMode warpMode;
 
 	TerrainConfig& config;
 	Noise* noise;

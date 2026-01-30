@@ -34,6 +34,7 @@ public:
 	void exportTerrain();
 
 	TerrainConfig& getTerrainConfig();
+	TerrainGenerator& getTerrainGenerator();
 
 	//Temporary Lightning Values
 	glm::vec3 lightPos;

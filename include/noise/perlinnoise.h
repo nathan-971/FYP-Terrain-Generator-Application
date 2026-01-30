@@ -13,7 +13,7 @@ class PerlinNoise : public Noise
 {
 public:
     PerlinNoise() = default;
-    float Get(float x, float y, float freq) override;
+    float Get(float x, float y) override;
 
 private:
     static float lerp(float a, float b, float t);

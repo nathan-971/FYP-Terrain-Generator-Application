@@ -14,7 +14,7 @@ class Noise
 {
 public:
 	virtual ~Noise() = default;
-	virtual float Get(float x, float y, float freq) = 0;
+	virtual float Get(float x, float y) = 0;
 };
 
 #endif

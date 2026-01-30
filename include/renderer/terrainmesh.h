@@ -13,8 +13,7 @@ public:
 	void UpdateBuffers();
 	void Create(unsigned int width, unsigned int depth, float resolution);
 	void recalculateNormals(unsigned int width, unsigned int depth, float resolution);
-	float GetSlopeAt(unsigned int x, unsigned int z, unsigned int width, unsigned int depth, float resolution);
-	
+
 	std::vector<Vertex>& GetVertices();
 	std::vector<unsigned int>& GetIndices();
 private:

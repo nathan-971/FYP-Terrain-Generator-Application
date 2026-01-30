@@ -68,14 +68,11 @@ float getSlope(vec3 normalVector)
 vec3 getTerrainColor(float slope)
 {
 	vec3 grass = vec3(0.18, 0.32, 0.15);
-	vec3 dirt  = vec3(0.25, 0.20, 0.15);
 	vec3 stone  = vec3(0.35, 0.36, 0.38);
 
-	float grassToDirt = smoothstep(30.0, 35.0, slope);
-	float dirtToStone = smoothstep(35.0, 65.0, slope);
-	
-	vec3 slopeColor = mix(grass, dirt, grassToDirt);
-    return slopeColor = mix(slopeColor, stone, dirtToStone);
+	float grassToStone = smoothstep(30.0, 55.0, slope);
+
+	return mix(grass, stone, grassToStone);
 }
 
 void main()

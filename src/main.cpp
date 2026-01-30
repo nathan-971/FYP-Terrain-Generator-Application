@@ -59,6 +59,12 @@ int main()
     int frames = 0;
     static int fps = 0;
 
+    const char* noiseConfigNames[] = { "Base Noise", "Ridged Noise" };
+    static NoiseConfiguration selectedConfig = NoiseConfiguration::BaseNoise;
+
+    const char* warpModeNames[] = { "None", "Single", "Double" };
+    static WarpMode selectedWarpMode = WarpMode::None;
+
     while (!window.shouldClose())
     {
         window.pollEvents();
@@ -97,7 +103,7 @@ int main()
         else
         {
             enableWireFrame(window);
-            ImGui::Begin("Terrain Configuration");
+            ImGui::Begin("Terrain Settings");
 
             float currentFrame = window.getTime();
             deltaTime = currentFrame - lastFrameTime;
@@ -136,33 +142,78 @@ int main()
             }
     #pragma endregion
     #pragma region NOISE CONTROLS
-            ImGui::SeparatorText("Noise Configuration");
-            if (ImGui::SliderInt("Noise Octaves", (int*)&config.octaves, 1, 8))
+            ImGui::SeparatorText("Noise Settings");
+            if (ImGui::BeginCombo("Noise Configuration", noiseConfigNames[static_cast<int>(selectedConfig)]))
+            {
+                for (int i = 0; i < sizeof(noiseConfigNames) / sizeof(noiseConfigNames[0]); ++i)
+                {
+                    bool isSelected = (selectedConfig == static_cast<NoiseConfiguration>(i));
+                    if (ImGui::Selectable(noiseConfigNames[i], isSelected))
+                    {
+                        selectedConfig = static_cast<NoiseConfiguration>(i);
+
+                        scene.getTerrainGenerator().setNoiseConfiguration(selectedConfig);
+                        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+                    }
+                    if (isSelected)
+                    {
+                        ImGui::SetItemDefaultFocus();
+                    }
+                }
+                ImGui::EndCombo();
+            }
+
+            if (ImGui::SliderInt("Noise Octaves", static_cast<int*>(&config.octaves), 1, 8))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Amplitude", (float*)&config.amplitude, 1.0f, 20.0f))
+            if (ImGui::SliderFloat("Noise Amplitude", static_cast<float*>(&config.amplitude), 1.0f, 20.0f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Frequency", (float*)&config.frequency, 0.01f, 0.1f))
+            if (ImGui::SliderFloat("Noise Frequency", static_cast<float*>(&config.frequency), 0.01f, 0.1f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Lacunarity", (float*)&config.lacunarity, 1.0f, 2.0f))
+            if (ImGui::SliderFloat("Noise Lacunarity", static_cast<float*>(&config.lacunarity), 1.0f, 2.0f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Persistence", (float*)&config.persistence, 0.01f, 1.0f))
+            if (ImGui::SliderFloat("Noise Persistence", static_cast<float*>(&config.persistence), 0.01f, 1.0f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Scale", (float*)&config.scale, 0.1f, 5.0f))
+            if (ImGui::SliderFloat("Noise Scale", static_cast<float*>(&config.scale), 0.1f, 5.0f))
+            {
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+            }
+
+            if (ImGui::BeginCombo("Warp Configuration", warpModeNames[static_cast<int>(selectedWarpMode)]))
+            {
+                for (int i = 0; i < sizeof(warpModeNames) / sizeof(warpModeNames[0]); ++i)
+                {
+                    bool isSelected = (selectedWarpMode == static_cast<WarpMode>(i));
+                    if (ImGui::Selectable(warpModeNames[i], isSelected))
+                    {
+                        selectedWarpMode = static_cast<WarpMode>(i);
+
+                        scene.getTerrainGenerator().setWarpMode(selectedWarpMode);
+                        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+                    }
+                    if (isSelected)
+                    {
+                        ImGui::SetItemDefaultFocus();
+                    }
+                }
+                ImGui::EndCombo();
+            }
+
+            if (ImGui::SliderFloat("Wrap Multiplier", static_cast<float*>(&config.warpMultiplier), 0.0f, 250.0f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
@@ -195,7 +246,7 @@ int main()
             }
     #pragma endregion
     #pragma region SKYBOX CONTROLS
-            ImGui::SeparatorText("Skybox");
+            ImGui::SeparatorText("Skybox Settings");
             if (ImGui::Button(ICON_FA_CLOUD_SUN, buttonSize))
             {
                 scene.ChangeSkybox(SkyboxOption::MORNING);
