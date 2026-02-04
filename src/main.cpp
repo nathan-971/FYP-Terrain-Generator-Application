@@ -3,6 +3,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "IconsFontAwesome6.h"
 
+#include <random>
 #include <iostream>
 
 #include "core/window.h"
@@ -15,6 +16,7 @@
 #define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
 
 void enableWireFrame(Window& window);
+int generateSeed();
 
 int main()
 {
@@ -65,6 +67,8 @@ int main()
     const char* warpModeNames[] = { "None", "Single", "Double" };
     static WarpMode selectedWarpMode = WarpMode::None;
 
+    int seed = generateSeed();
+
     while (!window.shouldClose())
     {
         window.pollEvents();
@@ -97,7 +101,7 @@ int main()
             {
                 scene.Generate();
             }
-
+            ImGui::ShowDemoWindow();
             ImGui::End();
         }
         else
@@ -121,6 +125,7 @@ int main()
             ImGui::Text("FPS: %d", fps);
             ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.Position.x, camera.Position.y, camera.Position.z);
             ImGui::Text("Camera Speed: %.2f", camera.speed);
+            ImGui::Text("Vertex Count: %d", scene.getVertexCount());
 #pragma region IMGUI CONTROLS
     #pragma region MESH CONTROLS
             ImGui::SeparatorText("Mesh Configuration");
@@ -168,12 +173,12 @@ int main()
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Amplitude", static_cast<float*>(&config.amplitude), 1.0f, 20.0f))
+            if (ImGui::SliderFloat("Noise Amplitude", static_cast<float*>(&config.amplitude), 1.0f, 15.0f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Frequency", static_cast<float*>(&config.frequency), 0.01f, 0.1f))
+            if (ImGui::SliderFloat("Noise Frequency", static_cast<float*>(&config.frequency), 0.01f, 0.5f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
@@ -183,12 +188,12 @@ int main()
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Persistence", static_cast<float*>(&config.persistence), 0.01f, 1.0f))
+            if (ImGui::SliderFloat("Noise Persistence", static_cast<float*>(&config.persistence), 0.01f, 0.75f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
 
-            if (ImGui::SliderFloat("Noise Scale", static_cast<float*>(&config.scale), 0.1f, 5.0f))
+            if (ImGui::SliderFloat("Noise Scale", static_cast<float*>(&config.scale), 0.1f, 2.5f))
             {
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
@@ -213,8 +218,21 @@ int main()
                 ImGui::EndCombo();
             }
 
-            if (ImGui::SliderFloat("Wrap Multiplier", static_cast<float*>(&config.warpMultiplier), 0.0f, 250.0f))
+            if (ImGui::SliderFloat("Wrap Multiplier", static_cast<float*>(&config.warpMultiplier), 0.0f, 200.0f))
             {
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+            }
+
+            if (ImGui::SliderFloat("Wrap Freqeuncy", static_cast<float*>(&config.warpFrequency), 0.000f, 0.03f))
+            {
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+            }
+
+            ImGui::InputInt("Seed", &seed, ImGuiInputTextFlags_ReadOnly);
+            if (ImGui::Button("Generate"))
+            {
+                seed = generateSeed();
+                scene.getTerrainGenerator().setSeed(seed);
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
     #pragma endregion
@@ -316,4 +334,13 @@ void enableWireFrame(Window& window)
     {
         lastFramePressed = false;
     }
+}
+
+int generateSeed()
+{
+    std::random_device rngDevice;
+    std::mt19937 gen(rngDevice());
+    std::uniform_int_distribution<int> range(100000000, 999999999); //Seed is 9 Numbers
+
+    return range(gen);
 }

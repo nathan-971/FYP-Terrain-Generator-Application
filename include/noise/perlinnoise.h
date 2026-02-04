@@ -14,19 +14,20 @@ class PerlinNoise : public Noise
 public:
     PerlinNoise() = default;
     float Get(float x, float y) override;
+    void ApplySeed(int seed) override;
 
 private:
-    static float lerp(float a, float b, float t);
-    static float fade(float t);
-    static float dotProduct(const Vector& gradient, const Vector& gridPoint);
-    static Vector getGradient(int x, int y);
-    static Vector getVectorDistance(float xf, float x, float yf, float y);
-    static int hash(int x, int y);
+    float lerp(float a, float b, float t);
+    float fade(float t);
+    float dotProduct(const Vector& gradient, const Vector& gridPoint);
+    Vector getGradient(int x, int y);
+    Vector getVectorDistance(float xf, float x, float yf, float y);
+    int hash(int x, int y);
+    void initPermTable(int seed);
 
-    static const int permutation[256];
     static int perm[512];
+    int seed;
     static bool initialized;
-    static void initPermTable();
 };
 
 #endif

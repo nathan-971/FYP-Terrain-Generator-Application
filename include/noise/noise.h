@@ -15,6 +15,7 @@ class Noise
 public:
 	virtual ~Noise() = default;
 	virtual float Get(float x, float y) = 0;
+    virtual void ApplySeed(int seed) = 0;
 };
 
 #endif

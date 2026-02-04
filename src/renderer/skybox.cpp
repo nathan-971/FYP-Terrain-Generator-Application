@@ -47,23 +47,12 @@ Skybox::~Skybox()
 
 bool Skybox::LoadTextures()
 {
-	if (!loadAndCacheTextures(SkyboxOption::MORNING))
-	{
-		std::cout << "Error Occurred Loading Skybox MORNING textures";
-	}
-
-	if(!loadAndCacheTextures(SkyboxOption::NOON))
-	{
-		std::cout << "Error Occurred Loading Skybox NOON textures";
-	}
-
-	if(!loadAndCacheTextures(SkyboxOption::NIGHT))
-	{
-		std::cout << "Error Occurred Loading Skybox NIGHT textures";
-	}
-
-	activeTexture = skyboxCache[SkyboxOption::NOON];
+	ensureCached(SkyboxOption::MORNING);
+	ensureCached(SkyboxOption::NOON);
+	ensureCached(SkyboxOption::NIGHT);
 	skyboxCache[SkyboxOption::NONE] = 0;
+
+	activeTexture = skyboxCache.at(SkyboxOption::NOON);
 	return true;
 }
 
@@ -72,9 +61,15 @@ unsigned int Skybox::getActiveTextureId()
 	return this->activeTexture;
 }
 
-bool Skybox::Change(SkyboxOption option)
+bool Skybox::Change(SkyboxOption& option)
 {
-	if (loadAndCacheTextures(option))
+	if (option == SkyboxOption::NONE)
+	{
+		activeTexture = 0;
+		return true;
+	}
+
+	if (ensureCached(option))
 	{
 		activeTexture = skyboxCache[option];
 		return true;
@@ -87,23 +82,35 @@ bool Skybox::isDisabled()
 	return activeTexture == skyboxCache[SkyboxOption::NONE];
 }
 
-bool Skybox::loadAndCacheTextures(SkyboxOption option)
+bool Skybox::ensureCached(SkyboxOption option)
 {
-	if (option == SkyboxOption::NONE)
-	{
-		activeTexture = skyboxCache[option];
-		return true;
-	}
-
-	if (skyboxCache[option])
+	if (isCached(option))
 	{
 		return true;
 	}
 
+	unsigned int textureId = loadSkyboxTexture(option);
+	if (textureId == 0)
+	{
+		return false;
+	}
+
+	skyboxCache[option] = textureId;
+	return true;
+}
+
+bool Skybox::isCached(SkyboxOption& option)
+{
+	auto iterator = skyboxCache.find(option);
+	return iterator != skyboxCache.end() && iterator->second != 0;
+}
+
+unsigned int Skybox::loadSkyboxTexture(SkyboxOption& option)
+{
 	int numOfPaths = skyboxTexturePaths.at(option).size();
 	if (numOfPaths != 6)
 	{
-		return false;
+		return 0;
 	}
 
 	unsigned int textureId;
@@ -120,10 +127,8 @@ bool Skybox::loadAndCacheTextures(SkyboxOption option)
 		texData = stbi_load(skyboxTexturePaths[option][i].c_str(), &texWidth, &texHeight, &numChannels, 0);
 		if (!texData)
 		{
-			std::cout << "Error Loading Texture: " << skyboxTexturePaths[option][i] << std::endl;
-			stbi_image_free(texData);
 			glDeleteTextures(1, &textureId);
-			return false;
+			return 0;
 		}
 
 		int channelFormat = numChannels == 4 ? GL_RGBA : GL_RGB;
@@ -146,6 +151,5 @@ bool Skybox::loadAndCacheTextures(SkyboxOption option)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	skyboxCache[option] = textureId;
-	return true;
+	return textureId;
 }

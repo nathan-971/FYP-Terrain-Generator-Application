@@ -35,6 +35,7 @@ public:
 
 	TerrainConfig& getTerrainConfig();
 	TerrainGenerator& getTerrainGenerator();
+	int getVertexCount();
 
 	//Temporary Lightning Values
 	glm::vec3 lightPos;
@@ -61,7 +62,6 @@ private:
 
 	uint8_t flags;
 
-	//Shadow Map Variables
 	unsigned int shadowMapWidth;
 	unsigned int shadowMapHeight;
 	unsigned int shadowMap;

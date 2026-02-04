@@ -33,6 +33,7 @@ public:
 	~TerrainGenerator();
 
 	void setMesh(TerrainMesh& terrainMesh);
+	void setSeed(int& seed);
 	void setShaderProgram(unsigned int shaderProgram);
 	void setNoiseConfiguration(NoiseConfiguration& noiseConfig);
 	void setWarpMode(WarpMode& warpMode);
@@ -43,6 +44,9 @@ private:
 	void applyBaseNoise();
 	void applyRidgedNoise();
 	void applyErosion();
+	void warpSingle(Vertex& v, float& wx, float& wz);
+	void warpDouble(Vertex& v, float& wx, float& wz);
+	void warp(Vertex& v, float& wx, float& wz, float frequency, float multiplier);
 
 	NoiseConfiguration noiseConfig;
 	WarpMode warpMode;
@@ -51,6 +55,7 @@ private:
 	Noise* noise;
 	TerrainMesh* terrainMesh;
 	unsigned int shaderProgram;
+	int seed;
 };
 
 #endif

@@ -23,13 +23,15 @@ public:
 	Skybox();
 	~Skybox();
 
-	bool Change(SkyboxOption option);
+	bool Change(SkyboxOption& option);
 	bool LoadTextures();
 	bool isDisabled();
 	unsigned int getActiveTextureId();
 
 private:
-	bool loadAndCacheTextures(SkyboxOption option);
+	unsigned int loadSkyboxTexture(SkyboxOption& option);
+	bool ensureCached(SkyboxOption option);
+	bool isCached(SkyboxOption& option);
 
 	unsigned int activeTexture;
 	std::unordered_map<SkyboxOption, std::vector<std::string>> skyboxTexturePaths;

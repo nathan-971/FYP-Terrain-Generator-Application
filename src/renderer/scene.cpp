@@ -23,16 +23,17 @@ Scene::Scene() :
     terrainGenerator(config)
 {
     //DEFAULT CONFIG VALUES
-    config.width = 100;
-    config.depth = 100;
+    config.width = 150;
+    config.depth = 150;
     config.resolution = 1.0f;
-    config.octaves = 4;
-    config.amplitude = 17.0;
-    config.frequency = 0.04f;
-    config.lacunarity = 1.5f;
-    config.persistence = 0.6f;
-    config.scale = 1.0f;
+    config.octaves = 5;
+    config.amplitude = 0.0f;
+    config.frequency = 0.0f;
+    config.lacunarity = 0.0f;
+    config.persistence = 0.0f;
+    config.scale = 0.0f;
     config.warpMultiplier = 0.0f;
+    config.warpFrequency = 0.0f;
 }
 
 Scene::~Scene() { }
@@ -251,4 +252,9 @@ void Scene::exportTerrain()
         return;
     }
     delete exporter;
+}
+
+int Scene::getVertexCount()
+{
+    return terrainMesh.GetVertices().size();
 }

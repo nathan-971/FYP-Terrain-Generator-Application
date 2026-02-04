@@ -12,7 +12,9 @@ struct TerrainConfig
 	float persistence;
 	float lacunarity;
 	float scale;
+
 	float warpMultiplier;
+	float warpFrequency;
 };
 
 #endif

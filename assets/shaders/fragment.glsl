@@ -71,7 +71,6 @@ vec3 getTerrainColor(float slope)
 	vec3 stone  = vec3(0.35, 0.36, 0.38);
 
 	float grassToStone = smoothstep(30.0, 55.0, slope);
-
 	return mix(grass, stone, grassToStone);
 }
 
