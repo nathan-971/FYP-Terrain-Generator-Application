@@ -26,6 +26,7 @@
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\noise\perlinnoise.cpp" />
+    <ClCompile Include="src\renderer\renderer.cpp" />
     <ClCompile Include="src\renderer\terrainmesh.cpp" />
     <ClCompile Include="src\renderer\meshbase.cpp" />
     <ClCompile Include="src\renderer\scene.cpp" />
@@ -52,6 +53,9 @@
     <ClInclude Include="include\exporter\OBJexporter.h" />
     <ClInclude Include="include\noise\noise.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
+    <ClInclude Include="include\renderer\framedata.h" />
+    <ClInclude Include="include\renderer\light.h" />
+    <ClInclude Include="include\renderer\renderer.h" />
     <ClInclude Include="include\renderer\terrainmesh.h" />
     <ClInclude Include="include\renderer\meshbase.h" />
     <ClInclude Include="include\renderer\scene.h" />
