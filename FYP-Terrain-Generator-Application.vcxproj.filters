@@ -102,9 +102,6 @@
     <ClCompile Include="src\core\window.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\scene.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\exporter\FBXexporter.cpp">
       <Filter>Source Files\Exporter</Filter>
     </ClCompile>
@@ -116,6 +113,15 @@
     </ClCompile>
     <ClCompile Include="src\renderer\skyboxmesh.cpp">
       <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exporter\OBJexporter.cpp">
+      <Filter>Source Files\Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\scene.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\time.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,9 +146,6 @@
     <ClInclude Include="include\core\window.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\renderer\scene.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="include\terrain\terrainconfig.h">
       <Filter>Header Files\Terrain</Filter>
     </ClInclude>
@@ -162,6 +165,18 @@
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer\skyboxmesh.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\exporter\OBJexporter.h">
+      <Filter>Header Files\Exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\time.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer\scene.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer\transform.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>

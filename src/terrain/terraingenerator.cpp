@@ -13,7 +13,7 @@ TerrainGenerator::TerrainGenerator(TerrainConfig& config)
 	noise = new PerlinNoise();
 }
 
-TerrainGenerator::~TerrainGenerator() 
+TerrainGenerator::~TerrainGenerator()
 {
 	delete noise;
 	noise = nullptr;
@@ -21,7 +21,7 @@ TerrainGenerator::~TerrainGenerator()
 	
 void TerrainGenerator::setMesh(TerrainMesh& mesh)
 {
-	terrainMesh = &mesh;
+	this->terrainMesh = &mesh;
 }
 
 void TerrainGenerator::setShaderProgram(unsigned int shaderProgram)
@@ -34,11 +34,6 @@ void TerrainGenerator::setSeed(int& seed)
 	this->seed = seed;
 }
 
-TerrainConfig& TerrainGenerator::getConfig()
-{
-	return this->config;
-}
-
 void TerrainGenerator::setNoiseConfiguration(NoiseConfiguration& noiseConfig)
 {
 	this->noiseConfig = noiseConfig;
@@ -47,6 +42,16 @@ void TerrainGenerator::setNoiseConfiguration(NoiseConfiguration& noiseConfig)
 void TerrainGenerator::setWarpMode(WarpMode& warpMode)
 {
 	this->warpMode = warpMode;
+}
+
+void TerrainGenerator::toggleErosion()
+{
+	this->erosionToggled = erosionToggled ? false : true;
+}
+
+TerrainConfig& TerrainGenerator::getConfig()
+{
+	return this->config;
 }
 
 void TerrainGenerator::Apply()
@@ -70,7 +75,11 @@ void TerrainGenerator::Apply()
 			break;
 		}
 	}
-	applyErosion();
+
+	if (erosionToggled)
+	{
+		applyErosion();
+	}
 
 	terrainMesh->recalculateNormals(this->config.width, this->config.depth, this->config.resolution);
 	terrainMesh->UpdateBuffers();
@@ -83,14 +92,13 @@ void TerrainGenerator::applyRidgedNoise()
 	float persistence = this->config.persistence;
 	float scale = this->config.scale;
 
-	float baseFrequency = config.frequency;
 	float warpFrequency = config.warpFrequency;
 	float warpAmplitude = config.warpMultiplier;
 
 	for (auto& vertex : terrainMesh->GetVertices()) 
 	{
 		float amplitude = this->config.amplitude;
-		float frequency = baseFrequency;
+		float frequency = this->config.frequency;
 		float totalNoise = 0.0f;
 		float prev = 1.0f;
 
@@ -135,15 +143,15 @@ void TerrainGenerator::applyRidgedNoise()
 
 void TerrainGenerator::applyBaseNoise()
 {
-	int octaves = config.octaves;
-	float lacunarity = config.lacunarity;
-	float persistence = config.persistence;
-	float scale = config.scale;
+	int octaves = this->config.octaves;
+	float lacunarity = this->config.lacunarity;
+	float persistence = this->config.persistence;
+	float scale = this->config.scale;
 
 	for (auto& vertex : terrainMesh->GetVertices())
 	{
-		float amplitude = config.amplitude;
-		float frequency = config.frequency;
+		float amplitude = this->config.amplitude;
+		float frequency = this->config.frequency;
 		float totalNoise = 0.0f;
 
 		float noiseX = vertex.position.x * scale;
@@ -183,13 +191,13 @@ void TerrainGenerator::applyBaseNoise()
 
 void TerrainGenerator::warpSingle(Vertex& v, float& wx, float& wz)
 {
-	warp(v, wx, wz, config.warpFrequency, config.warpMultiplier);
+	warp(v, wx, wz, this->config.warpFrequency, this->config.warpMultiplier);
 }
 
 void TerrainGenerator::warpDouble(Vertex& v, float& wx, float& wz)
 {
-	warp(v, wx, wz, config.warpFrequency, config.warpMultiplier);
-	warp(v, wx, wz, config.warpFrequency * 2.0f, config.warpMultiplier * 0.5f);
+	warp(v, wx, wz, this->config.warpFrequency, this->config.warpMultiplier);
+	warp(v, wx, wz, this->config.warpFrequency * 2.0f, this->config.warpMultiplier * 0.5f);
 }
 
 void TerrainGenerator::warp(Vertex& v, float& wx, float& wz, float frequency, float multiplier)
@@ -210,31 +218,29 @@ void TerrainGenerator::warp(Vertex& v, float& wx, float& wz, float frequency, fl
 
 void TerrainGenerator::applyErosion()
 {
-	//int vertCountX = static_cast<unsigned int>(config.width / config.resolution) + 1;
-	//int vertCountZ = static_cast<unsigned int>(config.depth / config.resolution) + 1;
-	//std::vector<float> heightMap;
-	//
-	//for (Vertex& v : terrainMesh->GetVertices())
-	//{
-	//	heightMap.push_back(v.position.y);
-	//}
-	//
-	//int erosionIterations = 50;
-	//float talus = 1.0f;
-	//float erosionStrength = 0.5f;
+	int vertCountX = static_cast<unsigned int>(config.width / config.resolution) + 1;
+	int vertCountZ = static_cast<unsigned int>(config.depth / config.resolution) + 1;
+	std::vector<float> heightMap;
+	
+	for (Vertex& v : terrainMesh->GetVertices())
+	{
+		heightMap.push_back(v.position.y);
+	}
+	
+	int erosionIterations = 500;
+	float talus = 1.0f;
+	float erosionStrength = 0.5f;
 
-	//for (int i = 0; i < erosionIterations; i++)
-	//{
-	//	std::vector<float> erosionMap(heightMap.size(), 0.0f);
-
-	//	for (int z = 0; z < vertCountZ - 1; z++)
-	//	{
-	//		for (int x = 0; x < vertCountX - 1; x++)
-	//		{
-	//			int index = z * vertCountX + x;
-	//			float currentHeight = heightMap[index];
-
-	//		}
-	//	}
-	//}
+	for (int i = 0; i < erosionIterations; i++)
+	{
+		std::vector<float> erosionMap(heightMap.size(), 0.0f);
+		for (int z = 0; z < vertCountZ - 1; z++)
+		{
+			for (int x = 0; x < vertCountX - 1; x++)
+			{
+				int index = z * vertCountX + x;
+				float currentHeight = heightMap[index];
+			}
+		}
+	}
 }

@@ -1,14 +1,13 @@
 #include "core/camera.h"
 
 Camera::Camera(int width, int height, glm::vec3 position)
-	: width(width), height(height), Position(position), deltaTime(0.0f), projection(1.0f), view(1.0f) { }
+	: width(width), height(height), Position(position), projection(1.0f), view(1.0f) { }
 
 void Camera::updateCameraMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
 	view = glm::lookAt(Position, Position + Orientation, Up);
 	projection = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
 }
-
 
 void Camera::onResize(int newWidth, int newHeight)
 {
@@ -21,29 +20,29 @@ void Camera::Inputs(GLFWwindow* window)
 	//XZ Coord Controls
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		Position += speed * deltaTime * Orientation;
+		Position += speed * Time::deltaTime * Orientation;
 	}
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		Position += speed * deltaTime * -glm::normalize(glm::cross(Orientation, Up));
+		Position += speed * Time::deltaTime * -glm::normalize(glm::cross(Orientation, Up));
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		Position += speed * deltaTime * -Orientation;
+		Position += speed * Time::deltaTime * -Orientation;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		Position += speed * deltaTime * glm::normalize(glm::cross(Orientation, Up));
+		Position += speed * Time::deltaTime * glm::normalize(glm::cross(Orientation, Up));
 	}
 
 	//Y Coord Controls
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		Position += speed * deltaTime * Up;
+		Position += speed * Time::deltaTime * Up;
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
 	{
-		Position += speed * deltaTime * -Up;
+		Position += speed * Time::deltaTime * -Up;
 	}	
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 	{

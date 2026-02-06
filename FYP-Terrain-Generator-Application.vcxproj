@@ -20,8 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\camera.cpp" />
+    <ClCompile Include="src\core\time.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\exporter\FBXexporter.cpp" />
+    <ClCompile Include="src\exporter\OBJexporter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\noise\perlinnoise.cpp" />
     <ClCompile Include="src\renderer\terrainmesh.cpp" />
@@ -43,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core\camera.h" />
+    <ClInclude Include="include\core\time.h" />
     <ClInclude Include="include\core\window.h" />
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
+    <ClInclude Include="include\exporter\OBJexporter.h" />
     <ClInclude Include="include\noise\noise.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
     <ClInclude Include="include\renderer\terrainmesh.h" />
@@ -54,6 +58,7 @@
     <ClInclude Include="include\renderer\shader.h" />
     <ClInclude Include="include\renderer\skybox.h" />
     <ClInclude Include="include\renderer\skyboxmesh.h" />
+    <ClInclude Include="include\renderer\transform.h" />
     <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />

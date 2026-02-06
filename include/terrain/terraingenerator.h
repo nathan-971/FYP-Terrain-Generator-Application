@@ -1,11 +1,11 @@
 #ifndef _TERRAIN_GENERATOR_H_
 #define _TERRAIN_GENERATOR_H_
 
-#define TERRAIN_MIN_WIDTH 2
-#define TERRAIN_MAX_WIDTH 150
+#define TERRAIN_MIN_WIDTH 25
+#define TERRAIN_MAX_WIDTH 100
 
-#define TERRAIN_MIN_DEPTH 2
-#define TERRAIN_MAX_DEPTH 150
+#define TERRAIN_MIN_DEPTH 25
+#define TERRAIN_MAX_DEPTH 100
 
 #include "renderer/vertex.h"
 #include "renderer/terrainmesh.h"
@@ -37,6 +37,7 @@ public:
 	void setShaderProgram(unsigned int shaderProgram);
 	void setNoiseConfiguration(NoiseConfiguration& noiseConfig);
 	void setWarpMode(WarpMode& warpMode);
+	void toggleErosion();
 	void Apply();
 
 	TerrainConfig& getConfig();
@@ -56,6 +57,7 @@ private:
 	TerrainMesh* terrainMesh;
 	unsigned int shaderProgram;
 	int seed;
+	bool erosionToggled;
 };
 
 #endif

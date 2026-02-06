@@ -1,7 +1,7 @@
 #include "renderer/terrainmesh.h"
 
 TerrainMesh::TerrainMesh() 
-	: finished(false) { }
+	: finished(false), transform() { }
 
 TerrainMesh::~TerrainMesh() { }
 
@@ -13,6 +13,11 @@ std::vector<Vertex>& TerrainMesh::GetVertices()
 std::vector<unsigned int>& TerrainMesh::GetIndices()
 {
 	return this->indices;
+}
+
+Transform& TerrainMesh::getTransform()
+{
+	return this->transform;
 }
 
 void TerrainMesh::Create(unsigned int width, unsigned int depth, float resolution)
@@ -51,7 +56,12 @@ void TerrainMesh::buildMesh(unsigned int width, unsigned int depth, float resolu
 		for (int z = 0; z < vertCountZ; z++)
 		{
 			Vertex v;
-			v.position = glm::vec3(x * xSpacing, 0.0f, z * zSpacing);
+
+			v.position = glm::vec3(
+				x * xSpacing - (width * 0.5f),
+				0.0f,
+				z * zSpacing - (depth * 0.5f)
+			);
 			v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			v.color = glm::vec3(0.0f, 0.0f, 1.0f);
 			vertices.push_back(v);

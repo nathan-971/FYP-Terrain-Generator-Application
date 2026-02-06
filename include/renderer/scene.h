@@ -5,12 +5,18 @@
 
 #include "core/camera.h"
 #include "core/window.h"
+#include "core/time.h"
+
 #include "renderer/shader.h"
 #include "renderer/terrainmesh.h"
 #include "renderer/skybox.h"
 #include "renderer/skyboxmesh.h"
+
 #include "terrain/terraingenerator.h"
 #include "terrain/terrainconfig.h"
+
+#include "exporter/exporter.h"
+#include "exporter/FBXexporter.h"
 
 enum class UpdateSceneFlag : uint8_t
 {
@@ -31,11 +37,10 @@ public:
 	void Generate();
 	bool isGenerated() const;
 	bool ChangeSkybox(SkyboxOption option);
-	void exportTerrain();
+	void ExportTerrain(FileType type);
 
 	TerrainConfig& getTerrainConfig();
 	TerrainGenerator& getTerrainGenerator();
-	int getVertexCount();
 
 	//Temporary Lightning Values
 	glm::vec3 lightPos;
@@ -54,6 +59,7 @@ private:
 	TerrainConfig config;
 	TerrainGenerator terrainGenerator;
 	TerrainMesh terrainMesh;
+	Transform* terrainTransform;
 	Shader depthShader;
 
 	Skybox skybox;
@@ -68,6 +74,8 @@ private:
 	unsigned int shadowMapFBO;
 
 	bool generated;
+
+	float rotation;
 
 	glm::mat4 orthgonalProjection;
 };

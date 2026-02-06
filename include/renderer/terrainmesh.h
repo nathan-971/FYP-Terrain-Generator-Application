@@ -3,6 +3,7 @@
 
 #include "renderer/meshbase.h"
 #include "renderer/vertex.h"
+#include "renderer/transform.h"
 
 class TerrainMesh : public MeshBase
 {
@@ -16,8 +17,12 @@ public:
 
 	std::vector<Vertex>& GetVertices();
 	std::vector<unsigned int>& GetIndices();
+	Transform& getTransform();
+
 private:
 	void buildMesh(unsigned int width, unsigned int depth, float resolution);
+
+	Transform transform;
 
 	bool finished;
 	std::vector<Vertex> vertices;

@@ -65,7 +65,7 @@ bool Skybox::Change(SkyboxOption& option)
 {
 	if (option == SkyboxOption::NONE)
 	{
-		activeTexture = 0;
+		activeTexture = skyboxCache[SkyboxOption::NONE];
 		return true;
 	}
 

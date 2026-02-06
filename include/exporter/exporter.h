@@ -6,7 +6,8 @@
 
 enum class FileType
 {
-    FBX
+    FBX,
+    OBJ
 };
 
 class Exporter

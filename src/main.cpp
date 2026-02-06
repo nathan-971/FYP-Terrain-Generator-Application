@@ -8,7 +8,10 @@
 
 #include "core/window.h"
 #include "core/camera.h"
+#include "core/time.h"
+
 #include "renderer/scene.h"
+#include "exporter/exporter.h"
 
 #define SCR_WIDTH 1920
 #define SCR_HEIGHT 1080
@@ -20,7 +23,7 @@ int generateSeed();
 
 int main()
 {
-	Window window(SCR_HEIGHT, SCR_WIDTH, std::string("Terrain Generator Program"), true);
+    Window window(SCR_HEIGHT, SCR_WIDTH, std::string("Terrain Generator Program"), true);
     Camera camera(SCR_WIDTH, SCR_HEIGHT, WORLD_ORIGIN);
     Scene scene;
 
@@ -38,7 +41,7 @@ int main()
 
     ImFontConfig config;
     config.MergeMode = true;
-    config.GlyphOffset.y =+ 1.0f;
+    config.GlyphOffset.y = +1.0f;
     config.GlyphOffset.x = +1.0f;
 
     static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
@@ -54,10 +57,11 @@ int main()
 
     ImVec2 buttonSize(30, 30);
 
-    float deltaTime = 0.0f;
-    float lastFrameTime = 0.0f;
 
-    double previousTime = window.getTime();
+    Time::applicationTime = window.getTime();
+    float lastFrameTime = Time::applicationTime;
+
+    float fpsTimer = 0.0f;
     int frames = 0;
     static int fps = 0;
 
@@ -66,6 +70,8 @@ int main()
 
     const char* warpModeNames[] = { "None", "Single", "Double" };
     static WarpMode selectedWarpMode = WarpMode::None;
+
+    static bool disableControls = false;
 
     int seed = generateSeed();
 
@@ -110,24 +116,26 @@ int main()
             ImGui::Begin("Terrain Settings");
 
             float currentFrame = window.getTime();
-            deltaTime = currentFrame - lastFrameTime;
-            lastFrameTime = currentFrame;
-            camera.deltaTime = deltaTime;
+            Time::applicationTime = currentFrame;
 
+            Time::deltaTime = currentFrame - lastFrameTime;
+            lastFrameTime = currentFrame;
+
+            fpsTimer += Time::deltaTime;
             frames++;
-            if (currentFrame - previousTime >= 1.0)
+
+            if (fpsTimer >= 1.0f)
             {
                 fps = frames;
                 frames = 0;
-                previousTime = currentFrame;
+                fpsTimer = 0.0f;
             }
 
             ImGui::Text("FPS: %d", fps);
             ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.Position.x, camera.Position.y, camera.Position.z);
             ImGui::Text("Camera Speed: %.2f", camera.speed);
-            ImGui::Text("Vertex Count: %d", scene.getVertexCount());
 #pragma region IMGUI CONTROLS
-    #pragma region MESH CONTROLS
+#pragma region MESH CONTROLS
             ImGui::SeparatorText("Mesh Configuration");
             if (ImGui::SliderInt("Terrain Width", (int*)&config.width, TERRAIN_MIN_WIDTH, TERRAIN_MAX_WIDTH))
             {
@@ -145,8 +153,8 @@ int main()
                 scene.FlagForUpdate(UpdateSceneFlag::Mesh);
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
-    #pragma endregion
-    #pragma region NOISE CONTROLS
+#pragma endregion
+#pragma region NOISE CONTROLS
             ImGui::SeparatorText("Noise Settings");
             if (ImGui::BeginCombo("Noise Configuration", noiseConfigNames[static_cast<int>(selectedConfig)]))
             {
@@ -235,8 +243,16 @@ int main()
                 scene.getTerrainGenerator().setSeed(seed);
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
-    #pragma endregion
-    #pragma region LIGHT CONTROLS
+#pragma endregion
+#pragma region EROSION CONTROLS
+            ImGui::SeparatorText("Erosion Settings");
+            if (ImGui::Checkbox("Enable Erosion", &config.enableErosion))
+            {
+                scene.getTerrainGenerator().toggleErosion();
+                scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+            }
+#pragma endregion
+#pragma region LIGHT CONTROLS
             ImGui::SeparatorText("Lighting Configuration");
             if (ImGui::SliderFloat3("Light Position", &scene.lightPos.x, 0.0f, 100.0f))
             {
@@ -262,8 +278,8 @@ int main()
             {
                 scene.terrainShader.setUniformFloat("specularStrength", scene.specularStrength);
             }
-    #pragma endregion
-    #pragma region SKYBOX CONTROLS
+#pragma endregion
+#pragma region SKYBOX CONTROLS
             ImGui::SeparatorText("Skybox Settings");
             if (ImGui::Button(ICON_FA_CLOUD_SUN, buttonSize))
             {
@@ -284,17 +300,19 @@ int main()
             {
                 scene.ChangeSkybox(SkyboxOption::NONE);
             }
-    #pragma endregion
+#pragma endregion
+#pragma region EXPORT CONTROLS
+            ImGui::SeparatorText("Export Terrain");
+            if (ImGui::Button(ICON_FA_FLOPPY_DISK, buttonSize))
+            {
+                scene.ExportTerrain(FileType::FBX);
+            }
+            ImGui::SameLine();
+            ImGui::Text("Save Terrain");
 #pragma endregion
 
-            //TEMPORARY INPUT
-            if (glfwGetKey(window.getNativeWindow(), GLFW_KEY_P) == GLFW_PRESS)
-            {
-                scene.exportTerrain();
-            }
-
             ImGui::End();
-            
+
             camera.Inputs(window.getNativeWindow());
             camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
 
