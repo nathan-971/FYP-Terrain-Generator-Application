@@ -155,6 +155,7 @@ int main()
                 scene.FlagForUpdate(UpdateSceneFlag::Mesh);
                 scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
             }
+            ImGui::SliderFloat("Rotation Speed", (float*)&config.rotationSpeed, 10.0f, 100.0f);
 #pragma endregion
 #pragma region NOISE CONTROLS
             ImGui::SeparatorText("Noise Settings");
@@ -293,7 +294,7 @@ int main()
             ImGui::SameLine();
             ImGui::Text("Save Terrain");
 #pragma endregion
-
+#pragma endregion
             ImGui::End();
 
             camera.Inputs(window.getNativeWindow());

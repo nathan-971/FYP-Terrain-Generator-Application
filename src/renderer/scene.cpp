@@ -25,7 +25,7 @@ Scene::Scene() :
     config.warpMultiplier = 0.0f;
     config.warpFrequency = 0.0f;
     config.enableErosion = false;
-    config.rotationSpeed = 0.25f;
+    config.rotationSpeed = 25.0f;
 }
 
 Scene::~Scene() { }
@@ -65,18 +65,9 @@ void Scene::Update()
         terrainGenerator.Apply();
     }
 
-    std::cout << "Delta Time: " << Time::deltaTime << std::endl;
-
-    terrainTransform.rotation = glm::rotate(
-        terrainTransform.rotation,
-        Time::deltaTime * config.rotationSpeed,
-        glm::vec3(0, 1, 0)
-    );
+    glm::quat delta = glm::angleAxis((glm::radians(config.rotationSpeed) * Time::deltaTime), glm::vec3(0, 1, 0));
+    terrainTransform.rotation = glm::normalize(delta * terrainTransform.rotation);
     flags = 0;
-    std::cout << "TRANSFORMATION: "
-        << terrainTransform.rotation.x << " "
-        << terrainTransform.rotation.y << " "
-        << terrainTransform.rotation.z << "\n";
 }
 
 void Scene::FlagForUpdate(UpdateSceneFlag flag)
