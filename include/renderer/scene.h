@@ -4,20 +4,19 @@
 #define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
 
 #include "core/camera.h"
-#include "core/window.h"
-#include "core/time.h"
 
-#include "renderer/shader.h"
 #include "renderer/terrainmesh.h"
 #include "renderer/skybox.h"
 #include "renderer/skyboxmesh.h"
+#include "renderer/framedata.h"
+#include "renderer/light.h"
 
 #include "terrain/terraingenerator.h"
 #include "terrain/terrainconfig.h"
 
 #include "exporter/exporter.h"
 #include "exporter/FBXexporter.h"
-
+	
 enum class UpdateSceneFlag : uint8_t
 {
 	None = 0,
@@ -31,53 +30,37 @@ public:
 	Scene();
 	~Scene();
 
-	void Render(Window& window, Camera& camera);
-	void FlagForUpdate(UpdateSceneFlag flag);
 	void Update();
 	void Generate();
 	bool isGenerated() const;
+
+	void FlagForUpdate(UpdateSceneFlag flag);
 	bool ChangeSkybox(SkyboxOption option);
 	void ExportTerrain(FileType type);
 
 	TerrainConfig& getTerrainConfig();
 	TerrainGenerator& getTerrainGenerator();
+	TerrainMesh& getTerrainMesh();
+	Transform& getTerrainTransform();
+	Skybox& getSkybox();
+	SkyboxMesh& getSkyboxMesh();
+	Light& getLight();
+	FrameData getFrameData(Camera& camera);
 
-	//Temporary Lightning Values
-	glm::vec3 lightPos;
-	glm::vec3 lightColor;
-	float ambientStrength;
-	float specularStrength;
-	int shininess;
-
-	Shader terrainShader;
 private:
-	void renderDepthPass(glm::mat4& lightSpaceMatrix);
-	void renderScenePass(glm::mat4& lightSpaceMatrix, Camera& camera);
-	void renderSkyboxPass(Camera& camera);
-	void generateShadowMap();
-
 	TerrainConfig config;
 	TerrainGenerator terrainGenerator;
 	TerrainMesh terrainMesh;
-	Transform* terrainTransform;
-	Shader depthShader;
+	Transform& terrainTransform;
 
 	Skybox skybox;
 	SkyboxMesh skyboxMesh;
-	Shader skyboxShader;
+
+	Light light;
 
 	uint8_t flags;
 
-	unsigned int shadowMapWidth;
-	unsigned int shadowMapHeight;
-	unsigned int shadowMap;
-	unsigned int shadowMapFBO;
-
 	bool generated;
-
-	float rotation;
-
-	glm::mat4 orthgonalProjection;
 };
 
 #endif

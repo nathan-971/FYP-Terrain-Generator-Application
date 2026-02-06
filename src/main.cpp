@@ -11,6 +11,7 @@
 #include "core/time.h"
 
 #include "renderer/scene.h"
+#include "renderer/renderer.h"
 #include "exporter/exporter.h"
 
 #define SCR_WIDTH 1920
@@ -26,6 +27,7 @@ int main()
     Window window(SCR_HEIGHT, SCR_WIDTH, std::string("Terrain Generator Program"), true);
     Camera camera(SCR_WIDTH, SCR_HEIGHT, WORLD_ORIGIN);
     Scene scene;
+    Renderer renderer;
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -132,7 +134,7 @@ int main()
             }
 
             ImGui::Text("FPS: %d", fps);
-            ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.Position.x, camera.Position.y, camera.Position.z);
+            ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.position.x, camera.position.y, camera.position.z);
             ImGui::Text("Camera Speed: %.2f", camera.speed);
 #pragma region IMGUI CONTROLS
 #pragma region MESH CONTROLS
@@ -254,30 +256,11 @@ int main()
 #pragma endregion
 #pragma region LIGHT CONTROLS
             ImGui::SeparatorText("Lighting Configuration");
-            if (ImGui::SliderFloat3("Light Position", &scene.lightPos.x, 0.0f, 100.0f))
-            {
-                scene.terrainShader.setUniformVec3("lightPos", scene.lightPos);
-            }
-
-            if (ImGui::SliderFloat3("Light Color", &scene.lightColor.x, 0.0f, 1.0f))
-            {
-                scene.terrainShader.setUniformVec3("lightColor", scene.lightColor);
-            }
-
-            if (ImGui::SliderFloat("Ambient Strength", (float*)&scene.ambientStrength, 0.0f, 1.0f))
-            {
-                scene.terrainShader.setUniformFloat("ambientStrength", scene.ambientStrength);
-            }
-
-            if (ImGui::SliderInt("Shininess", (int*)&scene.shininess, 2, 256))
-            {
-                scene.terrainShader.setUniformInt("shininess", scene.shininess);
-            }
-
-            if (ImGui::SliderFloat("Specular Strength", (float*)&scene.specularStrength, 0.0f, 1.0f))
-            {
-                scene.terrainShader.setUniformFloat("specularStrength", scene.specularStrength);
-            }
+            ImGui::SliderFloat3("Light Position", &scene.getLight().position.x, 0.0f, 100.0f);
+            ImGui::SliderFloat3("Light Color", &scene.getLight().color.x, 0.0f, 1.0f);
+            ImGui::SliderFloat("Ambient Strength", &scene.getLight().ambient, 0.0f, 1.0f);
+            ImGui::SliderInt("Shininess", &scene.getLight().shininess, 2, 256);
+            ImGui::SliderFloat("Specular Strength", &scene.getLight().specular, 0.0f, 1.0f);
 #pragma endregion
 #pragma region SKYBOX CONTROLS
             ImGui::SeparatorText("Skybox Settings");
@@ -317,7 +300,7 @@ int main()
             camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
 
             scene.Update();
-            scene.Render(window, camera);
+            renderer.RenderScene(window, camera, scene);
         }
 
         ImGui::Render();
