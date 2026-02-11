@@ -47,6 +47,8 @@ public:
 	Light& getLight();
 	FrameData getFrameData(Camera& camera);
 
+	void positionAndOrientateCamera(Camera& camera);
+
 private:
 	TerrainConfig config;
 	TerrainGenerator terrainGenerator;

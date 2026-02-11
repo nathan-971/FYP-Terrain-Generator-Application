@@ -59,7 +59,6 @@ int main()
 
     ImVec2 buttonSize(30, 30);
 
-
     Time::applicationTime = window.getTime();
     float lastFrameTime = Time::applicationTime;
 
@@ -134,8 +133,12 @@ int main()
             }
 
             ImGui::Text("FPS: %d", fps);
-            ImGui::Text("Camera Position: ( %.2f, %.2f, %.2f )", camera.position.x, camera.position.y, camera.position.z);
-            ImGui::Text("Camera Speed: %.2f", camera.speed);
+            ImGui::Text(
+                "Camera Position: ( %.2f, %.2f, %.2f )", 
+                camera.getPosition().x, 
+                camera.getPosition().y, 
+                camera.getPosition().z
+            );
 #pragma region IMGUI CONTROLS
 #pragma region MESH CONTROLS
             ImGui::SeparatorText("Mesh Configuration");
@@ -297,8 +300,8 @@ int main()
 #pragma endregion
             ImGui::End();
 
-            camera.Inputs(window.getNativeWindow());
             camera.updateCameraMatrix(75.0f, 0.05f, 250.0f);
+            scene.positionAndOrientateCamera(camera);
 
             scene.Update();
             renderer.RenderScene(window, camera, scene);

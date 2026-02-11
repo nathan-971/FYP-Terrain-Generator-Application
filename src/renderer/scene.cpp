@@ -1,6 +1,7 @@
 #include "renderer/scene.h"
 #include <iostream>
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 Scene::Scene() :
     generated(false),
@@ -92,11 +93,11 @@ bool Scene::ChangeSkybox(SkyboxOption option)
 FrameData Scene::getFrameData(Camera& camera)
 {
     FrameData frame;
-    frame.viewMatrix = camera.view;
-    frame.projectionMatrix = camera.projection;
-    frame.cameraPosition = camera.position;
-    frame.cameraOrientation = camera.orientation;
-    frame.cameraUp = camera.up;
+    frame.viewMatrix = camera.getView();
+    frame.projectionMatrix = camera.getProjection();
+    frame.cameraPosition = camera.getPosition();
+    frame.cameraOrientation = camera.getOrientation();
+    frame.cameraUp = camera.getCameraUp();
 
     glm::mat4 lightView = glm::lookAt(light.position, glm::vec3(0.0f), glm::vec3(0, 1, 0));
     frame.lightSpaceMatrix = lightView;
@@ -165,4 +166,15 @@ SkyboxMesh& Scene::getSkyboxMesh()
 Light& Scene::getLight()
 {
     return light;
+}
+
+void Scene::positionAndOrientateCamera(Camera& camera)
+{
+    glm::vec3 meshLocalPos = terrainTransform.getMatrix()[3];
+    camera.setPosition(glm::vec3(
+        meshLocalPos.x - 75.0f,
+        100.0f,
+        meshLocalPos.z - 75.0f
+    ));
+    camera.setOrientation(glm::normalize(meshLocalPos - camera.getPosition()));
 }
