@@ -19,9 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\application.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\core\time.cpp" />
     <ClCompile Include="src\core\window.cpp" />
+    <ClCompile Include="src\editor\editor.cpp" />
+    <ClCompile Include="src\editor\imguilayer.cpp" />
     <ClCompile Include="src\exporter\FBXexporter.cpp" />
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -45,9 +48,13 @@
     <ClCompile Include="thirdparty\stb\stb.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\core\application.h" />
     <ClInclude Include="include\core\camera.h" />
     <ClInclude Include="include\core\time.h" />
     <ClInclude Include="include\core\window.h" />
+    <ClInclude Include="include\editor\editor.h" />
+    <ClInclude Include="include\editor\editorstate.h" />
+    <ClInclude Include="include\editor\imguilayer.h" />
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
     <ClInclude Include="include\exporter\OBJexporter.h" />

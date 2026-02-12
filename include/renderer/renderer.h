@@ -19,7 +19,7 @@ public:
 	void RenderScene(Window& window, Camera& camera, Scene& scene);
 
 private:
-	void renderDepthPass(Scene& scene);
+	void renderDepthPass(Scene& scene, FrameData& frameData);
 	void renderLightPass(Scene& scene, FrameData& frameData);
 	void renderSkyboxPass(Scene& scene, FrameData& frameData);
 

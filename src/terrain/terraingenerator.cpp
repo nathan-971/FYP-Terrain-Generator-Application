@@ -78,7 +78,7 @@ void TerrainGenerator::Apply()
 
 	if (erosionToggled)
 	{
-		applyErosion();
+		applyThermalErosion();
 	}
 
 	terrainMesh->recalculateNormals(this->config.width, this->config.depth, this->config.resolution);
@@ -216,20 +216,25 @@ void TerrainGenerator::warp(Vertex& v, float& wx, float& wz, float frequency, fl
 	wz = wz + (-dNoise_dx * multiplier);
 }
 
-void TerrainGenerator::applyErosion()
+void TerrainGenerator::applyThermalErosion()
 {
 	int vertCountX = static_cast<unsigned int>(config.width / config.resolution) + 1;
 	int vertCountZ = static_cast<unsigned int>(config.depth / config.resolution) + 1;
-	std::vector<float> heightMap;
-	
-	for (Vertex& v : terrainMesh->GetVertices())
+
+	std::vector<float> heightMap(vertCountX * vertCountZ);
+	for (int i = 0; i < heightMap.size(); i++)
 	{
-		heightMap.push_back(v.position.y);
+		heightMap[i] = terrainMesh->GetVertices()[i].position.y;
 	}
 	
-	int erosionIterations = 500;
+	int erosionIterations = 200;
 	float talus = 1.0f;
-	float erosionStrength = 0.5f;
+	float erosionStrength = 0.25f;
+
+	int offsets[4][2] = {
+		{ 1,0 }, { -1,0 },
+		{ 0,1 }, { 0, -1 }
+	};
 
 	for (int i = 0; i < erosionIterations; i++)
 	{
@@ -240,7 +245,54 @@ void TerrainGenerator::applyErosion()
 			{
 				int index = z * vertCountX + x;
 				float currentHeight = heightMap[index];
+
+				float maxSlope = 0.0f;
+				int lowestNeighbour = -1;
+
+				for (int neighbourIndex = 0; neighbourIndex < 4; neighbourIndex++)
+				{
+					int neighbourX = x + offsets[neighbourIndex][0];
+					int neighbourZ = z + offsets[neighbourIndex][1];
+
+					if (neighbourX < 0 || neighbourX >= vertCountX || neighbourZ < 0 || neighbourZ >= vertCountZ)
+					{
+						continue;
+					}
+
+					int nIndex = neighbourZ * vertCountX + neighbourX;
+					float slope = currentHeight - heightMap[nIndex];
+
+					if (slope > maxSlope)
+					{
+						maxSlope = slope;
+						lowestNeighbour = nIndex;
+					}
+				}
+
+				if (lowestNeighbour != -1 && maxSlope > talus)
+				{
+					float amount = (maxSlope - talus) * erosionStrength;
+					erosionMap[index] -= amount;
+					erosionMap[lowestNeighbour] += amount;
+				}
 			}
 		}
+
+		for (int i = 0; i < heightMap.size(); i++)
+		{
+			heightMap[i] += erosionMap[i];
+		}
 	}
+
+	std::vector<Vertex>& verts = terrainMesh->GetVertices();
+	for (int i = 0; i < verts.size(); i++)
+	{
+		verts[i].position.y = heightMap[i];
+	}
+	terrainMesh->recalculateNormals(config.width, config.depth, config.resolution);
+}
+
+void TerrainGenerator::applyHydraulicErosion()
+{
+
 }

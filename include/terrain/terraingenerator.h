@@ -44,7 +44,8 @@ public:
 private:
 	void applyBaseNoise();
 	void applyRidgedNoise();
-	void applyErosion();
+	void applyThermalErosion();
+	void applyHydraulicErosion();
 	void warpSingle(Vertex& v, float& wx, float& wz);
 	void warpDouble(Vertex& v, float& wx, float& wz);
 	void warp(Vertex& v, float& wx, float& wz, float frequency, float multiplier);

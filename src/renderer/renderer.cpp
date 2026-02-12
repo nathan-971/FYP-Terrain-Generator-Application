@@ -31,23 +31,26 @@ void Renderer::RenderScene(Window& window, Camera& camera, Scene& scene)
     window.updateViewport(window.getWidth(), window.getHeight());
     camera.onResize(window.getWidth(), window.getHeight());
 
-    renderDepthPass(scene);
-
+    renderDepthPass(scene, frameData);
     glViewport(0, 0, window.getWidth(), window.getHeight());
     renderLightPass(scene, frameData);
+
     if (!scene.getSkybox().isDisabled())
     {
         renderSkyboxPass(scene, frameData);
     }
 }
 
-void Renderer::renderDepthPass(Scene& scene)
+void Renderer::renderDepthPass(Scene& scene, FrameData& frameData)
 {
     glViewport(0, 0, shadowMapWidth, shadowMapHeight);
     glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
     glClear(GL_DEPTH_BUFFER_BIT);
 
     depthShader.Activate();
+
+    glm::mat4 lightSpace = orthogonalProjection * frameData.lightSpaceMatrix;
+    depthShader.setUniformMat("lightSpaceMatrix", lightSpace);
 
     glm::mat4 model = scene.getTerrainTransform().getMatrix();
     depthShader.setUniformMat("model", model);
