@@ -15,8 +15,8 @@
 #include "core/window.h"
 #include "core/camera.h"
 
-#include "editor/imguilayer.h"
-#include "editor/editor.h"
+#include "UI/imguilayer.h"
+#include "UI/editor.h"
 
 #include "renderer/scene.h"
 #include "renderer/renderer.h"

@@ -52,11 +52,17 @@
     <Filter Include="Source Files\Exporter">
       <UniqueIdentifier>{191489e9-68ac-4f2e-9937-3a35fcc8b796}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Editor">
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{1fc1ef4a-b801-4037-ad79-a35d3f76bd76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
       <UniqueIdentifier>{239aaffb-72f9-40ed-920d-c665b33e3e4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Editor">
-      <UniqueIdentifier>{1fc1ef4a-b801-4037-ad79-a35d3f76bd76}</UniqueIdentifier>
+    <Filter Include="Header Files\UI\panels">
+      <UniqueIdentifier>{e02004ae-2659-4a0a-974d-ba9adec10aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\panels">
+      <UniqueIdentifier>{316f1a80-d224-4f09-9cc0-3e931b4dd4bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,11 +141,29 @@
     <ClCompile Include="src\core\application.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\imguilayer.cpp">
-      <Filter>Source Files\Editor</Filter>
+    <ClCompile Include="src\UI\editor.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="src\editor\editor.cpp">
-      <Filter>Source Files\Editor</Filter>
+    <ClCompile Include="src\UI\imguilayer.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\panels\noisepanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\panels\exportpanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\panels\skyboxpanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\panels\erosionpanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\panels\lightingpanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\panels\meshpanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,14 +233,38 @@
     <ClInclude Include="include\core\application.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\editor\imguilayer.h">
-      <Filter>Header Files\Editor</Filter>
+    <ClInclude Include="include\UI\editorstate.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="include\editor\editor.h">
-      <Filter>Header Files\Editor</Filter>
+    <ClInclude Include="include\UI\imguilayer.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="include\editor\editorstate.h">
-      <Filter>Header Files\Editor</Filter>
+    <ClInclude Include="include\UI\editor.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\Panels\ipanel.h">
+      <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\Panels\meshpanel.h">
+      <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\editorcontext.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\panels\noisepanel.h">
+      <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\panels\exportpanel.h">
+      <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\panels\skyboxpanel.h">
+      <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\panels\erosionpanel.h">
+      <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\panels\lightingpanel.h">
+      <Filter>Header Files\UI\panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

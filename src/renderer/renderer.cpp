@@ -21,8 +21,14 @@ Renderer::Renderer()
 
 Renderer::~Renderer() 
 { 
-    glDeleteTextures(1, &shadowMap);
-    glDeleteFramebuffers(1, &shadowMapFBO);
+    if (shadowMap)
+    {
+        glDeleteTextures(1, &shadowMap);
+    }
+    if (shadowMapFBO)
+    {
+        glDeleteFramebuffers(1, &shadowMapFBO);
+    }
 }
 
 void Renderer::RenderScene(Window& window, Camera& camera, Scene& scene)

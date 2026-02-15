@@ -23,8 +23,6 @@
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\core\time.cpp" />
     <ClCompile Include="src\core\window.cpp" />
-    <ClCompile Include="src\editor\editor.cpp" />
-    <ClCompile Include="src\editor\imguilayer.cpp" />
     <ClCompile Include="src\exporter\FBXexporter.cpp" />
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -37,6 +35,14 @@
     <ClCompile Include="src\renderer\skybox.cpp" />
     <ClCompile Include="src\renderer\skyboxmesh.cpp" />
     <ClCompile Include="src\terrain\terraingenerator.cpp" />
+    <ClCompile Include="src\UI\editor.cpp" />
+    <ClCompile Include="src\UI\imguilayer.cpp" />
+    <ClCompile Include="src\UI\panels\erosionpanel.cpp" />
+    <ClCompile Include="src\UI\panels\exportpanel.cpp" />
+    <ClCompile Include="src\UI\panels\lightingpanel.cpp" />
+    <ClCompile Include="src\UI\panels\meshpanel.cpp" />
+    <ClCompile Include="src\UI\panels\noisepanel.cpp" />
+    <ClCompile Include="src\UI\panels\skyboxpanel.cpp" />
     <ClCompile Include="thirdparty\glad\glad.c" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp" />
@@ -52,9 +58,6 @@
     <ClInclude Include="include\core\camera.h" />
     <ClInclude Include="include\core\time.h" />
     <ClInclude Include="include\core\window.h" />
-    <ClInclude Include="include\editor\editor.h" />
-    <ClInclude Include="include\editor\editorstate.h" />
-    <ClInclude Include="include\editor\imguilayer.h" />
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
     <ClInclude Include="include\exporter\OBJexporter.h" />
@@ -73,6 +76,17 @@
     <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />
+    <ClInclude Include="include\UI\editor.h" />
+    <ClInclude Include="include\UI\editorcontext.h" />
+    <ClInclude Include="include\UI\editorstate.h" />
+    <ClInclude Include="include\UI\imguilayer.h" />
+    <ClInclude Include="include\UI\panels\erosionpanel.h" />
+    <ClInclude Include="include\UI\panels\exportpanel.h" />
+    <ClInclude Include="include\UI\Panels\ipanel.h" />
+    <ClInclude Include="include\UI\panels\lightingpanel.h" />
+    <ClInclude Include="include\UI\Panels\meshpanel.h" />
+    <ClInclude Include="include\UI\panels\noisepanel.h" />
+    <ClInclude Include="include\UI\panels\skyboxpanel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\depthFragment.glsl" />
