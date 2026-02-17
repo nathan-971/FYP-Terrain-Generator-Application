@@ -3,7 +3,7 @@
 
 #include "imgui/imgui.h"
 
-#include "UI/editorcontext.h"
+#include "UI/editor/editorcontext.h"
 
 class IPanel
 {

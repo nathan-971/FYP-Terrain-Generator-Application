@@ -3,11 +3,13 @@
 void ErosionPanel::Display(EditorContext& ctx)
 {
     auto& config = ctx.terrainConfig;
+    auto& commands = ctx.commands;
+    auto& state = ctx.state;
 
     ImGui::SeparatorText("Erosion Settings");
-    if (ImGui::Checkbox("Enable Erosion", &config.enableErosion))
+    if (ImGui::Checkbox("Enable Erosion", &state.erosionEnabled))
     {
-        ctx.scene.getTerrainGenerator().toggleErosion();
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+		commands.changeErosionEnabled = true;
+		commands.updateHeightMap = true;
     }
 }

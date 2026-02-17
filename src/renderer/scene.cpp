@@ -25,7 +25,6 @@ Scene::Scene() :
     config.scale = 0.0f;
     config.warpMultiplier = 0.0f;
     config.warpFrequency = 0.0f;
-    config.enableErosion = false;
     config.rotationSpeed = 25.0f;
 }
 
@@ -83,11 +82,7 @@ bool Scene::isGenerated() const
 
 bool Scene::ChangeSkybox(SkyboxOption option) 
 {
-    if (skybox.Change(option))
-    {
-        return true;
-    }
-    return false;
+	return skybox.Change(option);
 }
 
 FrameData Scene::getFrameData(Camera& camera)
@@ -128,9 +123,11 @@ void Scene::ExportTerrain(FileType type)
     {
         std::cout << "Error Exporting Terrain to FBX File!";
         delete exporter;
+		exporter = nullptr;
         return;
     }
     delete exporter;
+    exporter = nullptr;
 }
 
 TerrainConfig& Scene::getTerrainConfig()

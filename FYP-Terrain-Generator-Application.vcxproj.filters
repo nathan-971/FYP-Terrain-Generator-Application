@@ -64,6 +64,18 @@
     <Filter Include="Source Files\UI\panels">
       <UniqueIdentifier>{316f1a80-d224-4f09-9cc0-3e931b4dd4bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\UI\editor">
+      <UniqueIdentifier>{2800d590-5c76-42e5-802b-16530cf94a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\editor">
+      <UniqueIdentifier>{646114a7-a57a-47bd-8c95-5102b972d652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\viewport">
+      <UniqueIdentifier>{a088872e-6f5c-41e7-a87b-0de98d53a4f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\viewport">
+      <UniqueIdentifier>{02c6e5d0-6821-41ba-bd0f-c371b483907a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -141,9 +153,6 @@
     <ClCompile Include="src\core\application.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\editor.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="src\UI\imguilayer.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
@@ -164,6 +173,15 @@
     </ClCompile>
     <ClCompile Include="src\UI\panels\meshpanel.cpp">
       <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\editor\editor.cpp">
+      <Filter>Source Files\UI\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\viewport\viewport.cpp">
+      <Filter>Source Files\UI\viewport</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\uibase.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -233,13 +251,7 @@
     <ClInclude Include="include\core\application.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\UI\editorstate.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
     <ClInclude Include="include\UI\imguilayer.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="include\UI\editor.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="include\UI\Panels\ipanel.h">
@@ -247,9 +259,6 @@
     </ClInclude>
     <ClInclude Include="include\UI\Panels\meshpanel.h">
       <Filter>Header Files\UI\panels</Filter>
-    </ClInclude>
-    <ClInclude Include="include\UI\editorcontext.h">
-      <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="include\UI\panels\noisepanel.h">
       <Filter>Header Files\UI\panels</Filter>
@@ -265,6 +274,27 @@
     </ClInclude>
     <ClInclude Include="include\UI\panels\lightingpanel.h">
       <Filter>Header Files\UI\panels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\editor\editor.h">
+      <Filter>Header Files\UI\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\editor\editorcommands.h">
+      <Filter>Header Files\UI\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\editor\editorcontext.h">
+      <Filter>Header Files\UI\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\editor\editorstate.h">
+      <Filter>Header Files\UI\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\viewport\viewport.h">
+      <Filter>Header Files\UI\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\uibase.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\viewport\framebuffer.h">
+      <Filter>Header Files\UI\viewport</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

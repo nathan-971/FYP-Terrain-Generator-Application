@@ -17,8 +17,6 @@ struct TerrainConfig
 	float warpFrequency;
 
 	float rotationSpeed;
-
-	bool enableErosion;
 };
 
 #endif

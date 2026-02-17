@@ -37,7 +37,7 @@ public:
 	void setShaderProgram(unsigned int shaderProgram);
 	void setNoiseConfiguration(NoiseConfiguration& noiseConfig);
 	void setWarpMode(WarpMode& warpMode);
-	void toggleErosion();
+	void setErosionEnabled(bool& erosionEnabled);
 	void Apply();
 
 	TerrainConfig& getConfig();
@@ -58,7 +58,7 @@ private:
 	TerrainMesh* terrainMesh;
 	unsigned int shaderProgram;
 	int seed;
-	bool erosionToggled;
+	bool erosionEnabled;
 };
 
 #endif

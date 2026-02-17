@@ -1,57 +1,26 @@
 #include "terrain/terraingenerator.h"
 #include <iostream>
 
-TerrainGenerator::TerrainGenerator(TerrainConfig& config)
-	: config(config), 
+TerrainGenerator::TerrainGenerator(TerrainConfig& config) :
+	config(config), 
 	noise(nullptr), 
 	terrainMesh(nullptr), 
 	shaderProgram(0),
 	seed(0),
 	noiseConfig(NoiseConfiguration::BaseNoise), 
-	warpMode(WarpMode::None)
+	warpMode(WarpMode::None),
+	erosionEnabled(false)
 {
 	noise = new PerlinNoise();
 }
 
 TerrainGenerator::~TerrainGenerator()
 {
-	delete noise;
-	noise = nullptr;
-}
-	
-void TerrainGenerator::setMesh(TerrainMesh& mesh)
-{
-	this->terrainMesh = &mesh;
-}
-
-void TerrainGenerator::setShaderProgram(unsigned int shaderProgram)
-{
-	this->shaderProgram = shaderProgram;
-}
-
-void TerrainGenerator::setSeed(int& seed)
-{
-	this->seed = seed;
-}
-
-void TerrainGenerator::setNoiseConfiguration(NoiseConfiguration& noiseConfig)
-{
-	this->noiseConfig = noiseConfig;
-}
-
-void TerrainGenerator::setWarpMode(WarpMode& warpMode)
-{
-	this->warpMode = warpMode;
-}
-
-void TerrainGenerator::toggleErosion()
-{
-	this->erosionToggled = erosionToggled ? false : true;
-}
-
-TerrainConfig& TerrainGenerator::getConfig()
-{
-	return this->config;
+	if (noise)
+	{
+		delete noise;
+		noise = nullptr;
+	}
 }
 
 void TerrainGenerator::Apply()
@@ -76,7 +45,7 @@ void TerrainGenerator::Apply()
 		}
 	}
 
-	if (erosionToggled)
+	if (erosionEnabled)
 	{
 		applyThermalErosion();
 	}
@@ -289,10 +258,44 @@ void TerrainGenerator::applyThermalErosion()
 	{
 		verts[i].position.y = heightMap[i];
 	}
-	terrainMesh->recalculateNormals(config.width, config.depth, config.resolution);
 }
 
 void TerrainGenerator::applyHydraulicErosion()
 {
 
+}
+
+void TerrainGenerator::setMesh(TerrainMesh& mesh)
+{
+	this->terrainMesh = &mesh;
+}
+
+void TerrainGenerator::setShaderProgram(unsigned int shaderProgram)
+{
+	this->shaderProgram = shaderProgram;
+}
+
+void TerrainGenerator::setSeed(int& seed)
+{
+	this->seed = seed;
+}
+
+void TerrainGenerator::setNoiseConfiguration(NoiseConfiguration& noiseConfig)
+{
+	this->noiseConfig = noiseConfig;
+}
+
+void TerrainGenerator::setWarpMode(WarpMode& warpMode)
+{
+	this->warpMode = warpMode;
+}
+
+void TerrainGenerator::setErosionEnabled(bool& erosionEnabled)
+{
+	this->erosionEnabled = erosionEnabled;
+}
+
+TerrainConfig& TerrainGenerator::getConfig()
+{
+	return this->config;
 }

@@ -2,7 +2,7 @@
 #define _LIGHTING_PANEL_H_
 
 #include "UI/panels/ipanel.h"
-#include "UI/editorcontext.h"
+#include "UI/editor/editorcontext.h"
 
 class LightingPanel : public IPanel
 {

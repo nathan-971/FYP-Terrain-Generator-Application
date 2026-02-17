@@ -7,6 +7,7 @@ void NoisePanel::Display(EditorContext& ctx)
 {
     auto& config = ctx.terrainConfig;
     auto& state = ctx.state;
+	auto& commands = ctx.commands;
 
     ImGui::SeparatorText("Noise Settings");
     if (ImGui::BeginCombo("Noise Configuration", noiseConfigNames[static_cast<int>(state.noiseConfig)]))
@@ -18,8 +19,8 @@ void NoisePanel::Display(EditorContext& ctx)
             {
                 state.noiseConfig = static_cast<NoiseConfiguration>(i);
 
-                ctx.scene.getTerrainGenerator().setNoiseConfiguration(state.noiseConfig);
-                ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+				commands.changeNoiseConfiguration = true;
+                commands.updateHeightMap = true;
             }
             if (isSelected)
             {
@@ -31,32 +32,32 @@ void NoisePanel::Display(EditorContext& ctx)
 
     if (ImGui::SliderInt("Noise Octaves", static_cast<int*>(&config.octaves), 1, 8))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.updateHeightMap = true;
     }
 
     if (ImGui::SliderFloat("Noise Amplitude", static_cast<float*>(&config.amplitude), 1.0f, 15.0f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.updateHeightMap = true;
     }
 
     if (ImGui::SliderFloat("Noise Frequency", static_cast<float*>(&config.frequency), 0.01f, 0.5f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.updateHeightMap = true;
     }
 
     if (ImGui::SliderFloat("Noise Lacunarity", static_cast<float*>(&config.lacunarity), 1.0f, 2.0f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.updateHeightMap = true;
     }
 
     if (ImGui::SliderFloat("Noise Persistence", static_cast<float*>(&config.persistence), 0.01f, 0.75f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.updateHeightMap = true;
     }
 
     if (ImGui::SliderFloat("Noise Scale", static_cast<float*>(&config.scale), 0.1f, 2.5f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.updateHeightMap = true;
     }
 
     if (ImGui::BeginCombo("Warp Configuration", warpModeNames[static_cast<int>(state.warpMode)]))
@@ -68,8 +69,8 @@ void NoisePanel::Display(EditorContext& ctx)
             {
                 state.warpMode = static_cast<WarpMode>(i);
 
-                ctx.scene.getTerrainGenerator().setWarpMode(state.warpMode);
-                ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+                commands.changeWarpMode = true;
+				commands.updateHeightMap = true;
             }
             if (isSelected)
             {
@@ -81,20 +82,20 @@ void NoisePanel::Display(EditorContext& ctx)
 
     if (ImGui::SliderFloat("Wrap Multiplier", static_cast<float*>(&config.warpMultiplier), 0.0f, 200.0f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+		commands.updateHeightMap = true;
     }
 
     if (ImGui::SliderFloat("Wrap Freqeuncy", static_cast<float*>(&config.warpFrequency), 0.000f, 0.03f))
     {
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+		commands.updateHeightMap = true;
     }
 
-    ImGui::InputInt("Seed", &state.seed, ImGuiInputTextFlags_ReadOnly);
+    ImGui::BeginDisabled();
+    ImGui::InputInt("Seed", &state.seed);
+    ImGui::EndDisabled();
     if (ImGui::Button("Generate"))
     {
-        state.seed = generateSeed();
-        ctx.scene.getTerrainGenerator().setSeed(state.seed);
-        ctx.scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        commands.newSeed = generateSeed();
     }
 }
 

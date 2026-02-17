@@ -6,7 +6,7 @@ Application::Application() :
 	scene(nullptr),
 	renderer(nullptr),
 	imguiLayer(nullptr),
-	editor(nullptr)
+	ui(nullptr)
 { 
 	Init();
 }
@@ -34,9 +34,10 @@ void Application::Init()
 	scene = std::make_unique<Scene>();
 	renderer = std::make_unique<Renderer>();
 	imguiLayer = std::make_unique<ImGuiLayer>();
-	editor = std::make_unique<Editor>(
+	ui = std::make_unique<UIBase>(
 		*scene,
-		*camera
+		*camera,
+		*renderer
 	);
 
 	glEnable(GL_DEPTH_TEST);
@@ -60,28 +61,13 @@ void Application::Run()
 		Time::applicationTime = currentTime;
 
 		window->pollEvents();
-		Update();
-		Render();
+
+		imguiLayer->BeginFrame();
+		ui->Render();
+		imguiLayer->EndFrame();
+
 		window->swapBuffers();
 	}
-}
-
-void Application::Update()
-{
-	camera->updateCameraMatrix(FOV, NEAR_PLANE, FAR_PLANE);
-	scene->Update();
-}
-
-void Application::Render()
-{
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	renderer->RenderScene(*window, *camera, *scene);
-
-	imguiLayer->BeginFrame();
-	editor->Render();
-	imguiLayer->EndFrame();
 }
 
 void Application::Shutdown()

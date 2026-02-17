@@ -7,6 +7,8 @@ struct EditorState
 {
     NoiseConfiguration noiseConfig = NoiseConfiguration::BaseNoise;
     WarpMode warpMode = WarpMode::None;
+	SkyboxOption skyboxOption = SkyboxOption::NOON;
+    bool erosionEnabled = false;
     int seed = 0;
     int fps = 0;
 };

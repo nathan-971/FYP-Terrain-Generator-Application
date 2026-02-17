@@ -2,10 +2,12 @@
 
 void ExportPanel::Display(EditorContext& ctx)
 {
+	auto& commands = ctx.commands;
+
     ImGui::SeparatorText("Export Terrain");
     if (ImGui::Button(ICON_FA_FLOPPY_DISK, ImVec2(30, 30)))
     {
-        ctx.scene.ExportTerrain(FileType::FBX);
+		commands.exportTerrain = true;
     }
     ImGui::SameLine();
     ImGui::Text("Save Terrain");

@@ -4,7 +4,7 @@
 #include <random>
 
 #include "UI/panels/ipanel.h"
-#include "UI/editorcontext.h"
+#include "UI/editor/editorcontext.h"
 
 class NoisePanel : public IPanel
 {

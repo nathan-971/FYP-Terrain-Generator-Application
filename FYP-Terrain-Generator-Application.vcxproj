@@ -35,7 +35,7 @@
     <ClCompile Include="src\renderer\skybox.cpp" />
     <ClCompile Include="src\renderer\skyboxmesh.cpp" />
     <ClCompile Include="src\terrain\terraingenerator.cpp" />
-    <ClCompile Include="src\UI\editor.cpp" />
+    <ClCompile Include="src\UI\editor\editor.cpp" />
     <ClCompile Include="src\UI\imguilayer.cpp" />
     <ClCompile Include="src\UI\panels\erosionpanel.cpp" />
     <ClCompile Include="src\UI\panels\exportpanel.cpp" />
@@ -43,6 +43,8 @@
     <ClCompile Include="src\UI\panels\meshpanel.cpp" />
     <ClCompile Include="src\UI\panels\noisepanel.cpp" />
     <ClCompile Include="src\UI\panels\skyboxpanel.cpp" />
+    <ClCompile Include="src\UI\uibase.cpp" />
+    <ClCompile Include="src\UI\viewport\viewport.cpp" />
     <ClCompile Include="thirdparty\glad\glad.c" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp" />
@@ -76,9 +78,10 @@
     <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />
-    <ClInclude Include="include\UI\editor.h" />
-    <ClInclude Include="include\UI\editorcontext.h" />
-    <ClInclude Include="include\UI\editorstate.h" />
+    <ClInclude Include="include\UI\editor\editor.h" />
+    <ClInclude Include="include\UI\editor\editorcommands.h" />
+    <ClInclude Include="include\UI\editor\editorcontext.h" />
+    <ClInclude Include="include\UI\editor\editorstate.h" />
     <ClInclude Include="include\UI\imguilayer.h" />
     <ClInclude Include="include\UI\panels\erosionpanel.h" />
     <ClInclude Include="include\UI\panels\exportpanel.h" />
@@ -87,6 +90,9 @@
     <ClInclude Include="include\UI\Panels\meshpanel.h" />
     <ClInclude Include="include\UI\panels\noisepanel.h" />
     <ClInclude Include="include\UI\panels\skyboxpanel.h" />
+    <ClInclude Include="include\UI\uibase.h" />
+    <ClInclude Include="include\UI\viewport\framebuffer.h" />
+    <ClInclude Include="include\UI\viewport\viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\depthFragment.glsl" />

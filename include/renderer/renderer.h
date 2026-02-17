@@ -16,7 +16,7 @@ public:
 	Renderer();
 	~Renderer();
 
-	void RenderScene(Window& window, Camera& camera, Scene& scene);
+	void RenderScene(Camera& camera, Scene& scene);
 
 private:
 	void renderDepthPass(Scene& scene, FrameData& frameData);

@@ -31,14 +31,11 @@ Renderer::~Renderer()
     }
 }
 
-void Renderer::RenderScene(Window& window, Camera& camera, Scene& scene)
+void Renderer::RenderScene(Camera& camera, Scene& scene)
 {
     FrameData frameData = scene.getFrameData(camera);
-    window.updateViewport(window.getWidth(), window.getHeight());
-    camera.onResize(window.getWidth(), window.getHeight());
 
     renderDepthPass(scene, frameData);
-    glViewport(0, 0, window.getWidth(), window.getHeight());
     renderLightPass(scene, frameData);
 
     if (!scene.getSkybox().isDisabled())
@@ -49,6 +46,12 @@ void Renderer::RenderScene(Window& window, Camera& camera, Scene& scene)
 
 void Renderer::renderDepthPass(Scene& scene, FrameData& frameData)
 {
+    int previousFBO;
+    int viewport[4];
+
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &previousFBO);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
     glViewport(0, 0, shadowMapWidth, shadowMapHeight);
     glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
     glClear(GL_DEPTH_BUFFER_BIT);
@@ -62,7 +65,8 @@ void Renderer::renderDepthPass(Scene& scene, FrameData& frameData)
     depthShader.setUniformMat("model", model);
     scene.getTerrainMesh().Draw();
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
+    glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 }
 
 void Renderer::renderLightPass(Scene& scene, FrameData& frameData)
