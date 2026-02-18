@@ -16,7 +16,7 @@ Scene::Scene() :
     //DEFAULT CONFIG VALUES
     config.width = 100;
     config.depth = 100;
-    config.resolution = 1.0f;
+    config.resolution = 0.5f;
     config.octaves = 5;
     config.amplitude = 0.0f;
     config.frequency = 0.0f;

@@ -71,8 +71,16 @@ void TerrainGenerator::applyRidgedNoise()
 		float totalNoise = 0.0f;
 		float prev = 1.0f;
 
-		float noiseX = vertex.position.x * scale;
-		float noiseZ = vertex.position.z * scale;
+		float angle = 0.785398f; //45 Degrees In Radians
+		float cosOfAngle = cos(angle);
+		float sinOfAngle = sin(angle);
+
+		float rotatedX = vertex.position.x * cosOfAngle - vertex.position.z * sinOfAngle;
+		float rotatedZ = vertex.position.x * sinOfAngle + vertex.position.z * cosOfAngle;
+
+		float noiseX = rotatedX * scale;
+		float noiseZ = rotatedZ * scale;
+
 
 		switch (warpMode)
 		{
@@ -123,8 +131,16 @@ void TerrainGenerator::applyBaseNoise()
 		float frequency = this->config.frequency;
 		float totalNoise = 0.0f;
 
-		float noiseX = vertex.position.x * scale;
-		float noiseZ = vertex.position.z * scale;
+		float angle = 0.785398f; //45 Degrees In Radians
+		float cosOfAngle = cos(angle);
+		float sinOfAngle = sin(angle);
+
+		float rotatedX = vertex.position.x * cosOfAngle - vertex.position.z * sinOfAngle;
+		float rotatedZ = vertex.position.x * sinOfAngle + vertex.position.z * cosOfAngle;
+
+		float noiseX = rotatedX * scale;
+		float noiseZ = rotatedZ * scale;
+
 
 		switch (warpMode)
 		{

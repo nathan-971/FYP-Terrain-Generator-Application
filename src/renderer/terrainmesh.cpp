@@ -56,7 +56,6 @@ void TerrainMesh::buildMesh(unsigned int width, unsigned int depth, float resolu
 		for (int z = 0; z < vertCountZ; z++)
 		{
 			Vertex v;
-
 			v.position = glm::vec3(
 				x * xSpacing - (width * 0.5f),
 				0.0f,

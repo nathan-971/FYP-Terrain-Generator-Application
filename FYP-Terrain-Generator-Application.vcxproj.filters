@@ -183,6 +183,9 @@
     <ClCompile Include="src\UI\uibase.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="src\UI\panels\heightmappanel.cpp">
+      <Filter>Source Files\UI\panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\noise\noise.h">
@@ -295,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="include\UI\viewport\framebuffer.h">
       <Filter>Header Files\UI\viewport</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UI\panels\heightmappanel.h">
+      <Filter>Header Files\UI\panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

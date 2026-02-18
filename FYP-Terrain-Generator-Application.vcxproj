@@ -39,6 +39,7 @@
     <ClCompile Include="src\UI\imguilayer.cpp" />
     <ClCompile Include="src\UI\panels\erosionpanel.cpp" />
     <ClCompile Include="src\UI\panels\exportpanel.cpp" />
+    <ClCompile Include="src\UI\panels\heightmappanel.cpp" />
     <ClCompile Include="src\UI\panels\lightingpanel.cpp" />
     <ClCompile Include="src\UI\panels\meshpanel.cpp" />
     <ClCompile Include="src\UI\panels\noisepanel.cpp" />
@@ -85,6 +86,7 @@
     <ClInclude Include="include\UI\imguilayer.h" />
     <ClInclude Include="include\UI\panels\erosionpanel.h" />
     <ClInclude Include="include\UI\panels\exportpanel.h" />
+    <ClInclude Include="include\UI\panels\heightmappanel.h" />
     <ClInclude Include="include\UI\Panels\ipanel.h" />
     <ClInclude Include="include\UI\panels\lightingpanel.h" />
     <ClInclude Include="include\UI\Panels\meshpanel.h" />

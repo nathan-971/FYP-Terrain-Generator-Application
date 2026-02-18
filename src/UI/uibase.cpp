@@ -40,7 +40,6 @@ void UIBase::StartRootFrame()
 		ImGuiWindowFlags_NoNavFocus
 	);
 
-
 	ImGui::DockSpace(ImGui::GetID("RootDockspace"), ImVec2(0, 0),
 		ImGuiDockNodeFlags_NoWindowMenuButton |
 		ImGuiDockNodeFlags_NoCloseButton |

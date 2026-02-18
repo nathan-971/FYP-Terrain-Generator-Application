@@ -5,6 +5,7 @@
 #include "UI/panels/erosionpanel.h"
 #include "UI/panels/skyboxpanel.h"
 #include "UI/panels/exportpanel.h"
+#include "UI/panels/heightmappanel.h"
 
 Editor::Editor(Scene& scene, Camera& camera) : 
 	scene(scene),
@@ -15,6 +16,7 @@ Editor::Editor(Scene& scene, Camera& camera) :
     panels.push_back(std::make_unique<NoisePanel>());
     panels.push_back(std::make_unique<LightingPanel>());
     panels.push_back(std::make_unique<ErosionPanel>());
+    panels.push_back(std::make_unique<HeightMapPanel>());
     panels.push_back(std::make_unique<SkyboxPanel>());
     panels.push_back(std::make_unique<ExportPanel>());
 }
