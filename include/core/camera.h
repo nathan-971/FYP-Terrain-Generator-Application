@@ -12,19 +12,19 @@
 class Camera
 {
 public:
-	Camera(int width, int height, glm::vec3 position);
-	void updateCameraMatrix(float FOVdeg, float nearPlane, float farPlane);
-	void onResize(int newWidth, int newHeight);
+	Camera(int width, int height, const glm::vec3& position);
+	void UpdateCameraMatrix(float FOVdeg, float nearPlane, float farPlane);
+	void OnResize(int newWidth, int newHeight);
 
-	void setPosition(glm::vec3 position);
-	void setOrientation(glm::vec3 orientation);
+	void setPosition(const glm::vec3& position);
+	void setOrientation(const glm::vec3& orientation);
 	
-	glm::vec3& getPosition();
-	glm::vec3& getOrientation();
-	glm::vec3& getCameraUp();
+	const glm::vec3& getPosition() const;
+	const glm::vec3& getOrientation() const;
+	const glm::vec3& getCameraUp() const;
 
-	glm::mat4& getView();
-	glm::mat4& getProjection();
+	const glm::mat4& getView() const;
+	const glm::mat4& getProjection() const;
 
 private:
 	glm::vec3 position;

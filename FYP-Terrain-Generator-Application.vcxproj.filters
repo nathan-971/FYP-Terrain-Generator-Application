@@ -302,6 +302,12 @@
     <ClInclude Include="include\UI\panels\heightmappanel.h">
       <Filter>Header Files\UI\panels</Filter>
     </ClInclude>
+    <ClInclude Include="include\renderer\iviewportprovider.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer\irenderer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragment.glsl">

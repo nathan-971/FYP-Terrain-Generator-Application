@@ -12,9 +12,10 @@
 class UIBase
 {
 public:
-	UIBase(Scene& scene, Camera& camera, Renderer& renderer);
+	UIBase(Scene& scene, Camera& camera, IViewportProvider& viewportProvider);
 	~UIBase();
 
+	void PreRender();
 	void Render();
 
 private:
@@ -23,7 +24,7 @@ private:
 
 	Scene& scene;
 	Camera& camera;
-	Renderer& renderer;
+	IViewportProvider& viewportProvider;
 
 	Viewport viewport;
 	Editor editor;

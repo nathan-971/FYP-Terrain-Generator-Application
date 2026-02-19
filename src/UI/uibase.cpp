@@ -1,22 +1,26 @@
 #include "ui/uibase.h"
 
-UIBase::UIBase(Scene& scene, Camera& camera, Renderer& renderer) :
+UIBase::UIBase(Scene& scene, Camera& camera, IViewportProvider& viewportProvider) :
 	scene(scene), 
 	camera(camera), 
-	renderer(renderer),
-	viewport(scene, camera, renderer), 
+	viewportProvider(viewportProvider),
+	viewport(scene, camera, viewportProvider),
 	editor(scene, camera) { }
 
 UIBase::~UIBase() { }
 
-void UIBase::Render()
+void UIBase::PreRender()
 {
 	StartRootFrame();
 	LayoutRootFrame();
 
+	viewport.UpdateSize();
+}
+
+void UIBase::Render()
+{
 	editor.Render();
 	viewport.Render();
-
 	editor.ApplyCommands();
 
 	ImGui::End();

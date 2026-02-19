@@ -1,6 +1,6 @@
 #include "core/camera.h"
 
-Camera::Camera(int width, int height, glm::vec3 position) : 
+Camera::Camera(int width, int height, const glm::vec3& position) :
 	width(width), 
 	height(height), 
 	position(position),
@@ -9,49 +9,49 @@ Camera::Camera(int width, int height, glm::vec3 position) :
 	projection(1.0f),
 	view(1.0f) { }
 
-void Camera::updateCameraMatrix(float FOVdeg, float nearPlane, float farPlane)
+void Camera::UpdateCameraMatrix(float FOVdeg, float nearPlane, float farPlane)
 {
 	view = glm::lookAt(position, position + orientation, up);
 	projection = glm::perspective(glm::radians(FOVdeg), (float)width / (float)height, nearPlane, farPlane);
 }
 
-void Camera::onResize(int newWidth, int newHeight)
+void Camera::OnResize(int newWidth, int newHeight)
 {
 	width = newWidth;
 	height = newHeight;
 }
 
-void Camera::setOrientation(glm::vec3 orientation)
+void Camera::setOrientation(const glm::vec3& orientation)
 {
 	this->orientation = orientation;
 }
 
-void Camera::setPosition(glm::vec3 position)
+void Camera::setPosition(const glm::vec3& position)
 {
 	this->position = position;
 }
 
-glm::vec3& Camera::getPosition()
-{
-	return this->position;
-}
-
-glm::vec3& Camera::getOrientation()
+const glm::vec3& Camera::getOrientation() const
 {
 	return this->orientation;
 }
 
-glm::vec3& Camera::getCameraUp()
+const glm::vec3& Camera::getCameraUp() const
 {
 	return this->up;
 }
 
-glm::mat4& Camera::getView()
+const glm::vec3& Camera::getPosition() const
+{
+	return this->position;
+}
+
+const glm::mat4& Camera::getView() const
 {
 	return this->view;
 }
 
-glm::mat4& Camera::getProjection()
+const glm::mat4& Camera::getProjection() const
 {
 	return this->projection;
 }

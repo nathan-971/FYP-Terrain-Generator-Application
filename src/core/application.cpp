@@ -1,12 +1,20 @@
 #include "core/application.h"
+#include <utility>
 
-Application::Application() : 
-	window(nullptr), 
-	camera(nullptr), 
-	scene(nullptr),
-	renderer(nullptr),
-	imguiLayer(nullptr),
-	ui(nullptr)
+Application::Application(
+	std::unique_ptr<Window> window,
+	std::unique_ptr<Camera> camera,
+	std::unique_ptr<Scene> scene,
+	std::unique_ptr<IRenderer> renderer,
+	std::unique_ptr<ImGuiLayer> imguiLayer,
+	std::unique_ptr<UIBase> ui
+) :
+	window(std::move(window)),
+	scene(std::move(scene)),
+	renderer(std::move(renderer)),
+	camera(std::move(camera)),
+	imguiLayer(std::move(imguiLayer)),
+	ui(std::move(ui))
 { 
 	Init();
 }
@@ -18,33 +26,6 @@ Application::~Application()
 
 void Application::Init()
 {
-	window = std::make_unique<Window>(
-		SCR_HEIGHT, 
-		SCR_WIDTH, 
-		"Terrain Generator", 
-		true
-	);
-
-	camera = std::make_unique<Camera>(
-		SCR_HEIGHT,
-		SCR_WIDTH,
-		WORLD_ORIGIN
-	);
-
-	scene = std::make_unique<Scene>();
-	renderer = std::make_unique<Renderer>();
-	imguiLayer = std::make_unique<ImGuiLayer>();
-	ui = std::make_unique<UIBase>(
-		*scene,
-		*camera,
-		*renderer
-	);
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
-
 	imguiLayer->Init(*window);
 	lastFrameTime = window->getTime();
 	scene->Generate();
@@ -62,8 +43,15 @@ void Application::Run()
 
 		window->pollEvents();
 
+		camera->UpdateCameraMatrix(FOV, NEAR_PLANE, FAR_PLANE);
+		scene->Update();
+
 		imguiLayer->BeginFrame();
+
+		ui->PreRender();
+		renderer->RenderScene(scene->getFrameData(*camera));
 		ui->Render();
+
 		imguiLayer->EndFrame();
 
 		window->swapBuffers();

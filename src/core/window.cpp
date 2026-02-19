@@ -74,7 +74,7 @@ void Window::swapBuffers() const
 	glfwSwapBuffers(this->nativeWindow);
 }
 
-int Window::shouldClose() const
+bool Window::shouldClose() const
 {
 	return glfwWindowShouldClose(this->nativeWindow);
 }

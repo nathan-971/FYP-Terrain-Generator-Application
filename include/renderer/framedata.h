@@ -3,6 +3,19 @@
 
 #include <glm/glm.hpp>
 
+struct TerrainRenderData
+{
+	glm::mat4 modelMatrix;
+	TerrainMesh* terrainMesh;
+};
+
+struct SkyboxRenderData
+{
+	SkyboxMesh* skyboxMesh;
+	unsigned int skyboxTexture;
+	bool enabled = false;
+};
+
 struct FrameData 
 {
 	glm::mat4 viewMatrix;
@@ -19,6 +32,9 @@ struct FrameData
 	float ambientStrength;
 	float specularStrength;
 	int shininess;
+
+	TerrainRenderData terrain;
+	SkyboxRenderData skybox;
 };
 
 #endif

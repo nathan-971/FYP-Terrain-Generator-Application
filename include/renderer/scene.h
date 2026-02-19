@@ -38,6 +38,7 @@ public:
 	bool ChangeSkybox(SkyboxOption option);
 	void ExportTerrain(FileType type);
 
+	FrameData getFrameData(const Camera& camera);
 	TerrainConfig& getTerrainConfig();
 	TerrainGenerator& getTerrainGenerator();
 	TerrainMesh& getTerrainMesh();
@@ -45,7 +46,6 @@ public:
 	Skybox& getSkybox();
 	SkyboxMesh& getSkyboxMesh();
 	Light& getLight();
-	FrameData getFrameData(Camera& camera);
 
 	void positionAndOrientateCamera(Camera& camera);
 

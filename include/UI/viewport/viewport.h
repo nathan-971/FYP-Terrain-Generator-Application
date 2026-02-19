@@ -1,10 +1,6 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
-#define FOV 75.0f
-#define NEAR_PLANE 0.05f
-#define FAR_PLANE 250.0f
-
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
 
@@ -17,19 +13,16 @@
 class Viewport
 {
 public:
-	Viewport(Scene& scene, Camera& camera, Renderer& renderer);
+	Viewport(Scene& scene, Camera& camera, IViewportProvider& viewportProvider);
 	~Viewport();
 
 	void Render();
+	void UpdateSize();
 
 private:
-	void Resize(int width, int height);
-	void RenderSceneToTexture();
-
-	Framebuffer framebuffer;
 	Scene& scene;
 	Camera& camera;
-	Renderer& renderer;
+	IViewportProvider& viewportProvider;
 };
 
 #endif

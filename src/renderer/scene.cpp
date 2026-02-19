@@ -85,26 +85,42 @@ bool Scene::ChangeSkybox(SkyboxOption option)
 	return skybox.Change(option);
 }
 
-FrameData Scene::getFrameData(Camera& camera)
+FrameData Scene::getFrameData(const Camera& camera)
 {
     FrameData frame;
+
     frame.viewMatrix = camera.getView();
     frame.projectionMatrix = camera.getProjection();
     frame.cameraPosition = camera.getPosition();
-    frame.cameraOrientation = camera.getOrientation();
-    frame.cameraUp = camera.getCameraUp();
 
     glm::mat4 lightView = glm::lookAt(light.position, glm::vec3(0.0f), glm::vec3(0, 1, 0));
-    frame.lightSpaceMatrix = lightView;
 
+    frame.lightSpaceMatrix = lightView;
     frame.lightPosition = light.position;
     frame.lightColor = light.color;
-
     frame.ambientStrength = light.ambient;
     frame.specularStrength = light.specular;
     frame.shininess = light.shininess;
 
+    frame.terrain.modelMatrix = terrainTransform.getMatrix();
+    frame.terrain.terrainMesh = &terrainMesh;
+
+	frame.skybox.skyboxMesh = &skyboxMesh;
+    frame.skybox.enabled = !skybox.isDisabled();
+    frame.skybox.skyboxTexture = skybox.getActiveTextureId();
+
     return frame;
+}
+
+void Scene::positionAndOrientateCamera(Camera& camera)
+{
+    glm::vec3 meshLocalPos = terrainTransform.getMatrix()[3];
+    camera.setPosition(glm::vec3(
+        meshLocalPos.x - 75.0f,
+        100.0f,
+        meshLocalPos.z - 75.0f
+    ));
+    camera.setOrientation(glm::normalize(meshLocalPos - camera.getPosition()));
 }
 
 void Scene::ExportTerrain(FileType type)
@@ -163,15 +179,4 @@ SkyboxMesh& Scene::getSkyboxMesh()
 Light& Scene::getLight()
 {
     return light;
-}
-
-void Scene::positionAndOrientateCamera(Camera& camera)
-{
-    glm::vec3 meshLocalPos = terrainTransform.getMatrix()[3];
-    camera.setPosition(glm::vec3(
-        meshLocalPos.x - 75.0f,
-        100.0f,
-        meshLocalPos.z - 75.0f
-    ));
-    camera.setOrientation(glm::normalize(meshLocalPos - camera.getPosition()));
 }

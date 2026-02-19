@@ -21,7 +21,7 @@ public:
 	void setUserPointer(void* object) const;
 	void pollEvents() const;
 	void swapBuffers() const;
-	int shouldClose() const;
+	bool shouldClose() const;
 	double getTime() const;
 	void getMousePosition(double &x, double &y);
 

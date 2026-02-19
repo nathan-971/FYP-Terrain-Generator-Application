@@ -67,6 +67,8 @@
     <ClInclude Include="include\noise\noise.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
     <ClInclude Include="include\renderer\framedata.h" />
+    <ClInclude Include="include\renderer\irenderer.h" />
+    <ClInclude Include="include\renderer\iviewportprovider.h" />
     <ClInclude Include="include\renderer\light.h" />
     <ClInclude Include="include\renderer\renderer.h" />
     <ClInclude Include="include\renderer\terrainmesh.h" />
