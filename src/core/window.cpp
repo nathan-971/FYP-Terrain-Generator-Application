@@ -1,9 +1,8 @@
 #include "core/window.h"
-#include "core/camera.h"
-
+#include <GLFW/glfw3.h>
 #include <iostream>
 
-Window::Window(int height, int width, const std::string& title, bool vsync)
+Window::Window(int width, int height, const std::string& title, bool vsync)
 	: width(width), height(height)
 {
 	initGLFW();
@@ -18,8 +17,6 @@ Window::Window(int height, int width, const std::string& title, bool vsync)
 
 	glfwMakeContextCurrent(this->nativeWindow);
 	glfwSwapInterval(vsync);
-	initGLAD();
-	glfwSetFramebufferSizeCallback(this->nativeWindow, framebufferSizeCallback);
 }
 
 Window::~Window()
@@ -34,14 +31,6 @@ void Window::initGLFW()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_VERSION_NUM);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_VERSION_NUM);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-}
-
-void Window::initGLAD()
-{
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cerr << "Failed to initialize GLAD" << std::endl;
-	}
 }
 
 int Window::getWidth() const
@@ -87,20 +76,4 @@ double Window::getTime() const
 void Window::getMousePosition(double& x, double& y)
 {
 	return glfwGetCursorPos(nativeWindow, &x, &y);
-}
-
-void Window::updateViewport(int width, int height)
-{
-	this->width = width;
-	this->height = height;
-	glViewport(0, 0, width, height);
-}
-
-void Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
-{
-	Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	if (win)
-	{
-		win->updateViewport(width, height);
-	}
 }

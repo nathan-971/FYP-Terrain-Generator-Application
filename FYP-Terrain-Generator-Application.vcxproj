@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\application.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
-    <ClCompile Include="src\core\time.cpp" />
+    <ClCompile Include="src\core\graphicscontext.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\exporter\FBXexporter.cpp" />
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
@@ -59,18 +59,23 @@
   <ItemGroup>
     <ClInclude Include="include\core\application.h" />
     <ClInclude Include="include\core\camera.h" />
-    <ClInclude Include="include\core\time.h" />
+    <ClInclude Include="include\core\graphicscontext.h" />
+    <ClInclude Include="include\core\icamera.h" />
+    <ClInclude Include="include\core\iwindow.h" />
     <ClInclude Include="include\core\window.h" />
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
     <ClInclude Include="include\exporter\OBJexporter.h" />
     <ClInclude Include="include\noise\noise.h" />
+    <ClInclude Include="include\noise\noiseconfiguration.h" />
     <ClInclude Include="include\noise\perlinnoise.h" />
+    <ClInclude Include="include\noise\warpmode.h" />
     <ClInclude Include="include\renderer\framedata.h" />
     <ClInclude Include="include\renderer\irenderer.h" />
     <ClInclude Include="include\renderer\iviewportprovider.h" />
     <ClInclude Include="include\renderer\light.h" />
     <ClInclude Include="include\renderer\renderer.h" />
+    <ClInclude Include="include\renderer\skyboxoption.h" />
     <ClInclude Include="include\renderer\terrainmesh.h" />
     <ClInclude Include="include\renderer\meshbase.h" />
     <ClInclude Include="include\renderer\scene.h" />
@@ -78,6 +83,7 @@
     <ClInclude Include="include\renderer\skybox.h" />
     <ClInclude Include="include\renderer\skyboxmesh.h" />
     <ClInclude Include="include\renderer\transform.h" />
+    <ClInclude Include="include\renderer\updatesceneflag.h" />
     <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />

@@ -1,18 +1,18 @@
 #ifndef _UI_BASE_H_
 #define _UI_BASE_H_
 
-#include "core/camera.h"
+#include "core/icamera.h"
 
 #include "UI/editor/editor.h"
 #include "UI/viewport/viewport.h"
 
 #include "renderer/scene.h"
-#include "renderer/renderer.h"
+#include "renderer/iviewportprovider.h"
 
 class UIBase
 {
 public:
-	UIBase(Scene& scene, Camera& camera, IViewportProvider& viewportProvider);
+	UIBase(Scene& scene, ICamera& camera, IViewportProvider& viewportProvider);
 	~UIBase();
 
 	void PreRender();
@@ -23,7 +23,7 @@ private:
 	void LayoutRootFrame();
 
 	Scene& scene;
-	Camera& camera;
+	ICamera& camera;
 	IViewportProvider& viewportProvider;
 
 	Viewport viewport;

@@ -9,11 +9,6 @@ Renderer::Renderer() :
 	skyboxShader(),
     lightProjection(glm::ortho(-75.0f, 75.0f, -75.0f, 75.0f, 10.0f, 500.0f))
 { 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CW);
-
     terrainShader.Load("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
     depthShader.Load("assets/shaders/depthVertex.glsl", "assets/shaders/depthFragment.glsl");
     skyboxShader.Load("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
@@ -69,7 +64,6 @@ void Renderer::renderDepthPass(const FrameData& frameData)
     mesh->Draw();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
-
 
 void Renderer::renderLightPass(const FrameData& frameData)
 {
@@ -169,11 +163,6 @@ void Renderer::createViewportFrameBuffer(int width, int height)
     glBindRenderbuffer(GL_RENDERBUFFER, viewportFramebuffer.depth);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, viewportFramebuffer.depth);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    {
-        std::cout << "Framebuffer not complete!" << std::endl;
-    }
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

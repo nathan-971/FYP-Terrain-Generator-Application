@@ -1,11 +1,11 @@
 #include "ui/uibase.h"
 
-UIBase::UIBase(Scene& scene, Camera& camera, IViewportProvider& viewportProvider) :
+UIBase::UIBase(Scene& scene, ICamera& camera, IViewportProvider& viewportProvider) :
 	scene(scene), 
 	camera(camera), 
 	viewportProvider(viewportProvider),
-	viewport(scene, camera, viewportProvider),
-	editor(scene, camera) { }
+	viewport(camera, viewportProvider),
+	editor(scene) { }
 
 UIBase::~UIBase() { }
 

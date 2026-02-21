@@ -1,7 +1,9 @@
 #ifndef _EDITOR_STATE_H_
 #define _EDITOR_STATE_H_
 
-#include "renderer/renderer.h"
+#include "noise/noiseconfiguration.h"
+#include "noise/warpmode.h"
+#include "renderer/skyboxoption.h"
 
 struct EditorState
 {

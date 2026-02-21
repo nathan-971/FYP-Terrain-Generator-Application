@@ -13,21 +13,21 @@
 
 #include <memory>
 
-#include "core/window.h"
-#include "core/camera.h"
+#include "core/iwindow.h"
+#include "core/icamera.h"
 
 #include "UI/imguilayer.h"
 #include "UI/uibase.h"
 
-#include "renderer/scene.h"
 #include "renderer/irenderer.h"
+#include "renderer/scene.h"
 
 class Application
 {
 public:
 	Application(
-		std::unique_ptr<Window> window,
-		std::unique_ptr<Camera> camera,
+		std::unique_ptr<IWindow> window,
+		std::unique_ptr<ICamera> camera,
 		std::unique_ptr<Scene> scene,
 		std::unique_ptr<IRenderer> renderer,
 		std::unique_ptr<ImGuiLayer> imguiLayer,
@@ -40,15 +40,16 @@ private:
 	void Init();
 	void Shutdown();
 
-	std::unique_ptr<Window> window; //IWindow
-	std::unique_ptr<Scene> scene;
-	std::unique_ptr<IRenderer> renderer; //IRenderer
-	std::unique_ptr<Camera> camera;
+	std::unique_ptr<IWindow> window;
+	std::unique_ptr<Scene> scene; //IScene
+	std::unique_ptr<IRenderer> renderer;
+	std::unique_ptr<ICamera> camera;
 
 	std::unique_ptr<ImGuiLayer> imguiLayer; //IImGuiLayer
 	std::unique_ptr<UIBase> ui; //IUIBase
 
 	float lastFrameTime = 0.0f;
+	float deltaTime = 0.0f;
 };
 
 #endif

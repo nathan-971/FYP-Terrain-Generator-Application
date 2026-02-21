@@ -3,19 +3,9 @@
 
 #include <vector>
 #include <string>
-#include <iostream>
 #include <unordered_map>
 
-#include <glad/glad.h>
-#include "stb/stb_image.h"
-
-enum class SkyboxOption
-{
-	NONE,
-	MORNING,
-	NOON,
-	NIGHT
-};
+#include "skyboxoption.h"
 
 class Skybox
 {

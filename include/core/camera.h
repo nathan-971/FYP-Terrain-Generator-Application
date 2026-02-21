@@ -1,30 +1,28 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <glm/glm.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
-#include "core/time.h"
-#include "renderer/shader.h"
+#include "core/icamera.h"
 
-class Camera
+class Camera : public ICamera
 {
 public:
 	Camera(int width, int height, const glm::vec3& position);
-	void UpdateCameraMatrix(float FOVdeg, float nearPlane, float farPlane);
-	void OnResize(int newWidth, int newHeight);
+	void UpdateCameraMatrix(float FOVdeg, float nearPlane, float farPlane) override;
+	void OnResize(int newWidth, int newHeight) override;
 
-	void setPosition(const glm::vec3& position);
-	void setOrientation(const glm::vec3& orientation);
+	void setPosition(const glm::vec3& position) override;
+	void setOrientation(const glm::vec3& orientation) override;
 	
-	const glm::vec3& getPosition() const;
-	const glm::vec3& getOrientation() const;
-	const glm::vec3& getCameraUp() const;
+	const glm::vec3& getPosition() const override;
+	const glm::vec3& getOrientation() const override;
+	const glm::vec3& getCameraUp() const override;
 
-	const glm::mat4& getView() const;
-	const glm::mat4& getProjection() const;
+	const glm::mat4& getView() const override;
+	const glm::mat4& getProjection() const override;
 
 private:
 	glm::vec3 position;

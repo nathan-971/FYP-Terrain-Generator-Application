@@ -1,7 +1,5 @@
 #include "renderer/scene.h"
 #include <iostream>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtx/vector_angle.hpp>
 
 Scene::Scene() :
     generated(false),
@@ -53,7 +51,7 @@ void Scene::Generate()
     generated = true;
 }
 
-void Scene::Update()
+void Scene::Update(float deltaTime)
 {
     if (flags & static_cast<uint8_t>(UpdateSceneFlag::Mesh))
     {
@@ -65,7 +63,10 @@ void Scene::Update()
         terrainGenerator.Apply();
     }
 
-    glm::quat delta = glm::angleAxis((glm::radians(config.rotationSpeed) * Time::deltaTime), glm::vec3(0, 1, 0));
+    glm::quat delta = glm::angleAxis(
+        glm::radians(config.rotationSpeed) * deltaTime,
+        glm::vec3(0, 1, 0)
+    );
     terrainTransform.rotation = glm::normalize(delta * terrainTransform.rotation);
     flags = 0;
 }
@@ -85,7 +86,7 @@ bool Scene::ChangeSkybox(SkyboxOption option)
 	return skybox.Change(option);
 }
 
-FrameData Scene::getFrameData(const Camera& camera)
+FrameData Scene::getFrameData(const ICamera& camera)
 {
     FrameData frame;
 
@@ -112,7 +113,7 @@ FrameData Scene::getFrameData(const Camera& camera)
     return frame;
 }
 
-void Scene::positionAndOrientateCamera(Camera& camera)
+void Scene::positionAndOrientateCamera(ICamera& camera)
 {
     glm::vec3 meshLocalPos = terrainTransform.getMatrix()[3];
     camera.setPosition(glm::vec3(

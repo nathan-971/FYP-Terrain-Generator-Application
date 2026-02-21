@@ -1,17 +1,13 @@
 #ifndef _RENDERER_H_
 #define _RENDERER_H_
 
-#include "core/window.h"
-#include "core/camera.h"
+#include <glm/glm.hpp>
 
 #include "renderer/irenderer.h"
 #include "renderer/iviewportprovider.h"
 #include "renderer/shader.h"
 #include "renderer/framedata.h"
 #include "ui/viewport/framebuffer.h"
-#include "renderer/scene.h"
-
-#include <glm/glm.hpp>
 
 class Renderer : public IRenderer, public IViewportProvider
 {

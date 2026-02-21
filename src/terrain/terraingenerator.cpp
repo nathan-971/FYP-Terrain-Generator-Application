@@ -1,4 +1,5 @@
 #include "terrain/terraingenerator.h"
+#include "noise/perlinnoise.h"
 #include <iostream>
 
 TerrainGenerator::TerrainGenerator(TerrainConfig& config) :

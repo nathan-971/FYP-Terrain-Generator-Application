@@ -9,22 +9,10 @@
 
 #include "renderer/vertex.h"
 #include "renderer/terrainmesh.h"
-#include "noise/perlinnoise.h"
 #include "terrain/terrainconfig.h"
-#include <noise/noise.h>
-
-enum class NoiseConfiguration
-{
-	BaseNoise,
-	RidgedNoise
-};
-
-enum class WarpMode
-{
-	None,
-	Single,
-	Double
-};
+#include "noise/noise.h"
+#include "noise/noiseconfiguration.h"
+#include "noise/warpmode.h"
 
 class TerrainGenerator
 {

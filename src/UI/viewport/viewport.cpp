@@ -1,7 +1,6 @@
 #include "ui/viewport/viewport.h"
 
-Viewport::Viewport(Scene& scene, Camera& camera, IViewportProvider& viewportProvider) :
-	scene(scene), 
+Viewport::Viewport(ICamera& camera, IViewportProvider& viewportProvider) :
 	camera(camera),
     viewportProvider(viewportProvider) { }
 

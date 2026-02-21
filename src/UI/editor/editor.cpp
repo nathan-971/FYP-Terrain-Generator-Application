@@ -6,10 +6,10 @@
 #include "UI/panels/skyboxpanel.h"
 #include "UI/panels/exportpanel.h"
 #include "UI/panels/heightmappanel.h"
+#include "renderer/updatesceneflag.h"
 
-Editor::Editor(Scene& scene, Camera& camera) : 
+Editor::Editor(Scene& scene) : 
 	scene(scene),
-	camera(camera),
     ctx{ scene, scene.getTerrainConfig() }
 {
     panels.push_back(std::make_unique<MeshPanel>());
@@ -24,13 +24,6 @@ Editor::Editor(Scene& scene, Camera& camera) :
 void Editor::Render()
 {
 	ImGui::Begin("Terrain Editor");
-    ImGui::Text(
-        "Camera Position: ( %.2f, %.2f, %.2f )",
-        camera.getPosition().x,
-        camera.getPosition().y,
-        camera.getPosition().z
-    );
-
     for (std::unique_ptr<IPanel>& panel : panels)
     {
         panel->Display(ctx);

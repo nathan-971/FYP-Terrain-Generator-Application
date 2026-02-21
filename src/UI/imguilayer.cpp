@@ -1,6 +1,6 @@
 #include "UI/imguilayer.h"
 
-void ImGuiLayer::Init(Window& window)
+void ImGuiLayer::Init(IWindow& window)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

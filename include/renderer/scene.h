@@ -3,26 +3,23 @@
 
 #define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
 
-#include "core/camera.h"
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/vector_angle.hpp>
+
+#include "core/icamera.h"
 
 #include "renderer/terrainmesh.h"
 #include "renderer/skybox.h"
 #include "renderer/skyboxmesh.h"
 #include "renderer/framedata.h"
 #include "renderer/light.h"
+#include "renderer/updatesceneflag.h"
 
 #include "terrain/terraingenerator.h"
 #include "terrain/terrainconfig.h"
 
 #include "exporter/exporter.h"
 #include "exporter/FBXexporter.h"
-	
-enum class UpdateSceneFlag : uint8_t
-{
-	None = 0,
-	Mesh = 1 << 0,
-	HeightMap = 1 << 1
-};
 
 class Scene
 {
@@ -30,7 +27,7 @@ public:
 	Scene();
 	~Scene();
 
-	void Update();
+	void Update(float deltaTime);
 	void Generate();
 	bool isGenerated() const;
 
@@ -38,7 +35,7 @@ public:
 	bool ChangeSkybox(SkyboxOption option);
 	void ExportTerrain(FileType type);
 
-	FrameData getFrameData(const Camera& camera);
+	FrameData getFrameData(const ICamera& camera);
 	TerrainConfig& getTerrainConfig();
 	TerrainGenerator& getTerrainGenerator();
 	TerrainMesh& getTerrainMesh();
@@ -47,7 +44,7 @@ public:
 	SkyboxMesh& getSkyboxMesh();
 	Light& getLight();
 
-	void positionAndOrientateCamera(Camera& camera);
+	void positionAndOrientateCamera(ICamera& camera);
 
 private:
 	TerrainConfig config;

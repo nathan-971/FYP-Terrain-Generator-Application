@@ -1,4 +1,6 @@
 #include "UI/panels/noisepanel.h"
+#include "noise/noiseconfiguration.h"
+#include "noise/warpmode.h"
 
 const char* noiseConfigNames[] = { "Base Noise", "Ridged Noise" };
 const char* warpModeNames[] = { "None", "Single", "Double" };

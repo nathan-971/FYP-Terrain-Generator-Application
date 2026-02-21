@@ -2,8 +2,8 @@
 #include <utility>
 
 Application::Application(
-	std::unique_ptr<Window> window,
-	std::unique_ptr<Camera> camera,
+	std::unique_ptr<IWindow> window,
+	std::unique_ptr<ICamera> camera,
 	std::unique_ptr<Scene> scene,
 	std::unique_ptr<IRenderer> renderer,
 	std::unique_ptr<ImGuiLayer> imguiLayer,
@@ -37,14 +37,13 @@ void Application::Run()
 	while (!window->shouldClose())
 	{
 		float currentTime = window->getTime();
-		Time::deltaTime = currentTime - lastFrameTime;
+		deltaTime = currentTime - lastFrameTime;
 		lastFrameTime = currentTime;
-		Time::applicationTime = currentTime;
 
 		window->pollEvents();
 
 		camera->UpdateCameraMatrix(FOV, NEAR_PLANE, FAR_PLANE);
-		scene->Update();
+		scene->Update(deltaTime);
 
 		imguiLayer->BeginFrame();
 

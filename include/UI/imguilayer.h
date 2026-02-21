@@ -11,7 +11,7 @@
 class ImGuiLayer
 {
 public:
-	void Init(Window& window);
+	void Init(IWindow& window);
 	void BeginFrame();
 	void EndFrame();
 	void Shutdown();

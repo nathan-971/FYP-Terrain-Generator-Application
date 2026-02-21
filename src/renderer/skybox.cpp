@@ -1,5 +1,6 @@
 #include "renderer/skybox.h"
-#include <iostream>
+#include <glad/glad.h>
+#include "stb/stb_image.h"
 
 Skybox::Skybox() 
 	: activeTexture(0)

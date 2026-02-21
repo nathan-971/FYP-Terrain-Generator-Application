@@ -1,6 +1,7 @@
 #include <utility>
 #include <iostream>
 
+#include "core/graphicscontext.h"
 #include "core/application.h"
 
 #include "core/window.h"
@@ -17,17 +18,21 @@ int main()
     try
     {
 		std::unique_ptr<Window> window = std::make_unique<Window>(
-			SCR_HEIGHT,
 			SCR_WIDTH,
+			SCR_HEIGHT,
 			"Terrain Generator",
 			true
 		);
 
+		GraphicsContext graphics(*window);
+		graphics.Init();
+
 		std::unique_ptr<Camera> camera = std::make_unique<Camera>(
-			SCR_HEIGHT,
 			SCR_WIDTH,
+			SCR_HEIGHT,
 			WORLD_ORIGIN
 		);
+
 
 		std::unique_ptr<Scene> scene = std::make_unique<Scene>();
 		std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>();

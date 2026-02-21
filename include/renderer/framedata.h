@@ -3,6 +3,9 @@
 
 #include <glm/glm.hpp>
 
+#include "renderer/terrainmesh.h"
+#include "renderer/skyboxmesh.h"
+
 struct TerrainRenderData
 {
 	glm::mat4 modelMatrix;

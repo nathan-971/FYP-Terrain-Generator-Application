@@ -3,37 +3,33 @@
 
 #define GL_VERSION_NUM 3
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <string>
+#include "core/iwindow.h"
 
-class Window
+class Window : public IWindow
 {
 public:
-	Window(int height, int width, const std::string& title, bool vsync);
+	Window(int width, int height, const std::string& title, bool vsync);
 	~Window();
 
 	int getWidth() const;
 	int getHeight() const;
-	GLFWwindow* getNativeWindow() const;
+
+	GLFWwindow* getNativeWindow() const override;
+	void pollEvents() const override;
+	void swapBuffers() const override;
+	bool shouldClose() const override;
+	double getTime() const override;
 
 	void setUserPointer(void* object) const;
-	void pollEvents() const;
-	void swapBuffers() const;
-	bool shouldClose() const;
-	double getTime() const;
 	void getMousePosition(double &x, double &y);
 
-	void updateViewport(int width, int height);
-	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 private:
+	void initGLFW();
+
 	GLFWwindow* nativeWindow;
 	int width;
 	int height;
-
-	void initGLFW();
-	void initGLAD();
 };
 
 #endif
