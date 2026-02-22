@@ -32,7 +32,7 @@ public:
 
 	void FlagForUpdate(UpdateSceneFlag flag);
 	bool ChangeSkybox(SkyboxOption option);
-	void ExportTerrain(FileType type);
+	void ExportTerrain(const FileType& type, const std::string& path);
 
 	FrameData getFrameData(const ICamera& camera);
 	TerrainConfig& getTerrainConfig();

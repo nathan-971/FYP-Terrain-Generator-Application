@@ -136,21 +136,39 @@ void Scene::positionAndOrientateCamera(ICamera& camera)
     camera.setOrientation(glm::normalize(meshLocalPos - camera.getPosition()));
 }
 
-void Scene::ExportTerrain(FileType type)
+void Scene::ExportTerrain(const FileType& type, const std::string& path)
 {
-    Exporter* exporter = new OBJExporter();
+    Exporter* exporter = nullptr;
     try
     {
-        if (exporter->Export(terrainMesh, std::string("C:/FBX-OUTPUT/terrain.obj")))
+        switch (type)
         {
-            std::cout << "saved OBJ model file!";
+            case FileType::FBX:
+            {
+                exporter = new FBXExporter();
+                break;
+            }
+            case FileType::OBJ:
+            {
+                exporter = new OBJExporter();
+                break;
+            }
+            default:
+            {
+                exporter = new FBXExporter();
+                break;
+            }
+        }
+        if (exporter->Export(terrainMesh, path))
+        {
+            std::cout << "saved model file!";
             return;
         }
-        std::cout << "Failed to save OBJ Model File!";
+        std::cout << "Failed to save  Model File!";
     }
     catch (const std::exception e)
     {
-        std::cout << "Error Exporting Terrain to OBJ File!";
+        std::cout << "Error Exporting Terrain to File!";
         delete exporter;
 		exporter = nullptr;
         return;

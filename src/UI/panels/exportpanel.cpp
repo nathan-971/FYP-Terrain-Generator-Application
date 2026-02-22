@@ -7,7 +7,7 @@ void ExportPanel::Display(EditorContext& ctx)
     ImGui::SeparatorText("Export Terrain");
     if (ImGui::Button(ICON_FA_FLOPPY_DISK, ImVec2(30, 30)))
     {
-		commands.exportTerrain = true;
+		commands.requestExport = true;
     }
     ImGui::SameLine();
     ImGui::Text("Save Terrain");

@@ -9,7 +9,7 @@ struct EditorCommands
 	bool changeNoiseConfiguration = false;
 	bool changeErosionEnabled = false;
 	bool changeSkybox = false;
-	bool exportTerrain = false;
+	bool requestExport = false;
 	int newSeed;
 };
 

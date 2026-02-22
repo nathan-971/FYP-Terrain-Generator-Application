@@ -11,7 +11,7 @@ bool OBJExporter::Export(TerrainMesh& mesh, std::string outputPath)
 	{
 		objFile << "#Terrain OBJ Export\n";
 		objFile << "o Terrain\n";
-
+		
 		for (Vertex& vertex : vertices) //Write Vertices
 		{
 			objFile << "v " << vertex.position.x << " "

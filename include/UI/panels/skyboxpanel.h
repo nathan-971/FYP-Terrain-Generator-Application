@@ -8,7 +8,7 @@
 class SkyboxPanel : public IPanel
 {
 public:
-	void Display(EditorContext& ctx);
+	void Display(EditorContext& ctx) override;
 };
 
 #endif
