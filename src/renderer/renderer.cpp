@@ -1,20 +1,22 @@
 #include "renderer/renderer.h"
+#include <utility>
 
 #define SHADOWMAP_HEIGHT 2048
 #define SHADOWMAP_WIDTH 2048
 
-Renderer::Renderer() : 
-    terrainShader(),
-	depthShader(), 
-	skyboxShader(),
-    lightProjection(glm::ortho(-75.0f, 75.0f, -75.0f, 75.0f, 10.0f, 500.0f))
+Renderer::Renderer(
+    std::unique_ptr<IShader> depthShader,
+    std::unique_ptr<IShader> terrainShader,
+    std::unique_ptr<IShader> skyboxShader,
+    int initiaWidth,
+    int initiaHeight
+) :
+	depthShader(std::move(depthShader)),
+	terrainShader(std::move(terrainShader)),
+	skyboxShader(std::move(skyboxShader))
 { 
-    terrainShader.Load("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-    depthShader.Load("assets/shaders/depthVertex.glsl", "assets/shaders/depthFragment.glsl");
-    skyboxShader.Load("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
-
     createShadowFrameBuffer(SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT);
-	createViewportFrameBuffer(800, 800); //???
+	createViewportFrameBuffer(initiaWidth, initiaHeight);
 }
 
 Renderer::~Renderer() 
@@ -44,22 +46,26 @@ void Renderer::RenderScene(const FrameData& frameData)
 
 void Renderer::ResizeViewport(int width, int height)
 {
+    if (width == 0 || height == 0)
+    {
+        return;
+    }
+
 	destroyFramebuffer(viewportFramebuffer);
 	createViewportFrameBuffer(width, height);
 }
 
 void Renderer::renderDepthPass(const FrameData& frameData)
 {
-    glm::mat4 lightSpace = lightProjection * frameData.lightSpaceMatrix;
     TerrainMesh* mesh = frameData.terrain.terrainMesh;
 
     glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFramebuffer.fbo);
     glViewport(0, 0, shadowMapFramebuffer.width, shadowMapFramebuffer.height);
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    depthShader.Activate();
-    depthShader.setUniformMat("lightSpaceMatrix", lightSpace);
-    depthShader.setUniformMat("model", frameData.terrain.modelMatrix);
+    depthShader->Activate();
+    depthShader->setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
+    depthShader->setUniformMat("model", frameData.terrain.modelMatrix);
 
     mesh->Draw();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -69,25 +75,24 @@ void Renderer::renderLightPass(const FrameData& frameData)
 {
     glm::mat4 model = frameData.terrain.modelMatrix;
     TerrainMesh* mesh = frameData.terrain.terrainMesh;
-    glm::mat4 lightSpace = lightProjection * frameData.lightSpaceMatrix;
 
-    terrainShader.Activate();
-    terrainShader.setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
-    terrainShader.setUniformMat("view", frameData.viewMatrix);
-    terrainShader.setUniformMat("projection", frameData.projectionMatrix);
-    terrainShader.setUniformVec3("viewPos", frameData.cameraPosition);
+    terrainShader->Activate();
+    terrainShader->setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
+    terrainShader->setUniformMat("view", frameData.viewMatrix);
+    terrainShader->setUniformMat("projection", frameData.projectionMatrix);
+    terrainShader->setUniformVec3("viewPos", frameData.cameraPosition);
 
-    terrainShader.setUniformVec3("lightPos", frameData.lightPosition);
-    terrainShader.setUniformVec3("lightColor", frameData.lightColor);
-    terrainShader.setUniformFloat("ambientStrength", frameData.ambientStrength);
-    terrainShader.setUniformFloat("specularStrength", frameData.specularStrength);
-    terrainShader.setUniformInt("shininess", frameData.shininess);
+    terrainShader->setUniformVec3("lightPos", frameData.lightPosition);
+    terrainShader->setUniformVec3("lightColor", frameData.lightColor);
+    terrainShader->setUniformFloat("ambientStrength", frameData.ambientStrength);
+    terrainShader->setUniformFloat("specularStrength", frameData.specularStrength);
+    terrainShader->setUniformInt("shininess", frameData.shininess);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, shadowMapFramebuffer.depth);
-    terrainShader.setUniformInt("shadowMap", 0);
+    terrainShader->setUniformInt("shadowMap", 0);
 
-    terrainShader.setUniformMat("model", model);
+    terrainShader->setUniformMat("model", model);
 	mesh->Draw();
 }
 
@@ -99,10 +104,10 @@ void Renderer::renderSkyboxPass(const FrameData& frameData)
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_FALSE);
     
-    skyboxShader.Activate();
+    skyboxShader->Activate();
 
-    skyboxShader.setUniformMat("view", view);
-    skyboxShader.setUniformMat("projection", frameData.projectionMatrix);
+    skyboxShader->setUniformMat("view", view);
+    skyboxShader->setUniformMat("projection", frameData.projectionMatrix);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, frameData.skybox.skyboxTexture);
@@ -130,8 +135,6 @@ void Renderer::createShadowFrameBuffer(int width, int height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
     float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
@@ -159,10 +162,10 @@ void Renderer::createViewportFrameBuffer(int width, int height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, viewportFramebuffer.color, 0);
 
-    glGenRenderbuffers(1, &viewportFramebuffer.depth);
-    glBindRenderbuffer(GL_RENDERBUFFER, viewportFramebuffer.depth);
+    glGenRenderbuffers(1, &viewportFramebuffer.depthRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, viewportFramebuffer.depthRenderBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, viewportFramebuffer.depth);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, viewportFramebuffer.depthRenderBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -170,8 +173,12 @@ void Renderer::destroyFramebuffer(Framebuffer& framebuffer)
 {
     if (framebuffer.depth)
     {
-        glDeleteRenderbuffers(1, &framebuffer.depth);
         glDeleteTextures(1, &framebuffer.depth);
+    }
+
+    if (framebuffer.depthRenderBuffer)
+    {
+        glDeleteRenderbuffers(1, &framebuffer.depthRenderBuffer);
     }
 
     if (framebuffer.color)

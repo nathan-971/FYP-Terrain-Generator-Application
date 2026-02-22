@@ -19,7 +19,6 @@
 #include "terrain/terrainconfig.h"
 
 #include "exporter/exporter.h"
-#include "exporter/FBXexporter.h"
 
 class Scene
 {
@@ -40,8 +39,6 @@ public:
 	TerrainGenerator& getTerrainGenerator();
 	TerrainMesh& getTerrainMesh();
 	Transform& getTerrainTransform();
-	Skybox& getSkybox();
-	SkyboxMesh& getSkyboxMesh();
 	Light& getLight();
 
 	void positionAndOrientateCamera(ICamera& camera);

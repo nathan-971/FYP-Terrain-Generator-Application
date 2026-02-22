@@ -1,5 +1,10 @@
 #include "renderer/shader.h"
+#include <glad/glad.h>	
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
+#include <string>
+#include <fstream>
 
 Shader::Shader() 
 	: progID(0) { }
@@ -52,12 +57,12 @@ void Shader::setUniformInt(const char* name, int i)
 	glUniform1i(glGetUniformLocation(progID, name), i);
 }
 
-void Shader::setUniformVec3(const char* name, glm::vec3 vec)
+void Shader::setUniformVec3(const char* name, const glm::vec3& vec)
 {
 	glUniform3f(glGetUniformLocation(progID, name), vec.x, vec.y, vec.z);
 }
 
-void Shader::setUniformMat(const char* name, glm::mat4 mat)
+void Shader::setUniformMat(const char* name, const glm::mat4& mat)
 {
 	glUniformMatrix4fv(glGetUniformLocation(progID, name), 1, GL_FALSE, glm::value_ptr(mat));
 }
@@ -66,7 +71,7 @@ void Shader::compileErrors(unsigned int ID, const char* type) const
 {
 	int hasCompiled;
 	char infoLog[1024];
-	if (type != "PROGRAM")
+	if (strcmp(type, "PROGRAM") != 0)
 	{
 		glGetShaderiv(ID, GL_COMPILE_STATUS, &hasCompiled);
 		if (hasCompiled == GL_FALSE)

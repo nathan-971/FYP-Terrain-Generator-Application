@@ -7,7 +7,7 @@
 
 //Camera Parameters
 #define FOV 75.0f
-#define NEAR_PLANE 0.05f
+#define NEAR_PLANE 1.0f
 #define FAR_PLANE 250.0f
 #define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
 

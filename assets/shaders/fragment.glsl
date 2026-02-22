@@ -33,26 +33,33 @@ vec3 getSpecular(vec3 norm, vec3 lightDir, vec3 viewDir)
 
 float calculateShadow(vec4 fragPosLight, vec3 norm, vec3 lightDir)
 {
-    vec3 projectionCoords = fragPosLight.xyz / fragPosLight.w;
-    projectionCoords = projectionCoords * 0.5 + 0.5;
+    vec3 projCoords = fragPosLight.xyz / fragPosLight.w;
+    projCoords = projCoords * 0.5 + 0.5;
 
-    if(projectionCoords.x < 0.0 || projectionCoords.x > 1.0 || projectionCoords.y < 0.0 || projectionCoords.y > 1.0)
+    if(projCoords.z > 1.0)
 	{
 		return 0.0;
 	}
 
-    float closestDepth = texture(shadowMap, projectionCoords.xy).r;
-    float currentDepth = projectionCoords.z;
+    float currentDepth = projCoords.z;
+    float bias = max(0.0005 * (1.0 - dot(norm, lightDir)), 0.00005);
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(
+                shadowMap,
+                projCoords.xy + vec2(x, y) * texelSize
+            ).r;
 
-    float bias = max(0.005, 0.05 * (1.0 - dot(norm, lightDir)));
-	if(currentDepth - bias > closestDepth)
-	{
-		return 1.0;
-	}
-	else
-	{
-		return 0.0;
-	}
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+        }
+    }
+
+    shadow /= 9.0;
+    return shadow;
 }
 
 float getSlope(vec3 normalVector)

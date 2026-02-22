@@ -72,6 +72,7 @@
     <ClInclude Include="include\noise\warpmode.h" />
     <ClInclude Include="include\renderer\framedata.h" />
     <ClInclude Include="include\renderer\irenderer.h" />
+    <ClInclude Include="include\renderer\ishader.h" />
     <ClInclude Include="include\renderer\iviewportprovider.h" />
     <ClInclude Include="include\renderer\light.h" />
     <ClInclude Include="include\renderer\renderer.h" />

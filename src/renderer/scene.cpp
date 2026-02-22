@@ -1,4 +1,6 @@
 #include "renderer/scene.h"
+#include "exporter/FBXexporter.h"
+#include "exporter/OBJexporter.h"
 #include <iostream>
 
 Scene::Scene() :
@@ -42,7 +44,7 @@ void Scene::Generate()
 
     skybox.LoadTextures();
 
-    light.position = glm::vec3(100.0f);
+    light.position = glm::vec3(50.0f, 150.0f, 50.0f);
     light.color = glm::vec3(1.0f);
     light.ambient = 0.1f;
     light.specular = 0.1f;
@@ -94,9 +96,19 @@ FrameData Scene::getFrameData(const ICamera& camera)
     frame.projectionMatrix = camera.getProjection();
     frame.cameraPosition = camera.getPosition();
 
-    glm::mat4 lightView = glm::lookAt(light.position, glm::vec3(0.0f), glm::vec3(0, 1, 0));
+    glm::mat4 lightProjection = glm::ortho(
+        -80.0f, 80.0f,
+        -80.0f, 80.0f,
+        1.0f, 120.0f 
+    );
 
-    frame.lightSpaceMatrix = lightView;
+    glm::mat4 lightView = glm::lookAt(
+        light.position,
+        glm::vec3(terrainTransform.getMatrix()[3]),
+        glm::vec3(0, 1, 0)
+    );
+
+    frame.lightSpaceMatrix = lightProjection * lightView;
     frame.lightPosition = light.position;
     frame.lightColor = light.color;
     frame.ambientStrength = light.ambient;
@@ -126,19 +138,19 @@ void Scene::positionAndOrientateCamera(ICamera& camera)
 
 void Scene::ExportTerrain(FileType type)
 {
-    Exporter* exporter = new FBXExporter();
+    Exporter* exporter = new OBJExporter();
     try
     {
-        if (exporter->Export(terrainMesh, std::string("C:/FBX-OUTPUT/terrain.fbx")))
+        if (exporter->Export(terrainMesh, std::string("C:/FBX-OUTPUT/terrain.obj")))
         {
-            std::cout << "saved FBX model file!";
+            std::cout << "saved OBJ model file!";
             return;
         }
-        std::cout << "Failed to save FBX Model File!";
+        std::cout << "Failed to save OBJ Model File!";
     }
     catch (const std::exception e)
     {
-        std::cout << "Error Exporting Terrain to FBX File!";
+        std::cout << "Error Exporting Terrain to OBJ File!";
         delete exporter;
 		exporter = nullptr;
         return;
@@ -165,16 +177,6 @@ TerrainMesh& Scene::getTerrainMesh()
 Transform& Scene::getTerrainTransform()
 {
     return terrainTransform;
-}
-
-Skybox& Scene::getSkybox()
-{
-    return skybox;
-}
-
-SkyboxMesh& Scene::getSkyboxMesh()
-{
-    return skyboxMesh;
 }
 
 Light& Scene::getLight()

@@ -19,7 +19,7 @@ void GraphicsContext::Init()
 	GLFWwindow* nativeWindow = window.getNativeWindow();
 	if (!nativeWindow)
 	{
-		throw std::runtime_error("Failed to initialize graphics: Window not created");
+		throw std::runtime_error("Failed to initialize graphics: OpenGL context not created");
 	}
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
