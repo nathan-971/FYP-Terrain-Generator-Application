@@ -1,6 +1,8 @@
 #include "terrain/terraingenerator.h"
 #include "noise/perlinnoise.h"
+
 #include <iostream>
+#include <random>
 
 TerrainGenerator::TerrainGenerator(TerrainConfig& config) :
 	config(config), 
@@ -48,7 +50,7 @@ void TerrainGenerator::Apply()
 
 	if (erosionEnabled)
 	{
-		applyThermalErosion();
+		applyHydraulicErosion();
 	}
 
 	terrainMesh->recalculateNormals(this->config.width, this->config.depth, this->config.resolution);
@@ -202,84 +204,164 @@ void TerrainGenerator::warp(Vertex& v, float& wx, float& wz, float frequency, fl
 	wz = wz + (-dNoise_dx * multiplier);
 }
 
-void TerrainGenerator::applyThermalErosion()
+void TerrainGenerator::applyHydraulicErosion()
 {
-	int vertCountX = static_cast<unsigned int>(config.width / config.resolution) + 1;
-	int vertCountZ = static_cast<unsigned int>(config.depth / config.resolution) + 1;
+	const int lifetime = 20;
+	const float inertia = 0.3f;
+	const float capacityFactor = 1.5f;
+	const float minCapacity = 0.01f;
+	const float erodeSpeed = 0.08f;
+	const float depositSpeed = 0.3f;
+	const float evaporation = 0.005f;
+
+	const float minHeight = 0.1f;
+	const float maxDeltaHeight = 1.0f;
+	const float maxErodePerStep = 0.5f;
+	const float maxDepositPerStep = 0.5f;
+	
+	int numDroplets = 70000;
+
+	int vertCountX = static_cast<int>(config.width / config.resolution) + 1;
+	int vertCountZ = static_cast<int>(config.depth / config.resolution) + 1;
 
 	std::vector<float> heightMap(vertCountX * vertCountZ);
 	for (int i = 0; i < heightMap.size(); i++)
 	{
 		heightMap[i] = terrainMesh->GetVertices()[i].position.y;
 	}
-	
-	int erosionIterations = 200;
-	float talus = 1.0f;
-	float erosionStrength = 0.25f;
 
-	int offsets[4][2] = {
-		{ 1,0 }, { -1,0 },
-		{ 0,1 }, { 0, -1 }
-	};
+	std::mt19937 rng(std::random_device{}());
+	std::uniform_real_distribution<float> distX(0.0f, static_cast<float>(vertCountX - 2));
+	std::uniform_real_distribution<float> distZ(0.0f, static_cast<float>(vertCountZ - 2));
 
-	for (int i = 0; i < erosionIterations; i++)
+	for (int i = 0; i < numDroplets; i++)
 	{
-		std::vector<float> erosionMap(heightMap.size(), 0.0f);
-		for (int z = 0; z < vertCountZ - 1; z++)
+		Droplet drop;
+		drop.posX = distX(rng);
+		drop.posZ = distZ(rng);
+
+		for (int step = 0; step < lifetime; step++)
 		{
-			for (int x = 0; x < vertCountX - 1; x++)
+			drop.posX = std::clamp(drop.posX, 0.0f, static_cast<float>(vertCountX - 2));
+			drop.posZ = std::clamp(drop.posZ, 0.0f, static_cast<float>(vertCountZ - 2));
+
+			int x = static_cast<int>(drop.posX);
+			int z = static_cast<int>(drop.posZ);
+
+			float fx = drop.posX - x;
+			float fz = drop.posZ - z;
+
+			float h00 = getHeight(heightMap, x, z, vertCountX);
+			float h10 = getHeight(heightMap, x + 1, z, vertCountX);
+			float h01 = getHeight(heightMap, x, z + 1, vertCountX);
+			float h11 = getHeight(heightMap, x + 1, z + 1, vertCountX);
+
+			float heightCenter =
+				h00 * (1 - fx) * (1 - fz) + h10 * fx * (1 - fz) + h01 * (1 - fx) * fz + h11 * fx * fz;
+
+			// Compute gradient
+			float gradX = (h10 - h00) * (1 - fz) + (h11 - h01) * fz;
+			float gradZ = (h01 - h00) * (1 - fx) + (h11 - h10) * fx;
+
+			// Update droplet direction
+			drop.dirX = drop.dirX * inertia - gradX * (1 - inertia);
+			drop.dirZ = drop.dirZ * inertia - gradZ * (1 - inertia);
+
+			// Normalize direction
+			float len = std::sqrt(drop.dirX * drop.dirX + drop.dirZ * drop.dirZ);
+			if (len != 0.0f) 
 			{
-				int index = z * vertCountX + x;
-				float currentHeight = heightMap[index];
-
-				float maxSlope = 0.0f;
-				int lowestNeighbour = -1;
-
-				for (int neighbourIndex = 0; neighbourIndex < 4; neighbourIndex++)
-				{
-					int neighbourX = x + offsets[neighbourIndex][0];
-					int neighbourZ = z + offsets[neighbourIndex][1];
-
-					if (neighbourX < 0 || neighbourX >= vertCountX || neighbourZ < 0 || neighbourZ >= vertCountZ)
-					{
-						continue;
-					}
-
-					int nIndex = neighbourZ * vertCountX + neighbourX;
-					float slope = currentHeight - heightMap[nIndex];
-
-					if (slope > maxSlope)
-					{
-						maxSlope = slope;
-						lowestNeighbour = nIndex;
-					}
-				}
-
-				if (lowestNeighbour != -1 && maxSlope > talus)
-				{
-					float amount = (maxSlope - talus) * erosionStrength;
-					erosionMap[index] -= amount;
-					erosionMap[lowestNeighbour] += amount;
-				}
+				drop.dirX /= len;
+				drop.dirZ /= len;
 			}
-		}
 
-		for (int i = 0; i < heightMap.size(); i++)
-		{
-			heightMap[i] += erosionMap[i];
+			// Move droplet scaled by speed
+			drop.posX += drop.dirX * drop.speed;
+			drop.posZ += drop.dirZ * drop.speed;
+
+			// Sample new height
+			float newHeight = sampleHeight(heightMap, drop.posX, drop.posZ, vertCountX, vertCountZ);
+			float deltaHeight = newHeight - heightCenter;
+
+			// Compute sediment capacity
+			float capacity = std::max(-deltaHeight * drop.speed * drop.water * capacityFactor, minCapacity);
+
+			// Erosion or deposition
+			if (drop.sediment > capacity || deltaHeight > 0.0f)
+			{
+				// Deposit sediment
+				float depositAmount = (deltaHeight > 0.0f) ? std::min(deltaHeight, drop.sediment)
+					: (drop.sediment - capacity) * depositSpeed;
+				depositAmount = std::clamp(depositAmount, 0.0f, maxDepositPerStep);
+				drop.sediment -= depositAmount;
+
+				// Distribute deposition bilinearly
+				h00 += depositAmount * (1 - fx) * (1 - fz);
+				h10 += depositAmount * fx * (1 - fz);
+				h01 += depositAmount * (1 - fx) * fz;
+				h11 += depositAmount * fx * fz;
+
+				// Write back to heightMap
+				getHeight(heightMap, x, z, vertCountX) = h00;
+				getHeight(heightMap, x + 1, z, vertCountX) = h10;
+				getHeight(heightMap, x, z + 1, vertCountX) = h01;
+				getHeight(heightMap, x + 1, z + 1, vertCountX) = h11;
+			}
+			else
+			{
+				// Erode sediment
+				float erodeAmount = (capacity - drop.sediment) * erodeSpeed;
+				erodeAmount = std::clamp(erodeAmount, 0.0f, maxErodePerStep);
+				drop.sediment += erodeAmount;
+
+				// Distribute erosion bilinearly, clamp to minHeight
+				h00 = std::max(h00 - erodeAmount * (1 - fx) * (1 - fz), minHeight);
+				h10 = std::max(h10 - erodeAmount * fx * (1 - fz), minHeight);
+				h01 = std::max(h01 - erodeAmount * (1 - fx) * fz, minHeight);
+				h11 = std::max(h11 - erodeAmount * fx * fz, minHeight);
+
+				getHeight(heightMap, x, z, vertCountX) = h00;
+				getHeight(heightMap, x + 1, z, vertCountX) = h10;
+				getHeight(heightMap, x, z + 1, vertCountX) = h01;
+				getHeight(heightMap, x + 1, z + 1, vertCountX) = h11;
+			}
+			drop.water *= (1.0f - evaporation);
 		}
 	}
 
-	std::vector<Vertex>& verts = terrainMesh->GetVertices();
-	for (int i = 0; i < verts.size(); i++)
+	for (int i = 0; i < heightMap.size(); ++i)
 	{
-		verts[i].position.y = heightMap[i];
+		terrainMesh->GetVertices()[i].position.y = heightMap[i];
 	}
 }
 
-void TerrainGenerator::applyHydraulicErosion()
+float TerrainGenerator::sampleHeight(const std::vector<float>& heightMap, float x, float z, int width, int depth)
 {
+	x = std::clamp(x, 0.0f, static_cast<float>(width - 2));
+	z = std::clamp(z, 0.0f, static_cast<float>(depth - 2));
 
+	int ix = static_cast<int>(x);
+	int iz = static_cast<int>(z);
+	float fx = x - ix;
+	float fz = z - iz;
+
+	int ix1 = ix + 1;
+	int iz1 = iz + 1;
+
+	float h00 = heightMap[iz * width + ix];
+	float h10 = heightMap[iz * width + ix1];
+	float h01 = heightMap[iz1 * width + ix];
+	float h11 = heightMap[iz1 * width + ix1];
+
+	return h00 * (1 - fx) * (1 - fz) +
+		h10 * fx * (1 - fz) +
+		h01 * (1 - fx) * fz +
+		h11 * fx * fz;
+}
+
+float& TerrainGenerator::getHeight(std::vector<float>& heightMap, int x, int z, int width)
+{
+	return heightMap[z * width + x];
 }
 
 void TerrainGenerator::setMesh(TerrainMesh& mesh)

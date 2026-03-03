@@ -14,6 +14,19 @@
 #include "noise/noiseconfiguration.h"
 #include "noise/warpmode.h"
 
+struct Droplet
+{
+	float posX = 0.0f;
+	float posZ = 0.0f;
+	
+	float dirX = 0.0f;
+	float dirZ = 0.0f;
+
+	float speed = 1.0f;
+	float water = 1.0f;
+	float sediment = 0.0f;
+};
+
 class TerrainGenerator
 {
 public:
@@ -32,11 +45,13 @@ public:
 private:
 	void applyBaseNoise();
 	void applyRidgedNoise();
-	void applyThermalErosion();
 	void applyHydraulicErosion();
 	void warpSingle(Vertex& v, float& wx, float& wz);
 	void warpDouble(Vertex& v, float& wx, float& wz);
 	void warp(Vertex& v, float& wx, float& wz, float frequency, float multiplier);
+
+	float sampleHeight(const std::vector<float>& heightMap, float x, float z, int width, int depth);
+	float& getHeight(std::vector<float>& heightMap, int x, int z, int width);
 
 	NoiseConfiguration noiseConfig;
 	WarpMode warpMode;
