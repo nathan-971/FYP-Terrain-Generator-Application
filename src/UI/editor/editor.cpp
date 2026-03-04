@@ -15,7 +15,7 @@
 
 Editor::Editor(Scene& scene) : 
 	scene(scene),
-    ctx{ scene, scene.getTerrainConfig() }
+    ctx{ scene, scene.getConfig() }
 {
     panels.push_back(std::make_unique<MeshPanel>());
     panels.push_back(std::make_unique<NoisePanel>());
@@ -40,6 +40,38 @@ void Editor::Render()
 
 void Editor::ApplyCommands()
 {
+    if (ctx.commands.changeWarpMode)
+    {
+        ctx.terrainConfig.warpMode = ctx.state.warpMode;
+        scene.FlagForUpdate(UpdateSceneFlag::RebuildTerrainGenerator);
+        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        ctx.commands.changeWarpMode = false;
+    }
+
+    if (ctx.commands.changeNoiseConfiguration)
+    {
+        ctx.terrainConfig.noiseConfig = ctx.state.noiseConfig;
+        scene.FlagForUpdate(UpdateSceneFlag::RebuildTerrainGenerator);
+        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        ctx.commands.changeNoiseConfiguration = false;
+    }
+
+    if (ctx.commands.changeErosionEnabled)
+    {
+        ctx.terrainConfig.erosionEnabled = ctx.state.erosionEnabled;
+        scene.FlagForUpdate(UpdateSceneFlag::RebuildTerrainGenerator);
+        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        ctx.commands.changeErosionEnabled = false;
+    }
+
+    if (ctx.commands.changeSeed)
+    {
+        ctx.terrainConfig.seed = ctx.state.seed;
+        scene.FlagForUpdate(UpdateSceneFlag::RebuildTerrainGenerator);
+        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        ctx.commands.changeSeed = false;
+    }
+
     if (ctx.commands.updateMesh)
     {
         scene.FlagForUpdate(UpdateSceneFlag::Mesh);
@@ -51,24 +83,6 @@ void Editor::ApplyCommands()
         scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
         ctx.commands.updateHeightMap = false;
     }
-
-	if (ctx.commands.changeWarpMode)
-    {
-        scene.getTerrainGenerator().setWarpMode(ctx.state.warpMode);
-        ctx.commands.changeWarpMode = false;
-    }
-
-    if (ctx.commands.changeNoiseConfiguration)
-    {
-        scene.getTerrainGenerator().setNoiseConfiguration(ctx.state.noiseConfig);
-        ctx.commands.changeNoiseConfiguration = false;
-	}
-
-    if(ctx.commands.changeErosionEnabled)
-    {
-        scene.getTerrainGenerator().setErosionEnabled(ctx.state.erosionEnabled);
-        ctx.commands.changeErosionEnabled = false;
-	}
 
     if (ctx.commands.changeSkybox)
     {
@@ -93,14 +107,6 @@ void Editor::ApplyCommands()
     {
         scene.ExportTerrain(selectedExportType, exportPathString);
         exportPathMade = false;
-    }
-
-    if (ctx.commands.newSeed != 0)
-    {
-        ctx.state.seed = ctx.commands.newSeed;
-        scene.getTerrainGenerator().setSeed(ctx.state.seed);
-		scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
-		ctx.commands.newSeed = 0;
     }
 }
 

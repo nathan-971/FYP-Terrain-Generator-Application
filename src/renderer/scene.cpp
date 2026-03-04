@@ -1,22 +1,44 @@
 #include "renderer/scene.h"
+
+#include "terrain/terraingenerator.h"
+
+#include "terrain/noise/inoise.h"
+#include "terrain/noise/perlinnoise.h"
+#include "terrain/noise/noiseconfiguration.h"
+
+#include "terrain/erosion/ierosion.h"
+#include "terrain/erosion/hydraulicerosion.h"
+#include "terrain/erosion/hydraulicconfig.h"
+
+#include "terrain/height/iheightgenerator.h"
+#include "terrain/height/basenoisegenerator.h"
+#include "terrain/height/ridgednoisegenerator.h"
+
+#include "terrain/warp/iwarp.h"
+#include "terrain/warp/warpmode.h"
+#include "terrain/warp/singlewarp.h"
+#include "terrain/warp/doublewarp.h"
+
 #include "exporter/FBXexporter.h"
 #include "exporter/OBJexporter.h"
+
 #include <iostream>
 
 Scene::Scene() :
     generated(false),
     terrainMesh(),
+    terrainTransform(terrainMesh.getTransform()),
     skyboxMesh(),
     skybox(),
     light(),
-    terrainGenerator(config),
-    terrainTransform(terrainMesh.getTransform()),
     flags(0)
 {
     //DEFAULT CONFIG VALUES
     config.width = 100;
     config.depth = 100;
     config.resolution = 0.5f;
+    config.rotationSpeed = 10.0f;
+
     config.octaves = 5;
     config.amplitude = 0.0f;
     config.frequency = 0.0f;
@@ -25,7 +47,11 @@ Scene::Scene() :
     config.scale = 0.0f;
     config.warpMultiplier = 0.0f;
     config.warpFrequency = 0.0f;
-    config.rotationSpeed = 25.0f;
+
+    config.warpMode = WarpMode::None;
+    config.noiseConfig = NoiseConfiguration::BaseNoise;
+
+    config.erosionEnabled = false;
 }
 
 Scene::~Scene() { }
@@ -39,8 +65,8 @@ void Scene::Generate()
 
     terrainMesh.Create(config.width, config.depth, config.resolution);
 
-    terrainGenerator.setMesh(terrainMesh);
-    terrainGenerator.Apply();
+    this->RebuildTerrainGenerator();
+    terrainGenerator->Generate(terrainMesh);
 
     skybox.LoadTextures();
 
@@ -60,9 +86,15 @@ void Scene::Update(float deltaTime)
         terrainMesh.Create(config.width, config.depth, config.resolution);
     }
 
+    if (flags & static_cast<uint8_t>(UpdateSceneFlag::RebuildTerrainGenerator))
+    {
+        this->RebuildTerrainGenerator();
+    }
+
     if (flags & static_cast<uint8_t>(UpdateSceneFlag::HeightMap))
     {
-        terrainGenerator.Apply();
+        terrainGenerator->UpdateParameters(config);
+        terrainGenerator->Generate(terrainMesh);
     }
 
     glm::quat delta = glm::angleAxis(
@@ -71,6 +103,64 @@ void Scene::Update(float deltaTime)
     );
     terrainTransform.rotation = glm::normalize(delta * terrainTransform.rotation);
     flags = 0;
+}
+
+void Scene::RebuildTerrainGenerator()
+{
+    std::shared_ptr<INoise> noise = std::make_shared<PerlinNoise>();
+    noise->ApplySeed(config.seed);
+
+    std::shared_ptr<IWarp> warp = nullptr;
+    switch (config.warpMode)
+    {
+        case WarpMode::Single:
+        {
+            warp = std::make_shared<SingleWarp>(config.warpFrequency, config.warpMultiplier);
+            break;
+        }
+        case WarpMode::Double:
+        {
+            warp = std::make_shared<DoubleWarp>(config.warpFrequency, config.warpMultiplier);
+            break;
+        }
+        case WarpMode::None:
+        default:
+        {
+            warp = nullptr;
+            break;
+        }
+    }
+
+    std::unique_ptr<IHeightGenerator> heightGenerator = nullptr;
+    switch (config.noiseConfig)
+    {
+        case NoiseConfiguration::RidgedNoise:
+        {
+            heightGenerator = std::make_unique<RidgedNoiseGenerator>(config, noise, warp);
+            break;
+        }
+        case NoiseConfiguration::BaseNoise:
+        default:
+        {
+            heightGenerator = std::make_unique<BaseNoiseGenerator>(config, noise, warp);
+            break;
+        }
+    }
+
+    std::unique_ptr<IErosion> erosion = nullptr;
+
+    if (config.erosionEnabled)
+    {
+        HydraulicConfig hydraulicConfig;
+        erosion = std::make_unique<HydraulicErosion>(
+            hydraulicConfig,
+            config.seed);
+    }
+
+    terrainGenerator = std::make_unique<TerrainGenerator>(
+        std::move(heightGenerator),
+        std::move(erosion)
+    );
 }
 
 void Scene::FlagForUpdate(UpdateSceneFlag flag)
@@ -177,27 +267,17 @@ void Scene::ExportTerrain(const FileType& type, const std::string& path)
     exporter = nullptr;
 }
 
-TerrainConfig& Scene::getTerrainConfig()
+Light& Scene::getLight()
 {
-    return config;
+    return light;
 }
 
-TerrainGenerator& Scene::getTerrainGenerator()
+TerrainConfig& Scene::getConfig()
 {
-    return terrainGenerator;
+    return config;
 }
 
 TerrainMesh& Scene::getTerrainMesh()
 {
     return terrainMesh;
-}
-
-Transform& Scene::getTerrainTransform()
-{
-    return terrainTransform;
-}
-
-Light& Scene::getLight()
-{
-    return light;
 }

@@ -6,19 +6,27 @@ void MeshPanel::Display(EditorContext& ctx)
 	auto& commands = ctx.commands;
 
     ImGui::SeparatorText("Mesh Configuration");
-    if (ImGui::SliderInt("Terrain Width", (int*)&config.width, TERRAIN_MIN_WIDTH, TERRAIN_MAX_WIDTH))
+
+    int width = config.width;
+    if (ImGui::SliderInt("Terrain Width", &width, 2, 100))
     {
+        config.width = width;
         commands.updateMesh = true;
         commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderInt("Terrain Depth", (int*)&config.depth, TERRAIN_MIN_DEPTH, TERRAIN_MAX_DEPTH))
+    int depth = config.depth;
+    if (ImGui::SliderInt("Terrain Depth", &depth, 2, 100))
     {
+        config.depth = depth;
         commands.updateMesh = true;
         commands.updateHeightMap = true;
     }
-    if (ImGui::SliderFloat("Terrain Resolution", (float*)&config.resolution, 1.0f, 0.5f))
+
+    float resolution = config.resolution;
+    if (ImGui::SliderFloat("Terrain Resolution", &resolution, 1.0f, 0.5f))
     {
+        config.resolution = resolution;
         commands.updateMesh = true;
         commands.updateHeightMap = true;
     }

@@ -19,9 +19,6 @@
     <Filter Include="Source Files\ThirdParty">
       <UniqueIdentifier>{7ab7dae8-5bad-4d0c-96ed-dcfd14b1f179}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Noise">
-      <UniqueIdentifier>{ed725bed-f5f9-4263-b0b8-1db5f9fa9839}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{058305b2-7c3e-4e81-897e-48eb7e667036}</UniqueIdentifier>
     </Filter>
@@ -36,9 +33,6 @@
     </Filter>
     <Filter Include="Source Files\Terrain">
       <UniqueIdentifier>{6f22d874-8722-4b37-9c00-5fffbd90493e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Noise">
-      <UniqueIdentifier>{acce894a-2698-44d8-85ac-460b6251d28a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{21ef1450-2323-411d-bc97-9262d80820a4}</UniqueIdentifier>
@@ -76,6 +70,30 @@
     <Filter Include="Source Files\UI\viewport">
       <UniqueIdentifier>{02c6e5d0-6821-41ba-bd0f-c371b483907a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Terrain\Erosion">
+      <UniqueIdentifier>{bd167213-ca5a-46c4-a209-bc3b3a82bc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain\Erosion">
+      <UniqueIdentifier>{5e8ea10c-5708-49ae-84b4-97efd0f43e56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain\Noise">
+      <UniqueIdentifier>{ed725bed-f5f9-4263-b0b8-1db5f9fa9839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Terrain\Noise">
+      <UniqueIdentifier>{acce894a-2698-44d8-85ac-460b6251d28a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain\Warp">
+      <UniqueIdentifier>{446e94ef-1548-4cee-910f-eebd8721faa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Terrain\Warp">
+      <UniqueIdentifier>{bbba5bab-8825-4657-8f38-22185163004e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain\Height">
+      <UniqueIdentifier>{c88c9804-087c-44ab-9a5a-00911beb5c7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Terrain\Height">
+      <UniqueIdentifier>{882692e6-0867-49bd-86d6-6d42da5e503e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -107,9 +125,6 @@
     </ClCompile>
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp">
       <Filter>Source Files\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\noise\perlinnoise.cpp">
-      <Filter>Source Files\Noise</Filter>
     </ClCompile>
     <ClCompile Include="src\core\camera.cpp">
       <Filter>Source Files\Core</Filter>
@@ -186,14 +201,32 @@
     <ClCompile Include="src\core\graphicscontext.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\terrain\heightmap.cpp">
+      <Filter>Source Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\erosion\hydraulicerosion.cpp">
+      <Filter>Source Files\Terrain\Erosion</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\noise\perlinnoise.cpp">
+      <Filter>Source Files\Terrain\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\warp\doublewarp.cpp">
+      <Filter>Source Files\Terrain\Warp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\warp\singlewarp.cpp">
+      <Filter>Source Files\Terrain\Warp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\height\basenoisegenerator.cpp">
+      <Filter>Source Files\Terrain\Height</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\height\rigidnoisegenerator.cpp">
+      <Filter>Source Files\Terrain\Height</Filter>
+    </ClCompile>
+    <ClCompile Include="include\terrain\iterraingenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\noise\noise.h">
-      <Filter>Header Files\Noise</Filter>
-    </ClInclude>
-    <ClInclude Include="include\noise\perlinnoise.h">
-      <Filter>Header Files\Noise</Filter>
-    </ClInclude>
     <ClInclude Include="include\core\camera.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
@@ -314,12 +347,6 @@
     <ClInclude Include="include\core\icamera.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\noise\noiseconfiguration.h">
-      <Filter>Header Files\Noise</Filter>
-    </ClInclude>
-    <ClInclude Include="include\noise\warpmode.h">
-      <Filter>Header Files\Noise</Filter>
-    </ClInclude>
     <ClInclude Include="include\renderer\skyboxoption.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
@@ -328,6 +355,54 @@
     </ClInclude>
     <ClInclude Include="include\renderer\ishader.h">
       <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\hydraulicconfig.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\heightmap.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\droplet.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\hydraulicerosion.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\ierosion.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\noise\inoise.h">
+      <Filter>Header Files\Terrain\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\noise\noiseconfiguration.h">
+      <Filter>Header Files\Terrain\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\noise\perlinnoise.h">
+      <Filter>Header Files\Terrain\Noise</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\warp\doublewarp.h">
+      <Filter>Header Files\Terrain\Warp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\warp\iwarp.h">
+      <Filter>Header Files\Terrain\Warp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\warp\singlewarp.h">
+      <Filter>Header Files\Terrain\Warp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\noise\warpmode.h">
+      <Filter>Header Files\Terrain\Warp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\height\basenoisegenerator.h">
+      <Filter>Header Files\Terrain\Height</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\height\iheightgenerator.h">
+      <Filter>Header Files\Terrain\Height</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\height\ridgednoisegenerator.h">
+      <Filter>Header Files\Terrain\Height</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\iterraingenerator.h">
+      <Filter>Header Files\Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

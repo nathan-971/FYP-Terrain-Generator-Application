@@ -1,4 +1,4 @@
-#include "noise/perlinnoise.h"
+#include "terrain/noise/perlinnoise.h"
 
 #include <random>
 #include <algorithm>
@@ -92,7 +92,6 @@ Vector PerlinNoise::getGradient(int x, int y)
     float angle = (h / 255.0f) * 6.28318f;
     return Vector(cos(angle), sin(angle));
 }
-
 
 int PerlinNoise::hash(int x, int y)
 {

@@ -10,7 +10,7 @@ struct EditorCommands
 	bool changeErosionEnabled = false;
 	bool changeSkybox = false;
 	bool requestExport = false;
-	int newSeed;
+	bool changeSeed = false;
 };
 
 #endif

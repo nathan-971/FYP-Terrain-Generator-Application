@@ -3,9 +3,6 @@
 
 #define WORLD_ORIGIN glm::vec3(0.0f, 0.0f, 0.0f)
 
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtx/vector_angle.hpp>
-
 #include "core/icamera.h"
 
 #include "renderer/terrainmesh.h"
@@ -15,10 +12,15 @@
 #include "renderer/light.h"
 #include "renderer/updatesceneflag.h"
 
-#include "terrain/terraingenerator.h"
+#include "terrain/iterraingenerator.h"
 #include "terrain/terrainconfig.h"
 
 #include "exporter/exporter.h"
+
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/vector_angle.hpp>
+
+#include <memory>
 
 class Scene
 {
@@ -33,19 +35,17 @@ public:
 	void FlagForUpdate(UpdateSceneFlag flag);
 	bool ChangeSkybox(SkyboxOption option);
 	void ExportTerrain(const FileType& type, const std::string& path);
+	void RebuildTerrainGenerator();
+	void positionAndOrientateCamera(ICamera& camera);
 
 	FrameData getFrameData(const ICamera& camera);
-	TerrainConfig& getTerrainConfig();
-	TerrainGenerator& getTerrainGenerator();
-	TerrainMesh& getTerrainMesh();
-	Transform& getTerrainTransform();
-	Light& getLight();
-
-	void positionAndOrientateCamera(ICamera& camera);
+	TerrainConfig& getConfig();
+	TerrainMesh& getTerrainMesh(); //Needs Refactoring Heightmap Panel in Editor Directly Calls
+	Light& getLight(); //Needs Refactoring Light Panel in Editor Directly Calls
 
 private:
 	TerrainConfig config;
-	TerrainGenerator terrainGenerator;
+	std::unique_ptr<ITerrainGenerator> terrainGenerator;
 	TerrainMesh terrainMesh;
 	Transform& terrainTransform;
 

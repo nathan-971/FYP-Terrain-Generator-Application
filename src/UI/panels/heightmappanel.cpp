@@ -19,13 +19,14 @@ void HeightMapPanel::Display(EditorContext& ctx)
 int HeightMapPanel::generateHeightMapTexture(EditorContext& ctx)
 {
     auto& scene = ctx.scene;
+    auto& mesh = ctx.scene.getTerrainMesh();
     auto& config = ctx.terrainConfig;
 
     float minHeight = 0.0f;
 	float maxHeight = 0.0f;
 
-    int vertCountX = static_cast<int>(config.width / config.resolution) + 1;
-    int vertCountZ = static_cast<int>(config.depth / config.resolution) + 1;
+    int vertCountX = mesh.GetVertexXCount();
+    int vertCountZ = mesh.GetVertexZCount();
 
     auto& verts = scene.getTerrainMesh().GetVertices();
     std::vector<float> heightMap(vertCountX * vertCountZ);

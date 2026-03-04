@@ -1,29 +1,33 @@
 #include "renderer/terrainmesh.h"
 
 TerrainMesh::TerrainMesh() 
-	: finished(false), transform() { }
+	: finished(false), transform(), width(0), depth(0), vertexCountX(0), vertexCountZ(0), resolution(0.0f) { }
 
 TerrainMesh::~TerrainMesh() { }
 
-std::vector<Vertex>& TerrainMesh::GetVertices()
-{
-	return this->vertices;
-}
-
-std::vector<unsigned int>& TerrainMesh::GetIndices()
-{
-	return this->indices;
-}
-
-Transform& TerrainMesh::getTransform()
-{
-	return this->transform;
-}
-
 void TerrainMesh::Create(unsigned int width, unsigned int depth, float resolution)
 {
-	buildMesh(width, depth, resolution);
+	this->width = width;
+	this->depth = depth;
+	this->resolution = resolution;
+
+	this->vertexCountX = static_cast<unsigned int>(width / resolution) + 1;
+	this->vertexCountZ = static_cast<unsigned int>(depth / resolution) + 1;
+
+	buildMesh();
 	UpdateBuffers();
+}
+
+void TerrainMesh::ApplyHeightMap(HeightMap& map)
+{
+	for (unsigned int x = 0; x < this->vertexCountX; x++)
+	{
+		for (unsigned int z = 0; z < this->vertexCountZ; z++)
+		{
+			unsigned int index = x * this->vertexCountZ + z;
+			vertices[index].position.y = map.getHeight(x, z);
+		}
+	}
 }
 
 void TerrainMesh::UpdateBuffers()
@@ -38,7 +42,7 @@ void TerrainMesh::UpdateBuffers()
 	enableAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, color));
 }
 
-void TerrainMesh::buildMesh(unsigned int width, unsigned int depth, float resolution)
+void TerrainMesh::buildMesh()
 {
 	vertices.clear();
 	indices.clear();
@@ -87,7 +91,7 @@ void TerrainMesh::buildMesh(unsigned int width, unsigned int depth, float resolu
 	}
 }
 
-void TerrainMesh::recalculateNormals(unsigned int width, unsigned int depth, float resolution)
+void TerrainMesh::RecalculateNormals()
 {
 	unsigned int vertCountX = static_cast<unsigned int>(width / resolution) + 1;
 	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
@@ -114,4 +118,29 @@ void TerrainMesh::recalculateNormals(unsigned int width, unsigned int depth, flo
 			vertices[x * vertCountZ + z].normal = glm::normalize(normal);
 		}
 	}
+}
+
+std::vector<Vertex>& TerrainMesh::GetVertices()
+{
+	return this->vertices;
+}
+
+std::vector<unsigned int>& TerrainMesh::GetIndices()
+{
+	return this->indices;
+}
+
+Transform& TerrainMesh::getTransform()
+{
+	return this->transform;
+}
+
+int TerrainMesh::GetVertexXCount()
+{
+	return vertexCountX;
+}
+
+int TerrainMesh::GetVertexZCount()
+{
+	return vertexCountZ;
 }

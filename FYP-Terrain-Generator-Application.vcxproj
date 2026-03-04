@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\terrain\iterraingenerator.cpp" />
     <ClCompile Include="src\core\application.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\core\graphicscontext.cpp" />
@@ -26,7 +27,6 @@
     <ClCompile Include="src\exporter\FBXexporter.cpp" />
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\noise\perlinnoise.cpp" />
     <ClCompile Include="src\renderer\renderer.cpp" />
     <ClCompile Include="src\renderer\terrainmesh.cpp" />
     <ClCompile Include="src\renderer\meshbase.cpp" />
@@ -34,7 +34,14 @@
     <ClCompile Include="src\renderer\shader.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
     <ClCompile Include="src\renderer\skyboxmesh.cpp" />
+    <ClCompile Include="src\terrain\erosion\hydraulicerosion.cpp" />
+    <ClCompile Include="src\terrain\heightmap.cpp" />
+    <ClCompile Include="src\terrain\height\basenoisegenerator.cpp" />
+    <ClCompile Include="src\terrain\height\rigidnoisegenerator.cpp" />
+    <ClCompile Include="src\terrain\noise\perlinnoise.cpp" />
     <ClCompile Include="src\terrain\terraingenerator.cpp" />
+    <ClCompile Include="src\terrain\warp\doublewarp.cpp" />
+    <ClCompile Include="src\terrain\warp\singlewarp.cpp" />
     <ClCompile Include="src\UI\editor\editor.cpp" />
     <ClCompile Include="src\UI\imguilayer.cpp" />
     <ClCompile Include="src\UI\panels\erosionpanel.cpp" />
@@ -66,10 +73,6 @@
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
     <ClInclude Include="include\exporter\OBJexporter.h" />
-    <ClInclude Include="include\noise\noise.h" />
-    <ClInclude Include="include\noise\noiseconfiguration.h" />
-    <ClInclude Include="include\noise\perlinnoise.h" />
-    <ClInclude Include="include\noise\warpmode.h" />
     <ClInclude Include="include\renderer\framedata.h" />
     <ClInclude Include="include\renderer\irenderer.h" />
     <ClInclude Include="include\renderer\ishader.h" />
@@ -86,8 +89,24 @@
     <ClInclude Include="include\renderer\transform.h" />
     <ClInclude Include="include\renderer\updatesceneflag.h" />
     <ClInclude Include="include\renderer\vertex.h" />
+    <ClInclude Include="include\terrain\erosion\droplet.h" />
+    <ClInclude Include="include\terrain\erosion\hydraulicconfig.h" />
+    <ClInclude Include="include\terrain\erosion\hydraulicerosion.h" />
+    <ClInclude Include="include\terrain\erosion\ierosion.h" />
+    <ClInclude Include="include\terrain\heightmap.h" />
+    <ClInclude Include="include\terrain\height\basenoisegenerator.h" />
+    <ClInclude Include="include\terrain\height\iheightgenerator.h" />
+    <ClInclude Include="include\terrain\height\ridgednoisegenerator.h" />
+    <ClInclude Include="include\terrain\iterraingenerator.h" />
+    <ClInclude Include="include\terrain\noise\inoise.h" />
+    <ClInclude Include="include\terrain\noise\noiseconfiguration.h" />
+    <ClInclude Include="include\terrain\noise\perlinnoise.h" />
+    <ClInclude Include="include\terrain\noise\warpmode.h" />
     <ClInclude Include="include\terrain\terrainconfig.h" />
     <ClInclude Include="include\terrain\terraingenerator.h" />
+    <ClInclude Include="include\terrain\warp\doublewarp.h" />
+    <ClInclude Include="include\terrain\warp\iwarp.h" />
+    <ClInclude Include="include\terrain\warp\singlewarp.h" />
     <ClInclude Include="include\UI\editor\editor.h" />
     <ClInclude Include="include\UI\editor\editorcommands.h" />
     <ClInclude Include="include\UI\editor\editorcontext.h" />

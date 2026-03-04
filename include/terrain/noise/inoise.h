@@ -10,10 +10,10 @@ struct Vector
     Vector() : x(0.0f), y(0.0f) {}
 };
 
-class Noise
+class INoise
 {
 public:
-	virtual ~Noise() = default;
+	virtual ~INoise() = default;
 	virtual float Get(float x, float y) = 0;
     virtual void ApplySeed(int seed) = 0;
 };

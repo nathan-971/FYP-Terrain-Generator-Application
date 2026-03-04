@@ -1,8 +1,8 @@
 #ifndef _EDITOR_STATE_H_
 #define _EDITOR_STATE_H_
 
-#include "noise/noiseconfiguration.h"
-#include "noise/warpmode.h"
+#include "terrain/noise/noiseconfiguration.h"
+#include "terrain/warp/warpmode.h"
 #include "renderer/skyboxoption.h"
 
 struct EditorState

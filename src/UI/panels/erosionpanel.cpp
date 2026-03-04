@@ -12,4 +12,16 @@ void ErosionPanel::Display(EditorContext& ctx)
 		commands.changeErosionEnabled = true;
 		commands.updateHeightMap = true;
     }
+
+    if (ImGui::Button("Start Eroding"))
+    {
+
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Stop Eroding"))
+    {
+
+    }
+    ImGui::SameLine();
+    ImGui::Text("Number of Drops:");
 }

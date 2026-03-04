@@ -19,7 +19,7 @@ void UIBase::PreRender()
 
 void UIBase::Render()
 {
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	editor.ApplyCommands();
 	editor.Render();

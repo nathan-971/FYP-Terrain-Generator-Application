@@ -1,6 +1,6 @@
 #include "UI/panels/noisepanel.h"
-#include "noise/noiseconfiguration.h"
-#include "noise/warpmode.h"
+#include "terrain/noise/noiseconfiguration.h"
+#include "terrain/warp/warpmode.h"
 
 const char* noiseConfigNames[] = { "Base Noise", "Ridged Noise" };
 const char* warpModeNames[] = { "None", "Single", "Double" };
@@ -20,9 +20,7 @@ void NoisePanel::Display(EditorContext& ctx)
             if (ImGui::Selectable(noiseConfigNames[i], isSelected))
             {
                 state.noiseConfig = static_cast<NoiseConfiguration>(i);
-
-				commands.changeNoiseConfiguration = true;
-                commands.updateHeightMap = true;
+                commands.changeNoiseConfiguration = true;
             }
             if (isSelected)
             {
@@ -31,34 +29,46 @@ void NoisePanel::Display(EditorContext& ctx)
         }
         ImGui::EndCombo();
     }
-
-    if (ImGui::SliderInt("Noise Octaves", static_cast<int*>(&config.octaves), 1, 8))
+    
+    int octaves = config.octaves;
+    if (ImGui::SliderInt("Noise Octaves", &config.octaves, 1, 8))
     {
+        config.octaves = octaves;
         commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderFloat("Noise Amplitude", static_cast<float*>(&config.amplitude), 1.0f, 15.0f))
+    float amplitude = config.amplitude;
+    if (ImGui::SliderFloat("Noise Amplitude", &amplitude, 1.0f, 15.0f))
     {
+        config.amplitude = amplitude;
         commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderFloat("Noise Frequency", static_cast<float*>(&config.frequency), 0.01f, 0.5f))
+    float frequency = config.frequency;
+    if (ImGui::SliderFloat("Noise Frequency", &frequency, 0.01f, 0.5f))
     {
+        config.frequency = frequency;
         commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderFloat("Noise Lacunarity", static_cast<float*>(&config.lacunarity), 1.0f, 2.0f))
+    float lacunarity = config.lacunarity;
+    if (ImGui::SliderFloat("Noise Lacunarity", &lacunarity, 1.0f, 2.0f))
     {
+        config.lacunarity = lacunarity;
         commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderFloat("Noise Persistence", static_cast<float*>(&config.persistence), 0.01f, 0.75f))
+    float persistence = config.persistence;
+    if (ImGui::SliderFloat("Noise Persistence", &persistence, 0.01f, 0.75f))
     {
+        config.persistence = persistence;
         commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderFloat("Noise Scale", static_cast<float*>(&config.scale), 0.1f, 2.5f))
+    float scale = config.scale;
+    if (ImGui::SliderFloat("Noise Scale", &scale, 0.1f, 2.5f))
     {
+        config.scale = scale;
         commands.updateHeightMap = true;
     }
 
@@ -70,9 +80,7 @@ void NoisePanel::Display(EditorContext& ctx)
             if (ImGui::Selectable(warpModeNames[i], isSelected))
             {
                 state.warpMode = static_cast<WarpMode>(i);
-
                 commands.changeWarpMode = true;
-				commands.updateHeightMap = true;
             }
             if (isSelected)
             {
@@ -82,14 +90,18 @@ void NoisePanel::Display(EditorContext& ctx)
         ImGui::EndCombo();
     }
 
-    if (ImGui::SliderFloat("Wrap Multiplier", static_cast<float*>(&config.warpMultiplier), 0.0f, 200.0f))
+    float warpMultiplier = config.warpMultiplier;
+    if (ImGui::SliderFloat("Warp Multiplier", &warpMultiplier, 0.0f, 200.0f))
     {
-		commands.updateHeightMap = true;
+        config.warpMultiplier = warpMultiplier;
+        commands.updateHeightMap = true;
     }
 
-    if (ImGui::SliderFloat("Wrap Freqeuncy", static_cast<float*>(&config.warpFrequency), 0.000f, 0.03f))
+    float warpFrequency = config.warpFrequency;
+    if (ImGui::SliderFloat("Warp Frequency", &warpFrequency, 0.000f, 0.03f))
     {
-		commands.updateHeightMap = true;
+        config.warpFrequency = warpFrequency;
+        commands.updateHeightMap = true;
     }
 
     ImGui::BeginDisabled();
@@ -97,7 +109,8 @@ void NoisePanel::Display(EditorContext& ctx)
     ImGui::EndDisabled();
     if (ImGui::Button("Generate"))
     {
-        commands.newSeed = generateSeed();
+        state.seed = generateSeed();
+        commands.changeSeed = true;
     }
 }
 
