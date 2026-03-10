@@ -15,13 +15,16 @@ void ErosionPanel::Display(EditorContext& ctx)
 
     if (ImGui::Button("Start Eroding"))
     {
-
+        commands.startErosion = true;
     }
     ImGui::SameLine();
     if (ImGui::Button("Stop Eroding"))
     {
-
+        commands.stopErosion = true;
     }
     ImGui::SameLine();
-    ImGui::Text("Number of Drops:");
+    if (ImGui::Button("Reset Erosion"))
+    {
+        commands.resetErosion = true;
+    }
 }

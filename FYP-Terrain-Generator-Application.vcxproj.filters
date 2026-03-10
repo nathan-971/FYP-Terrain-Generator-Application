@@ -222,8 +222,8 @@
     <ClCompile Include="src\terrain\height\rigidnoisegenerator.cpp">
       <Filter>Source Files\Terrain\Height</Filter>
     </ClCompile>
-    <ClCompile Include="include\terrain\iterraingenerator.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\terrain\erosion\erosionhandler.cpp">
+      <Filter>Source Files\Terrain\Erosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -406,6 +406,15 @@
     </ClInclude>
     <ClInclude Include="include\core\parallelutils.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\erosionhandler.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\ierosionhandler.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\terrain\erosion\isimulatederosion.h">
+      <Filter>Header Files\Terrain\Erosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

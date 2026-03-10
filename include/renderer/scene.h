@@ -38,6 +38,10 @@ public:
 	void RebuildTerrainGenerator();
 	void positionAndOrientateCamera(ICamera& camera);
 
+	void StartErosion();
+	void StopErosion();
+	void ResetErosion();
+
 	FrameData getFrameData(const ICamera& camera);
 	TerrainConfig& getConfig();
 	TerrainMesh& getTerrainMesh(); //Needs Refactoring Heightmap Panel in Editor Directly Calls

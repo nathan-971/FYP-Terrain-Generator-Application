@@ -7,7 +7,7 @@ class IErosion
 {
 public:
 	virtual ~IErosion() = default;
-	void virtual Apply(HeightMap& heightmap) = 0;
+	virtual void Apply(HeightMap& heightmap) = 0;
 };
 
 #endif

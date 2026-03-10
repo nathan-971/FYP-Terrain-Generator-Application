@@ -12,7 +12,7 @@ void BaseNoiseGenerator::Generate(HeightMap& map)
 	int width = map.getWidth();
 	int depth = map.getDepth();
 
-	Parallel::ParallelFor2D(width, depth, [&](int startX, int endX) {
+	Parallel::ParallelForRange(width, depth, [&](int startX, int endX) {
 		for (int x = startX; x < endX; x++)
 		{
 			for (int z = 0; z < map.getDepth(); z++)

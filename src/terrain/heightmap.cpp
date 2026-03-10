@@ -1,7 +1,8 @@
 #include "terrain/heightmap.h"
 #include <algorithm>
 
-HeightMap::HeightMap(int width, int depth) : width(width), depth(depth), data(width * depth) { }
+HeightMap::HeightMap(int width, int depth) : width(width), depth(depth), data(width * depth, 0.0f) { }
+HeightMap::HeightMap() : width(0), depth(0) { }
 
 float HeightMap::sample(float x, float z) const
 {

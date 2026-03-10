@@ -6,7 +6,9 @@
 #include "terrain/noise/perlinnoise.h"
 #include "terrain/noise/noiseconfiguration.h"
 
-#include "terrain/erosion/ierosion.h"
+#include "terrain/erosion/isimulatederosion.h"
+#include "terrain/erosion/ierosionhandler.h"
+#include "terrain/erosion/erosionhandler.h"
 #include "terrain/erosion/hydraulicerosion.h"
 #include "terrain/erosion/hydraulicconfig.h"
 
@@ -96,6 +98,7 @@ void Scene::Update(float deltaTime)
         terrainGenerator->UpdateParameters(config);
         terrainGenerator->Generate(terrainMesh);
     }
+    terrainGenerator->Update(terrainMesh);
 
     glm::quat delta = glm::angleAxis(
         glm::radians(config.rotationSpeed) * deltaTime,
@@ -147,19 +150,23 @@ void Scene::RebuildTerrainGenerator()
         }
     }
 
-    std::unique_ptr<IErosion> erosion = nullptr;
-
+    std::unique_ptr<IErosionHandler> erosionHandler = nullptr;
     if (config.erosionEnabled)
     {
         HydraulicConfig hydraulicConfig;
-        erosion = std::make_unique<HydraulicErosion>(
+        std::unique_ptr<ISimulatedErosion> erosion = std::make_unique<HydraulicErosion>(
             hydraulicConfig,
-            config.seed);
+            config.seed
+        );
+        
+        erosionHandler = std::make_unique<ErosionHandler>(
+            std::move(erosion)
+        );
     }
 
     terrainGenerator = std::make_unique<TerrainGenerator>(
         std::move(heightGenerator),
-        std::move(erosion)
+        std::move(erosionHandler)
     );
 }
 
@@ -280,4 +287,28 @@ TerrainConfig& Scene::getConfig()
 TerrainMesh& Scene::getTerrainMesh()
 {
     return terrainMesh;
+}
+
+void Scene::StartErosion()
+{
+    if (terrainGenerator)
+    {
+        terrainGenerator->StartErosion();
+    }
+}
+
+void Scene::StopErosion()
+{
+    if (terrainGenerator)
+    {
+        terrainGenerator->StopErosion();
+    }
+}
+
+void Scene::ResetErosion()
+{
+    if (terrainGenerator)
+    {
+        terrainGenerator->ResetErosion();
+    }
 }

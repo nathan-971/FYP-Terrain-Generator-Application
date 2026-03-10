@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\terrain\iterraingenerator.cpp" />
     <ClCompile Include="src\core\application.cpp" />
     <ClCompile Include="src\core\camera.cpp" />
     <ClCompile Include="src\core\graphicscontext.cpp" />
@@ -34,6 +33,7 @@
     <ClCompile Include="src\renderer\shader.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
     <ClCompile Include="src\renderer\skyboxmesh.cpp" />
+    <ClCompile Include="src\terrain\erosion\erosionhandler.cpp" />
     <ClCompile Include="src\terrain\erosion\hydraulicerosion.cpp" />
     <ClCompile Include="src\terrain\heightmap.cpp" />
     <ClCompile Include="src\terrain\height\basenoisegenerator.cpp" />
@@ -91,9 +91,12 @@
     <ClInclude Include="include\renderer\updatesceneflag.h" />
     <ClInclude Include="include\renderer\vertex.h" />
     <ClInclude Include="include\terrain\erosion\droplet.h" />
+    <ClInclude Include="include\terrain\erosion\erosionhandler.h" />
     <ClInclude Include="include\terrain\erosion\hydraulicconfig.h" />
     <ClInclude Include="include\terrain\erosion\hydraulicerosion.h" />
     <ClInclude Include="include\terrain\erosion\ierosion.h" />
+    <ClInclude Include="include\terrain\erosion\ierosionhandler.h" />
+    <ClInclude Include="include\terrain\erosion\isimulatederosion.h" />
     <ClInclude Include="include\terrain\heightmap.h" />
     <ClInclude Include="include\terrain\height\basenoisegenerator.h" />
     <ClInclude Include="include\terrain\height\iheightgenerator.h" />

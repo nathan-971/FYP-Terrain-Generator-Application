@@ -8,9 +8,14 @@ struct EditorCommands
 	bool changeWarpMode = false;
 	bool changeNoiseConfiguration = false;
 	bool changeErosionEnabled = false;
+	bool changeSeed = false;
+
+	bool startErosion = false;
+	bool stopErosion = false;
+	bool resetErosion = false;
+
 	bool changeSkybox = false;
 	bool requestExport = false;
-	bool changeSeed = false;
 };
 
 #endif

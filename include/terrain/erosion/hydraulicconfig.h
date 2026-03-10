@@ -4,7 +4,7 @@
 struct HydraulicConfig
 {
     int dropLifetime = 20;
-    int numberOfDrops = 70000;
+    int numberOfDrops = 1000000;
 
     float inertia = 0.3f;
     float capacityFactor = 1.5f;

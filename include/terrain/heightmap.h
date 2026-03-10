@@ -7,6 +7,7 @@ class HeightMap
 {
 public:
 	HeightMap(int width, int depth);
+	HeightMap();
 	float& getHeight(int x, int z);
 	float sample(float x, float z) const;
 	float addBilinear(int x, int z, float fx, float fz, float amount);

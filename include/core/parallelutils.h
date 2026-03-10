@@ -6,7 +6,7 @@
 namespace Parallel
 {
     template<typename Lambda>
-    void ParallelFor2D(int width, int depth, Lambda worker)
+    void ParallelForRange(int width, int depth, Lambda worker)
     {
         int numThreads = std::thread::hardware_concurrency();
         numThreads = std::max(1, numThreads);

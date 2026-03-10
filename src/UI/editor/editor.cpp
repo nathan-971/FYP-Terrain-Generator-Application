@@ -64,6 +64,25 @@ void Editor::ApplyCommands()
         ctx.commands.changeErosionEnabled = false;
     }
 
+    if (ctx.commands.startErosion && ctx.terrainConfig.erosionEnabled)
+    {
+        scene.StartErosion();
+        ctx.commands.startErosion = false;
+    }
+
+    if (ctx.commands.stopErosion)
+    {
+        scene.StopErosion();
+        ctx.commands.stopErosion = false;
+    }
+
+    if (ctx.commands.resetErosion)
+    {
+        scene.ResetErosion();
+        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
+        ctx.commands.resetErosion = false;
+    }
+
     if (ctx.commands.changeSeed)
     {
         ctx.terrainConfig.seed = ctx.state.seed;
