@@ -404,6 +404,9 @@
     <ClInclude Include="include\terrain\iterraingenerator.h">
       <Filter>Header Files\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="include\core\parallelutils.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragment.glsl">

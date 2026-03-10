@@ -10,7 +10,7 @@ struct HydraulicConfig
     float capacityFactor = 1.5f;
     float minCapacity = 0.01f;
 
-    float erodeSpeed = 0.08f;
+    float erodeSpeed = 0.2f;
     float depositSpeed = 0.3f;
     float evaporation = 0.005f;
 

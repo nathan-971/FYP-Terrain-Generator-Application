@@ -1,4 +1,5 @@
 #include "renderer/terrainmesh.h"
+#include "core/parallelutils.h"
 
 TerrainMesh::TerrainMesh() 
 	: finished(false), transform(), width(0), depth(0), vertexCountX(0), vertexCountZ(0), resolution(0.0f) { }
@@ -20,14 +21,49 @@ void TerrainMesh::Create(unsigned int width, unsigned int depth, float resolutio
 
 void TerrainMesh::ApplyHeightMap(HeightMap& map)
 {
-	for (unsigned int x = 0; x < this->vertexCountX; x++)
-	{
-		for (unsigned int z = 0; z < this->vertexCountZ; z++)
+	int width = vertexCountX;
+	int depth = vertexCountZ;
+
+	Parallel::ParallelFor2D(width, depth, [&](int startX, int endX){
+		for (int x = startX; x < endX; x++)
 		{
-			unsigned int index = x * this->vertexCountZ + z;
-			vertices[index].position.y = map.getHeight(x, z);
+			for (int z = 0; z < depth; z++)
+			{
+				vertices[x * depth + z].position.y = map.getHeight(x, z);
+			}
 		}
-	}
+	});
+}
+
+void TerrainMesh::RecalculateNormals()
+{
+	int width = vertexCountX;
+	int depth = vertexCountZ;
+
+	Parallel::ParallelFor2D(width, depth, [&](int startX, int endX){
+		for (int x = startX; x < endX; x++)
+		{
+			for (int z = 0; z < depth; z++)
+			{
+				int xLeft = (x - 1 < 0) ? 0 : x - 1;
+				int xRight = (x + 1 >= width) ? width - 1 : x + 1;
+				int zDown = (z - 1 < 0) ? 0 : z - 1;
+				int zUp = (z + 1 >= depth) ? depth - 1 : z + 1;
+
+				float heightLeft = vertices[xLeft * depth + z].position.y;
+				float heightRight = vertices[xRight * depth + z].position.y;
+				float heightDown = vertices[x * depth + zDown].position.y;
+				float heightUp = vertices[x * depth + zUp].position.y;
+
+				glm::vec3 normal;
+				normal.x = heightLeft - heightRight;
+				normal.y = 1.0f;
+				normal.z = heightDown - heightUp;
+
+				vertices[x * depth + z].normal = glm::normalize(normal);
+			}
+		}
+	});
 }
 
 void TerrainMesh::UpdateBuffers()
@@ -87,35 +123,6 @@ void TerrainMesh::buildMesh()
 			indices.push_back(topRight);
 			indices.push_back(bottomLeft);
 			indices.push_back(bottomRight);
-		}
-	}
-}
-
-void TerrainMesh::RecalculateNormals()
-{
-	unsigned int vertCountX = static_cast<unsigned int>(width / resolution) + 1;
-	unsigned int vertCountZ = static_cast<unsigned int>(depth / resolution) + 1;
-
-	for (int x = 0; x < vertCountX; x++)
-	{
-		for (int z = 0; z < vertCountZ; z++)
-		{
-			int xLeft = (x - 1 < 0) ? 0 : x - 1;
-			int xRight = (x + 1 >= vertCountX) ? vertCountX - 1 : x + 1;
-			int zDown = (z - 1 < 0) ? 0 : z - 1;
-			int zUp = (z + 1 >= vertCountZ) ? vertCountZ - 1 : z + 1;
-
-			float heightLeft = vertices[xLeft * vertCountZ + z].position.y;
-			float heightRight = vertices[xRight * vertCountZ + z].position.y;
-			float heightDown = vertices[x * vertCountZ + zDown].position.y;
-			float heightUp = vertices[x * vertCountZ + zUp].position.y;
-
-			glm::vec3 normal;
-			normal.x = heightLeft - heightRight;
-			normal.y = 1.0f;
-			normal.z = heightDown - heightUp;
-
-			vertices[x * vertCountZ + z].normal = glm::normalize(normal);
 		}
 	}
 }

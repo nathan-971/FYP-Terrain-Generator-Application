@@ -1,7 +1,7 @@
 #include "terrain/erosion/hydraulicerosion.h"
 
-HydraulicErosion::HydraulicErosion(const HydraulicConfig& config, int seed) : 
-	config(config), rng(seed) { }
+HydraulicErosion::HydraulicErosion(const HydraulicConfig& config, int seed) 
+	: config(config), rng(seed) { }
 
 void HydraulicErosion::Apply(HeightMap& heightmap)
 {
@@ -49,14 +49,14 @@ void HydraulicErosion::Apply(HeightMap& heightmap)
 			float newHeight = heightmap.sample(drop.posX, drop.posZ);
 			float deltaHeight = newHeight - currentHeight;
 			float capacity = std::max(
-				-deltaHeight * drop.speed * drop.water * config.capacityFactor, config.minCapacity
+				-deltaHeight * drop.speed * drop.water * 
+				config.capacityFactor, config.minCapacity
 			);
 
 			if (drop.sediment > capacity || deltaHeight > 0.0f)
 			{
 				float depositAmount = (deltaHeight > 0.0f) ?
-					std::min(deltaHeight, drop.sediment) :
-					(drop.sediment - capacity) * config.depositSpeed;
+					std::min(deltaHeight, drop.sediment) : (drop.sediment - capacity) * config.depositSpeed;
 
 				depositAmount = std::clamp(depositAmount, 0.0f, config.maxDepositPerStep);
 				drop.sediment -= depositAmount;

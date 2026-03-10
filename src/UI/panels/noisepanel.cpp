@@ -31,7 +31,7 @@ void NoisePanel::Display(EditorContext& ctx)
     }
     
     int octaves = config.octaves;
-    if (ImGui::SliderInt("Noise Octaves", &config.octaves, 1, 8))
+    if (ImGui::SliderInt("Noise Octaves", &octaves, 1, 8))
     {
         config.octaves = octaves;
         commands.updateHeightMap = true;

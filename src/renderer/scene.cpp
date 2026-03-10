@@ -110,17 +110,17 @@ void Scene::RebuildTerrainGenerator()
     std::shared_ptr<INoise> noise = std::make_shared<PerlinNoise>();
     noise->ApplySeed(config.seed);
 
-    std::shared_ptr<IWarp> warp = nullptr;
+    std::unique_ptr<IWarp> warp = nullptr;
     switch (config.warpMode)
     {
         case WarpMode::Single:
         {
-            warp = std::make_shared<SingleWarp>(config.warpFrequency, config.warpMultiplier);
+            warp = std::make_unique<SingleWarp>(config.warpFrequency, config.warpMultiplier);
             break;
         }
         case WarpMode::Double:
         {
-            warp = std::make_shared<DoubleWarp>(config.warpFrequency, config.warpMultiplier);
+            warp = std::make_unique<DoubleWarp>(config.warpFrequency, config.warpMultiplier);
             break;
         }
         case WarpMode::None:
@@ -136,13 +136,13 @@ void Scene::RebuildTerrainGenerator()
     {
         case NoiseConfiguration::RidgedNoise:
         {
-            heightGenerator = std::make_unique<RidgedNoiseGenerator>(config, noise, warp);
+            heightGenerator = std::make_unique<RidgedNoiseGenerator>(config, noise, std::move(warp));
             break;
         }
         case NoiseConfiguration::BaseNoise:
         default:
         {
-            heightGenerator = std::make_unique<BaseNoiseGenerator>(config, noise, warp);
+            heightGenerator = std::make_unique<BaseNoiseGenerator>(config, noise, std::move(warp));
             break;
         }
     }

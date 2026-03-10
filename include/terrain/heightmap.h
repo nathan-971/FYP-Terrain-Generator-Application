@@ -15,9 +15,9 @@ public:
 	int getDepth();
 
 private:
+	std::vector<float> data;
 	int width;
 	int depth;
-	std::vector<float> data;
 };
 
 #endif

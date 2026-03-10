@@ -11,14 +11,14 @@
 class BaseNoiseGenerator : public IHeightGenerator
 {
 public:
-    BaseNoiseGenerator(const TerrainConfig& config, std::shared_ptr<INoise> noise, std::shared_ptr<IWarp> warp);
+    BaseNoiseGenerator(const TerrainConfig& config, std::shared_ptr<INoise> noise, std::unique_ptr<IWarp> warp);
 	void Generate(HeightMap& map) override;
 	void SetConfig(const TerrainConfig& config) override;
 
 private:
 	TerrainConfig config;
 	std::shared_ptr<INoise> noise;
-	std::shared_ptr<IWarp> warp;
+	std::unique_ptr<IWarp> warp;
 };
 
 #endif

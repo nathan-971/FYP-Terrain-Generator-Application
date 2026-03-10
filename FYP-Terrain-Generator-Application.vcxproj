@@ -69,6 +69,7 @@
     <ClInclude Include="include\core\graphicscontext.h" />
     <ClInclude Include="include\core\icamera.h" />
     <ClInclude Include="include\core\iwindow.h" />
+    <ClInclude Include="include\core\parallelutils.h" />
     <ClInclude Include="include\core\window.h" />
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
