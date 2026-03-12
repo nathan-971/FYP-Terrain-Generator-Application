@@ -1,28 +1,10 @@
 #include "renderer/scene.h"
 
-#include "terrain/terraingenerator.h"
-
-#include "terrain/noise/inoise.h"
-#include "terrain/noise/perlinnoise.h"
 #include "terrain/noise/noiseconfiguration.h"
-
-#include "terrain/erosion/isimulatederosion.h"
-#include "terrain/erosion/ierosionhandler.h"
-#include "terrain/erosion/erosionhandler.h"
-#include "terrain/erosion/hydraulicerosion.h"
-#include "terrain/erosion/hydraulicconfig.h"
-
-#include "terrain/height/iheightgenerator.h"
-#include "terrain/height/basenoisegenerator.h"
-#include "terrain/height/ridgednoisegenerator.h"
-
-#include "terrain/warp/iwarp.h"
 #include "terrain/warp/warpmode.h"
-#include "terrain/warp/singlewarp.h"
-#include "terrain/warp/doublewarp.h"
 
-#include "exporter/FBXexporter.h"
-#include "exporter/OBJexporter.h"
+#include "utils/terraingeneratorfactory.h"
+#include "utils/exporterFactory.h"
 
 #include <iostream>
 
@@ -64,10 +46,12 @@ void Scene::Generate()
     {
         return;
     }
+    terrainGenFactory = std::make_unique<TerrainGeneratorFactory>();
+    exporterFactory = std::make_unique<ExporterFactory>();
 
     terrainMesh.Create(config.width, config.depth, config.resolution);
 
-    this->RebuildTerrainGenerator();
+    terrainGenerator = terrainGenFactory->Create(config);
     terrainGenerator->Generate(terrainMesh);
 
     skybox.LoadTextures();
@@ -90,7 +74,7 @@ void Scene::Update(float deltaTime)
 
     if (flags & static_cast<uint8_t>(UpdateSceneFlag::RebuildTerrainGenerator))
     {
-        this->RebuildTerrainGenerator();
+        terrainGenerator = terrainGenFactory->Create(config);
     }
 
     if (flags & static_cast<uint8_t>(UpdateSceneFlag::HeightMap))
@@ -106,68 +90,6 @@ void Scene::Update(float deltaTime)
     );
     terrainTransform.rotation = glm::normalize(delta * terrainTransform.rotation);
     flags = 0;
-}
-
-void Scene::RebuildTerrainGenerator()
-{
-    std::shared_ptr<INoise> noise = std::make_shared<PerlinNoise>();
-    noise->ApplySeed(config.seed);
-
-    std::unique_ptr<IWarp> warp = nullptr;
-    switch (config.warpMode)
-    {
-        case WarpMode::Single:
-        {
-            warp = std::make_unique<SingleWarp>(config.warpFrequency, config.warpMultiplier);
-            break;
-        }
-        case WarpMode::Double:
-        {
-            warp = std::make_unique<DoubleWarp>(config.warpFrequency, config.warpMultiplier);
-            break;
-        }
-        case WarpMode::None:
-        default:
-        {
-            warp = nullptr;
-            break;
-        }
-    }
-
-    std::unique_ptr<IHeightGenerator> heightGenerator = nullptr;
-    switch (config.noiseConfig)
-    {
-        case NoiseConfiguration::RidgedNoise:
-        {
-            heightGenerator = std::make_unique<RidgedNoiseGenerator>(config, noise, std::move(warp));
-            break;
-        }
-        case NoiseConfiguration::BaseNoise:
-        default:
-        {
-            heightGenerator = std::make_unique<BaseNoiseGenerator>(config, noise, std::move(warp));
-            break;
-        }
-    }
-
-    std::unique_ptr<IErosionHandler> erosionHandler = nullptr;
-    if (config.erosionEnabled)
-    {
-        HydraulicConfig hydraulicConfig;
-        std::unique_ptr<ISimulatedErosion> erosion = std::make_unique<HydraulicErosion>(
-            hydraulicConfig,
-            config.seed
-        );
-        
-        erosionHandler = std::make_unique<ErosionHandler>(
-            std::move(erosion)
-        );
-    }
-
-    terrainGenerator = std::make_unique<TerrainGenerator>(
-        std::move(heightGenerator),
-        std::move(erosionHandler)
-    );
 }
 
 void Scene::FlagForUpdate(UpdateSceneFlag flag)
@@ -235,43 +157,21 @@ void Scene::positionAndOrientateCamera(ICamera& camera)
 
 void Scene::ExportTerrain(const FileType& type, const std::string& path)
 {
-    Exporter* exporter = nullptr;
     try
     {
-        switch (type)
-        {
-            case FileType::FBX:
-            {
-                exporter = new FBXExporter();
-                break;
-            }
-            case FileType::OBJ:
-            {
-                exporter = new OBJExporter();
-                break;
-            }
-            default:
-            {
-                exporter = new FBXExporter();
-                break;
-            }
-        }
+        std::unique_ptr<IExporter> exporter = exporterFactory->Create(type);
         if (exporter->Export(terrainMesh, path))
         {
             std::cout << "saved model file!";
             return;
         }
-        std::cout << "Failed to save  Model File!";
+        std::cout << "Failed to save Model File!";
     }
     catch (const std::exception e)
     {
         std::cout << "Error Exporting Terrain to File!";
-        delete exporter;
-		exporter = nullptr;
         return;
     }
-    delete exporter;
-    exporter = nullptr;
 }
 
 Light& Scene::getLight()

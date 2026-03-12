@@ -13,7 +13,7 @@ public:
 	ErosionHandler(std::unique_ptr<ISimulatedErosion> simulatedErosion = nullptr);
 	~ErosionHandler();
 
-	void Start(bool reset = true) override;
+	void Start() override;
 	void Stop() override;
 	void Reset() override;
 	void Update() override;

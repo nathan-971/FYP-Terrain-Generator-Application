@@ -3,6 +3,8 @@
 HydraulicErosion::HydraulicErosion(const HydraulicConfig& config, int seed) 
 	: config(config), seed(seed), rng(this->seed) { }
 
+HydraulicErosion::~HydraulicErosion() { }
+
 void HydraulicErosion::Apply(HeightMap& heightmap)
 {
 	int width = heightmap.getWidth() - 2;
@@ -80,7 +82,7 @@ void HydraulicErosion::Apply(HeightMap& heightmap)
 
 void HydraulicErosion::Step(HeightMap& heightmap, int dropsPerStep)
 {
-    if (Finished())
+    if (this->Finished())
     {
         return;
     }

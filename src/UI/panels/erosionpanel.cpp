@@ -13,6 +13,7 @@ void ErosionPanel::Display(EditorContext& ctx)
 		commands.updateHeightMap = true;
     }
 
+    ImGui::BeginDisabled(!state.erosionEnabled);
     if (ImGui::Button("Start Eroding"))
     {
         commands.startErosion = true;
@@ -27,4 +28,5 @@ void ErosionPanel::Display(EditorContext& ctx)
     {
         commands.resetErosion = true;
     }
+    ImGui::EndDisabled();
 }

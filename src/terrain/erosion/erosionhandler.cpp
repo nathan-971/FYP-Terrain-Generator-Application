@@ -5,12 +5,8 @@ ErosionHandler::ErosionHandler(std::unique_ptr<ISimulatedErosion> simulatedErosi
 
 ErosionHandler::~ErosionHandler() { }
 
-void ErosionHandler::Start(bool reset)
+void ErosionHandler::Start()
 {
-	if (reset)
-	{
-		this->Reset();
-	}
 	running = true;
 }
 
@@ -21,6 +17,11 @@ void ErosionHandler::Stop()
 
 void ErosionHandler::Reset()
 {
+	if (!running)
+	{
+		return;
+	}
+
 	erosionMap = originalMap;
 
 	if (simulatedErosion)

@@ -10,10 +10,10 @@ enum class FileType
     OBJ
 };
 
-class Exporter
+class IExporter
 {
 public:
-    virtual ~Exporter() = default;
+    virtual ~IExporter() = default;
     virtual bool Export(TerrainMesh& mesh, std::string outputPath) = 0;
 };
 

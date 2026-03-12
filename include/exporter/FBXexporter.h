@@ -1,11 +1,11 @@
 #ifndef _FBX_EXPORTER_H_
 #define _FBX_EXPORTER_H_
 
-#include "exporter/exporter.h"
+#include "exporter/iexporter.h"
 #include "renderer/vertex.h"
 #include <fbxsdk.h>
 
-class FBXExporter : public Exporter
+class FBXExporter : public IExporter
 {
 public:
 	bool Export(TerrainMesh& mesh, std::string outputPath) override;

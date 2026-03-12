@@ -13,6 +13,7 @@ class HydraulicErosion : public ISimulatedErosion
 {
 public:
 	HydraulicErosion(const HydraulicConfig& config, int seed);
+	~HydraulicErosion();
 	void Apply(HeightMap& heightmap) override;
 
 	void Step(HeightMap& heightmap, int dropsPerStep) override;

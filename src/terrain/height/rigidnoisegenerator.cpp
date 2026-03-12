@@ -1,5 +1,5 @@
 #include "terrain/height/ridgednoisegenerator.h"
-#include "core/parallelutils.h"
+#include "utils/parallelutils.h"
 
 RidgedNoiseGenerator::RidgedNoiseGenerator(
 	const TerrainConfig& config,

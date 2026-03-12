@@ -15,7 +15,10 @@
 #include "terrain/iterraingenerator.h"
 #include "terrain/terrainconfig.h"
 
-#include "exporter/exporter.h"
+#include "exporter/iexporter.h"
+
+#include "utils/iterraingeneratorfactory.h"
+#include "utils/iexporterfactory.h"
 
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/vector_angle.hpp>
@@ -35,7 +38,6 @@ public:
 	void FlagForUpdate(UpdateSceneFlag flag);
 	bool ChangeSkybox(SkyboxOption option);
 	void ExportTerrain(const FileType& type, const std::string& path);
-	void RebuildTerrainGenerator();
 	void positionAndOrientateCamera(ICamera& camera);
 
 	void StartErosion();
@@ -50,6 +52,8 @@ public:
 private:
 	TerrainConfig config;
 	std::unique_ptr<ITerrainGenerator> terrainGenerator;
+	std::unique_ptr<ITerrainGeneratorFactory> terrainGenFactory;
+	std::unique_ptr<IExporterFactory> exporterFactory;
 	TerrainMesh terrainMesh;
 	Transform& terrainTransform;
 

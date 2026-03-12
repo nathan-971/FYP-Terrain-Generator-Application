@@ -1,5 +1,5 @@
 #include "terrain/height/basenoisegenerator.h"
-#include "core/parallelutils.h"
+#include "utils/parallelutils.h"
 
 BaseNoiseGenerator::BaseNoiseGenerator(
 	const TerrainConfig& config, 

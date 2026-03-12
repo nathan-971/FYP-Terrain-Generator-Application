@@ -1,5 +1,5 @@
 #include "renderer/terrainmesh.h"
-#include "core/parallelutils.h"
+#include "utils/parallelutils.h"
 
 TerrainMesh::TerrainMesh() 
 	: finished(false), transform(), width(0), depth(0), vertexCountX(0), vertexCountZ(0), resolution(0.0f) { }

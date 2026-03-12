@@ -60,7 +60,6 @@ void Editor::ApplyCommands()
     {
         ctx.terrainConfig.erosionEnabled = ctx.state.erosionEnabled;
         scene.FlagForUpdate(UpdateSceneFlag::RebuildTerrainGenerator);
-        scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
         ctx.commands.changeErosionEnabled = false;
     }
 

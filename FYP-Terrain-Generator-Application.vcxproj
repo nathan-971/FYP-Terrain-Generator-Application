@@ -53,6 +53,7 @@
     <ClCompile Include="src\UI\panels\skyboxpanel.cpp" />
     <ClCompile Include="src\UI\uibase.cpp" />
     <ClCompile Include="src\UI\viewport\viewport.cpp" />
+    <ClCompile Include="src\utils\terraingeneratorfactory.cpp" />
     <ClCompile Include="thirdparty\glad\glad.c" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp" />
@@ -69,7 +70,6 @@
     <ClInclude Include="include\core\graphicscontext.h" />
     <ClInclude Include="include\core\icamera.h" />
     <ClInclude Include="include\core\iwindow.h" />
-    <ClInclude Include="include\core\parallelutils.h" />
     <ClInclude Include="include\core\window.h" />
     <ClInclude Include="include\exporter\exporter.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
@@ -127,6 +127,9 @@
     <ClInclude Include="include\UI\uibase.h" />
     <ClInclude Include="include\UI\viewport\framebuffer.h" />
     <ClInclude Include="include\UI\viewport\viewport.h" />
+    <ClInclude Include="include\utils\iterraingeneratorfactory.h" />
+    <ClInclude Include="include\utils\parallelutils.h" />
+    <ClInclude Include="include\utils\terraingeneratorfactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\depthFragment.glsl" />

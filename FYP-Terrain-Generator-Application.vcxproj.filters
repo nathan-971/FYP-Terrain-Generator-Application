@@ -94,6 +94,12 @@
     <Filter Include="Source Files\Terrain\Height">
       <UniqueIdentifier>{882692e6-0867-49bd-86d6-6d42da5e503e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{a2554eff-3137-41d3-88ba-8ff88748c6f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{81855a10-d1c7-4b33-adfe-438a65f46363}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -224,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="src\terrain\erosion\erosionhandler.cpp">
       <Filter>Source Files\Terrain\Erosion</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\terraingeneratorfactory.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,9 +413,6 @@
     <ClInclude Include="include\terrain\iterraingenerator.h">
       <Filter>Header Files\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\parallelutils.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="include\terrain\erosion\erosionhandler.h">
       <Filter>Header Files\Terrain\Erosion</Filter>
     </ClInclude>
@@ -415,6 +421,15 @@
     </ClInclude>
     <ClInclude Include="include\terrain\erosion\isimulatederosion.h">
       <Filter>Header Files\Terrain\Erosion</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\iterraingeneratorfactory.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\parallelutils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\terraingeneratorfactory.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
