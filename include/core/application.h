@@ -20,7 +20,7 @@
 #include "UI/uibase.h"
 
 #include "renderer/irenderer.h"
-#include "renderer/scene.h"
+#include "scene/scene.h"
 
 class Application
 {

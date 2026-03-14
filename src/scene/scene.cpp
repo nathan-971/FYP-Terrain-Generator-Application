@@ -1,4 +1,4 @@
-#include "renderer/scene.h"
+#include "scene/scene.h"
 
 #include "terrain/noise/noiseconfiguration.h"
 #include "terrain/warp/warpmode.h"
@@ -8,16 +8,18 @@
 
 #include <iostream>
 
-Scene::Scene() :
+Scene::Scene(
+    std::unique_ptr<ITerrainSystem> terrainSystem,
+    std::unique_ptr<ISkyboxSystem> skyboxSystem,
+    std::unique_ptr<IExporterFactory> exporterFactory
+) :
+    skybox(std::move(skyboxSystem)),
+    terrain(std::move(terrainSystem)),
+    exporterFactory(std::move(exporterFactory)),
     generated(false),
-    terrainMesh(),
-    terrainTransform(terrainMesh.getTransform()),
-    skyboxMesh(),
-    skybox(),
     light(),
-    flags(0)
-{
-    //DEFAULT CONFIG VALUES
+    flags(0) 
+{ 
     config.width = 100;
     config.depth = 100;
     config.resolution = 0.5f;
@@ -46,15 +48,10 @@ void Scene::Generate()
     {
         return;
     }
-    terrainGenFactory = std::make_unique<TerrainGeneratorFactory>();
-    exporterFactory = std::make_unique<ExporterFactory>();
 
-    terrainMesh.Create(config.width, config.depth, config.resolution);
+    terrain->Initalize(config);
 
-    terrainGenerator = terrainGenFactory->Create(config);
-    terrainGenerator->Generate(terrainMesh);
-
-    skybox.LoadTextures();
+    skybox->LoadTextures();
 
     light.position = glm::vec3(-150.0f, 150.0f, -150.0f);
     light.color = glm::vec3(1.0f);
@@ -67,28 +64,26 @@ void Scene::Generate()
 
 void Scene::Update(float deltaTime)
 {
-    if (flags & static_cast<uint8_t>(UpdateSceneFlag::Mesh))
+    if (flags & static_cast<uint8_t>(UpdateSceneFlag::TerrainMesh))
     {
-        terrainMesh.Create(config.width, config.depth, config.resolution);
+        terrain->RebuildMesh(config.width, config.depth, config.resolution);
     }
 
     if (flags & static_cast<uint8_t>(UpdateSceneFlag::RebuildTerrainGenerator))
     {
-        terrainGenerator = terrainGenFactory->Create(config);
+        terrain->RebuildGenerator(config);
     }
 
     if (flags & static_cast<uint8_t>(UpdateSceneFlag::HeightMap))
     {
-        terrainGenerator->UpdateParameters(config);
-        terrainGenerator->Generate(terrainMesh);
+        terrain->RebuildHeightMap(config);
     }
-    terrainGenerator->Update(terrainMesh);
 
-    glm::quat delta = glm::angleAxis(
-        glm::radians(config.rotationSpeed) * deltaTime,
-        glm::vec3(0, 1, 0)
-    );
-    terrainTransform.rotation = glm::normalize(delta * terrainTransform.rotation);
+    if (flags & static_cast<uint8_t>(UpdateSceneFlag::ChangeSkybox))
+    {
+        skybox->Change(config.skyboxOption);
+    }
+    terrain->Update(config, deltaTime);
     flags = 0;
 }
 
@@ -100,11 +95,6 @@ void Scene::FlagForUpdate(UpdateSceneFlag flag)
 bool Scene::isGenerated() const
 {
     return this->generated;
-}
-
-bool Scene::ChangeSkybox(SkyboxOption option) 
-{
-	return skybox.Change(option);
 }
 
 FrameData Scene::getFrameData(const ICamera& camera)
@@ -123,7 +113,7 @@ FrameData Scene::getFrameData(const ICamera& camera)
 
     glm::mat4 lightView = glm::lookAt(
         light.position,
-        glm::vec3(terrainTransform.getMatrix()[3]),
+        glm::vec3(terrain->getMeshTransform().getMatrix()[3]),
         glm::vec3(0, 1, 0)
     );
 
@@ -134,19 +124,19 @@ FrameData Scene::getFrameData(const ICamera& camera)
     frame.specularStrength = light.specular;
     frame.shininess = light.shininess;
 
-    frame.terrain.modelMatrix = terrainTransform.getMatrix();
-    frame.terrain.terrainMesh = &terrainMesh;
+    frame.terrain.modelMatrix = terrain->getMeshTransform().getMatrix();
+    frame.terrain.terrainMesh = &terrain->getMesh();
 
-	frame.skybox.skyboxMesh = &skyboxMesh;
-    frame.skybox.enabled = !skybox.isDisabled();
-    frame.skybox.skyboxTexture = skybox.getActiveTextureId();
+	frame.skybox.skyboxMesh = &skybox->getMesh();
+    frame.skybox.enabled = !skybox->isDisabled();
+    frame.skybox.skyboxTexture = skybox->getActiveTexture();
 
     return frame;
 }
 
 void Scene::positionAndOrientateCamera(ICamera& camera)
 {
-    glm::vec3 meshLocalPos = terrainTransform.getMatrix()[3];
+    glm::vec3 meshLocalPos = terrain->getMeshTransform().getMatrix()[3];
     camera.setPosition(glm::vec3(
         meshLocalPos.x - 75.0f,
         100.0f,
@@ -160,14 +150,14 @@ void Scene::ExportTerrain(const FileType& type, const std::string& path)
     try
     {
         std::unique_ptr<IExporter> exporter = exporterFactory->Create(type);
-        if (exporter->Export(terrainMesh, path))
+        if (exporter->Export(terrain->getMesh(), path))
         {
             std::cout << "saved model file!";
             return;
         }
         std::cout << "Failed to save Model File!";
     }
-    catch (const std::exception e)
+    catch (const std::exception& e)
     {
         std::cout << "Error Exporting Terrain to File!";
         return;
@@ -184,31 +174,17 @@ TerrainConfig& Scene::getConfig()
     return config;
 }
 
-TerrainMesh& Scene::getTerrainMesh()
-{
-    return terrainMesh;
-}
-
 void Scene::StartErosion()
 {
-    if (terrainGenerator)
-    {
-        terrainGenerator->StartErosion();
-    }
+    terrain->StartErosion();
 }
 
 void Scene::StopErosion()
 {
-    if (terrainGenerator)
-    {
-        terrainGenerator->StopErosion();
-    }
+    terrain->StopErosion();
 }
 
 void Scene::ResetErosion()
 {
-    if (terrainGenerator)
-    {
-        terrainGenerator->ResetErosion();
-    }
+    terrain->ResetErosion();
 }

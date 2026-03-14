@@ -1,4 +1,4 @@
-#include "renderer/terrainmesh.h"
+#include "scene/terrain/terrainmesh.h"
 #include "utils/parallelutils.h"
 
 TerrainMesh::TerrainMesh() 

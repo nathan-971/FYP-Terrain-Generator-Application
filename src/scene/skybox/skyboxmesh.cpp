@@ -1,4 +1,4 @@
-#include "renderer/skyboxmesh.h"
+#include "scene/skybox/skyboxmesh.h"
 
 SkyboxMesh::SkyboxMesh()
 {

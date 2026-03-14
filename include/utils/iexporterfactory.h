@@ -1,7 +1,7 @@
 #ifndef _I_EXPORTER_FACTORY_H_
 #define _I_EXPORTER_FACTORY_H_
 
-#include "exporter/exporter.h"
+#include "exporter/iexporter.h"
 
 #include <memory>
 

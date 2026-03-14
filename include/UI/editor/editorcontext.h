@@ -3,8 +3,10 @@
 
 #include "UI/editor/editorstate.h"
 #include "UI/editor/editorcommands.h"
+
 #include "terrain/terrainConfig.h"
-#include "renderer/scene.h"
+
+#include "scene/scene.h"
 
 struct EditorContext
 {

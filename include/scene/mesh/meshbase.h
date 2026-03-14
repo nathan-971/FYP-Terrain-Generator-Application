@@ -1,7 +1,7 @@
 #ifndef _H_MESH_BASE_
 #define _H_MESH_BASE_
 
-#include "renderer/vertex.h"
+#include "scene/mesh/vertex.h"
 
 #include <glad/glad.h>
 #include <vector>

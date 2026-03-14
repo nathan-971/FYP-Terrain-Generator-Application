@@ -1,4 +1,4 @@
-#include "renderer/skybox.h"
+#include "scene/skybox/skybox.h"
 #include <glad/glad.h>
 #include "stb/stb_image.h"
 

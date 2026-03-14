@@ -1,9 +1,9 @@
 #ifndef _MESH_H_
 #define _MESH_H_
 
-#include "renderer/meshbase.h"
-#include "renderer/vertex.h"
-#include "renderer/transform.h"
+#include "scene/mesh/meshbase.h"
+#include "scene/mesh/vertex.h"
+#include "scene/mesh/transform.h"
 
 #include "terrain/heightmap.h"
 

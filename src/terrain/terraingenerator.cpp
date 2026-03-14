@@ -1,6 +1,7 @@
 #include "terrain/terraingenerator.h"
-#include "renderer/terrainmesh.h"
 #include "terrain/heightmap.h"
+
+#include "scene/terrain/terrainmesh.h"
 
 TerrainGenerator::TerrainGenerator(
 	std::unique_ptr<IHeightGenerator> heightGenerator,

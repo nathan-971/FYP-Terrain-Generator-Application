@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "skyboxoption.h"
+#include "scene/skybox/skyboxoption.h"
 
 class Skybox
 {

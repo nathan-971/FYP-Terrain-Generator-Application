@@ -1,4 +1,4 @@
-#include "renderer/meshbase.h"
+#include "scene/mesh/meshbase.h"
 
 MeshBase::MeshBase()
 	: VAO(0), VBO(0), EBO(0), vertexCount(0), indicesCount(0), indexed(false)

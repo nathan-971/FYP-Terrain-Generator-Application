@@ -1,8 +1,8 @@
 #ifndef _H_SKYBOX_MESH_H_
 #define _H_SKYBOX_MESH_H_
 
-#include "renderer/vertex.h"
-#include "renderer/meshbase.h"
+#include "scene/mesh/vertex.h"
+#include "scene/mesh/meshbase.h"
 
 class SkyboxMesh : public MeshBase
 {

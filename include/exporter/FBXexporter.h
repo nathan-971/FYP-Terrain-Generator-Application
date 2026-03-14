@@ -2,7 +2,7 @@
 #define _FBX_EXPORTER_H_
 
 #include "exporter/iexporter.h"
-#include "renderer/vertex.h"
+#include "scene/mesh/vertex.h"
 #include <fbxsdk.h>
 
 class FBXExporter : public IExporter

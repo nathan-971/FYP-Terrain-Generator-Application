@@ -1,7 +1,7 @@
 #ifndef _EXPORTER_H_
 #define _EXPORTER_H_
 
-#include "renderer/terrainmesh.h"
+#include "scene/terrain/terrainmesh.h"
 #include <string>
 
 enum class FileType

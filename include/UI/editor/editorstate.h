@@ -3,7 +3,8 @@
 
 #include "terrain/noise/noiseconfiguration.h"
 #include "terrain/warp/warpmode.h"
-#include "renderer/skyboxoption.h"
+
+#include "scene/skybox/skyboxoption.h"
 
 struct EditorState
 {

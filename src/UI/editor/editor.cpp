@@ -6,7 +6,7 @@
 #include "UI/panels/skyboxpanel.h"
 #include "UI/panels/exportpanel.h"
 #include "UI/panels/heightmappanel.h"
-#include "renderer/updatesceneflag.h"
+#include "scene/updatesceneflag.h"
 #include "IconsFontAwesome6.h"
 
 #include <iostream>
@@ -92,7 +92,7 @@ void Editor::ApplyCommands()
 
     if (ctx.commands.updateMesh)
     {
-        scene.FlagForUpdate(UpdateSceneFlag::Mesh);
+        scene.FlagForUpdate(UpdateSceneFlag::TerrainMesh);
         ctx.commands.updateMesh = false;
     }
 
@@ -104,7 +104,8 @@ void Editor::ApplyCommands()
 
     if (ctx.commands.changeSkybox)
     {
-		scene.ChangeSkybox(ctx.state.skyboxOption);
+        ctx.terrainConfig.skyboxOption = ctx.state.skyboxOption;
+        scene.FlagForUpdate(UpdateSceneFlag::ChangeSkybox);
 		ctx.commands.changeSkybox = false;
     }
 

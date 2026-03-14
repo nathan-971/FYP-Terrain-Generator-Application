@@ -10,9 +10,15 @@
 #include "UI/imguilayer.h"
 #include "UI/uibase.h"
 
-#include "renderer/scene.h"
 #include "renderer/renderer.h"
 #include "renderer/shader.h"
+
+#include "scene/scene.h"
+#include "scene/terrain/terrainsystem.h"
+#include "scene/skybox/skyboxsystem.h"
+
+#include "utils/terraingeneratorfactory.h"
+#include "utils/exporterfactory.h"
 
 int main()
 {
@@ -36,8 +42,12 @@ int main()
 			WORLD_ORIGIN
 		);
 
-		// Initialize Scene
-		std::unique_ptr<Scene> scene = std::make_unique<Scene>();
+		// Initialize Scene Systems and Scene Itself
+		std::unique_ptr<Scene> scene = std::make_unique<Scene>(
+			std::make_unique<TerrainSystem>(std::make_unique<TerrainGeneratorFactory>()),
+			std::make_unique<SkyboxSystem>(),
+			std::make_unique<ExporterFactory>()
+		);
 
 		// Initialize Shaders and Renderer
 		std::unique_ptr<Shader> depthShader = std::make_unique<Shader>();
@@ -76,7 +86,7 @@ int main()
         );
         application.Run();
     }
-	catch (const std::exception ex)
+	catch (const std::exception& ex)
     {
         std::cerr << "An Error Occurred during Application Runtime: " << ex.what() << std::endl;
         return EXIT_FAILURE;

@@ -1,7 +1,7 @@
 #ifndef _TERRAIN_GENERATOR_H_
 #define _TERRAIN_GENERATOR_H_
 
-#include "renderer/terrainmesh.h"
+#include "scene/terrain/terrainmesh.h"
 
 #include "terrain/terrainconfig.h"
 #include "terrain/iterraingenerator.h"

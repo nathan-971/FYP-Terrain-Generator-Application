@@ -4,9 +4,10 @@
 enum class UpdateSceneFlag : uint8_t
 {
 	None = 0,
-	Mesh = 1 << 0,
+	TerrainMesh = 1 << 0,
 	HeightMap = 1 << 1,
-	RebuildTerrainGenerator = 1 << 2
+	RebuildTerrainGenerator = 1 << 2,
+	ChangeSkybox = 1 << 3
 };
 
 #endif

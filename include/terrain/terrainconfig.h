@@ -1,6 +1,8 @@
 #ifndef _TERRAIN_CONFIG_H_
 #define _TERRAIN_CONFIG_H_
 
+#include "scene/skybox/skyboxoption.h"
+
 #include "terrain/warp/warpmode.h"
 #include "terrain/noise/noiseconfiguration.h"
 
@@ -26,8 +28,10 @@ struct TerrainConfig
 	//Erosion
 	bool erosionEnabled;
 
+	//Enumerated Configurations
 	WarpMode warpMode;
 	NoiseConfiguration noiseConfig;
+	SkyboxOption skyboxOption;
 };
 
 #endif

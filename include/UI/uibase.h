@@ -6,7 +6,8 @@
 #include "UI/editor/editor.h"
 #include "UI/viewport/viewport.h"
 
-#include "renderer/scene.h"
+#include "scene/scene.h"
+
 #include "renderer/iviewportprovider.h"
 
 class UIBase

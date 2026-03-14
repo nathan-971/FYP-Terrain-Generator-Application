@@ -5,10 +5,12 @@
 #include "imgui/imgui_internal.h"
 
 #include "core/icamera.h"
+
 #include "ui/viewport/framebuffer.h"
 
 #include "renderer/iviewportprovider.h"
-#include "renderer/scene.h"
+
+#include "scene/scene.h"
 
 class Viewport
 {

@@ -8,7 +8,7 @@
 #include "UI/panels/ipanel.h"
 #include "UI/editor/editorcontext.h"
 
-#include "renderer/scene.h"
+#include "scene/scene.h"
 
 class Editor
 {

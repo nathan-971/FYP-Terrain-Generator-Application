@@ -1,5 +1,5 @@
 #include "UI/panels/skyboxpanel.h"
-#include "renderer/skyboxoption.h"
+#include "scene/skybox/skyboxoption.h"
 
 void SkyboxPanel::Display(EditorContext& ctx)
 {

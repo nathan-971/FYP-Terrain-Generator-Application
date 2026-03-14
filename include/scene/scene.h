@@ -5,19 +5,15 @@
 
 #include "core/icamera.h"
 
-#include "renderer/terrainmesh.h"
-#include "renderer/skybox.h"
-#include "renderer/skyboxmesh.h"
-#include "renderer/framedata.h"
-#include "renderer/light.h"
-#include "renderer/updatesceneflag.h"
+#include "scene/terrain/terrainsystem.h"
+#include "scene/skybox/iskyboxsystem.h"
+#include "scene/lighting/light.h"
+#include "scene/updatesceneflag.h"
 
-#include "terrain/iterraingenerator.h"
-#include "terrain/terrainconfig.h"
+#include "renderer/framedata.h"
 
 #include "exporter/iexporter.h"
 
-#include "utils/iterraingeneratorfactory.h"
 #include "utils/iexporterfactory.h"
 
 #include <glm/gtx/quaternion.hpp>
@@ -28,15 +24,19 @@
 class Scene
 {
 public:
-	Scene();
+	Scene(
+		std::unique_ptr<ITerrainSystem> terrainSystem, 
+		std::unique_ptr<ISkyboxSystem> skyboxSystem,
+		std::unique_ptr<IExporterFactory> exporterFactory
+	);
 	~Scene();
 
-	void Update(float deltaTime);
 	void Generate();
 	bool isGenerated() const;
 
+	void Update(float deltaTime);
 	void FlagForUpdate(UpdateSceneFlag flag);
-	bool ChangeSkybox(SkyboxOption option);
+
 	void ExportTerrain(const FileType& type, const std::string& path);
 	void positionAndOrientateCamera(ICamera& camera);
 
@@ -46,22 +46,18 @@ public:
 
 	FrameData getFrameData(const ICamera& camera);
 	TerrainConfig& getConfig();
-	TerrainMesh& getTerrainMesh(); //Needs Refactoring Heightmap Panel in Editor Directly Calls
+	//TerrainMesh& getTerrainMesh(); //Needs Refactoring Heightmap Panel in Editor Directly Calls
 	Light& getLight(); //Needs Refactoring Light Panel in Editor Directly Calls
 
 private:
-	TerrainConfig config;
-	std::unique_ptr<ITerrainGenerator> terrainGenerator;
-	std::unique_ptr<ITerrainGeneratorFactory> terrainGenFactory;
 	std::unique_ptr<IExporterFactory> exporterFactory;
-	TerrainMesh terrainMesh;
-	Transform& terrainTransform;
+	std::unique_ptr<ISkyboxSystem> skybox;
+	std::unique_ptr<ITerrainSystem> terrain;
 
-	Skybox skybox;
-	SkyboxMesh skyboxMesh;
+	TerrainConfig config;
 
 	Light light;
-
+	
 	uint8_t flags;
 
 	bool generated;

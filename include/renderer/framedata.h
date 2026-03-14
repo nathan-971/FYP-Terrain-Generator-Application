@@ -3,8 +3,8 @@
 
 #include <glm/glm.hpp>
 
-#include "renderer/terrainmesh.h"
-#include "renderer/skyboxmesh.h"
+#include "scene/terrain/terrainmesh.h"
+#include "scene/skybox/skyboxmesh.h"
 
 struct TerrainRenderData
 {
