@@ -5,24 +5,28 @@
 #include "scene/terrain/terrainmesh.h"
 #include "terrain/terrainconfig.h"
 
+#include <glm/glm.hpp>
+
 class ITerrainSystem
 {
 public:
 	virtual ~ITerrainSystem() = default;
 
-    virtual void Initalize(const TerrainConfig& config) = 0;
-    virtual void Update(const TerrainConfig& config, float deltaTime) = 0;
+    virtual void Initalize() = 0;
+    virtual void Update(float deltaTime) = 0;
 
-    virtual void RebuildGenerator(const TerrainConfig& config) = 0;
-    virtual void RebuildHeightMap(const TerrainConfig& config) = 0;
-    virtual void RebuildMesh(int width, int depth, float resolution) = 0;
+    virtual void RebuildGenerator() = 0;
+    virtual void RebuildHeightMap() = 0;
+    virtual void RebuildMesh() = 0;
 
     virtual void StartErosion() = 0;
     virtual void StopErosion() = 0;
     virtual void ResetErosion() = 0;
-
-    virtual TerrainMesh& getMesh() = 0;
-    virtual Transform& getMeshTransform() = 0;
+    
+    virtual TerrainConfig& getConfig() = 0;
+    virtual glm::vec3 getTerrainPosition() const = 0;
+    virtual const TerrainMesh& getMesh() const = 0;
+    virtual const Transform& getMeshTransform() const = 0;
 };
 
 #endif

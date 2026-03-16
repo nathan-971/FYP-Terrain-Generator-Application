@@ -1,4 +1,5 @@
 #include "renderer/renderer.h"
+
 #include <utility>
 
 #define SHADOWMAP_HEIGHT 2048
@@ -44,6 +45,46 @@ void Renderer::RenderScene(const FrameData& frameData)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+FrameData Renderer::getFrameData(const ICamera& camera, const IScene& scene)
+{
+    FrameData frame;
+    auto& light = scene.Lighting().getLight();
+    auto& terrain = scene.Terrain();
+    auto& skybox = scene.Skybox();
+
+    frame.viewMatrix = camera.getView();
+    frame.projectionMatrix = camera.getProjection();
+    frame.cameraPosition = camera.getPosition();
+
+    glm::mat4 lightProjection = glm::ortho(
+        -80.0f, 80.0f,
+        -80.0f, 80.0f,
+        1.0f, 120.0f
+    );
+
+    glm::mat4 lightView = glm::lookAt(
+        light.position,
+        glm::vec3(terrain.getMeshTransform().getMatrix()[3]),
+        glm::vec3(0, 1, 0)
+    );
+
+    frame.lightSpaceMatrix = lightProjection * lightView;
+    frame.lightPosition = light.position;
+    frame.lightColor = light.color;
+    frame.ambientStrength = light.ambient;
+    frame.specularStrength = light.specular;
+    frame.shininess = light.shininess;
+
+    frame.terrain.modelMatrix = terrain.getMeshTransform().getMatrix();
+    frame.terrain.terrainMesh = &terrain.getMesh();
+
+    frame.skybox.skyboxMesh = &skybox.getMesh();
+    frame.skybox.enabled = !skybox.isDisabled();
+    frame.skybox.skyboxTexture = skybox.getActiveTexture();
+
+    return frame;
+}
+
 void Renderer::ResizeViewport(int width, int height)
 {
     if (width == 0 || height == 0)
@@ -57,8 +98,6 @@ void Renderer::ResizeViewport(int width, int height)
 
 void Renderer::renderDepthPass(const FrameData& frameData)
 {
-    TerrainMesh* mesh = frameData.terrain.terrainMesh;
-
     glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFramebuffer.fbo);
     glViewport(0, 0, shadowMapFramebuffer.width, shadowMapFramebuffer.height);
     glClear(GL_DEPTH_BUFFER_BIT);
@@ -67,14 +106,13 @@ void Renderer::renderDepthPass(const FrameData& frameData)
     depthShader->setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
     depthShader->setUniformMat("model", frameData.terrain.modelMatrix);
 
-    mesh->Draw();
+    frameData.terrain.terrainMesh->Draw();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Renderer::renderLightPass(const FrameData& frameData)
 {
     glm::mat4 model = frameData.terrain.modelMatrix;
-    TerrainMesh* mesh = frameData.terrain.terrainMesh;
 
     terrainShader->Activate();
     terrainShader->setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
@@ -93,13 +131,12 @@ void Renderer::renderLightPass(const FrameData& frameData)
     terrainShader->setUniformInt("shadowMap", 0);
 
     terrainShader->setUniformMat("model", model);
-	mesh->Draw();
+    frameData.terrain.terrainMesh->Draw();
 }
 
 void Renderer::renderSkyboxPass(const FrameData& frameData)
 {
     glm::mat4 view = glm::mat4(glm::mat3(frameData.viewMatrix));
-    SkyboxMesh* mesh = frameData.skybox.skyboxMesh;
 
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_FALSE);
@@ -113,7 +150,7 @@ void Renderer::renderSkyboxPass(const FrameData& frameData)
     glBindTexture(GL_TEXTURE_CUBE_MAP, frameData.skybox.skyboxTexture);
 
     glDisable(GL_CULL_FACE);
-    mesh->Draw();
+    frameData.skybox.skyboxMesh->Draw();
     glEnable(GL_CULL_FACE);
 
     glDepthMask(GL_TRUE);

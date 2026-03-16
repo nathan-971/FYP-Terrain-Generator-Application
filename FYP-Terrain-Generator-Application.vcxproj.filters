@@ -130,6 +130,12 @@
     <Filter Include="Header Files\Scene\Skybox">
       <UniqueIdentifier>{7a0d0b3d-39bf-4191-b517-040a6a1010a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Core\Camera">
+      <UniqueIdentifier>{727cda77-5f0f-42e2-9bea-bce7a426e78c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core\Camera">
+      <UniqueIdentifier>{2e8fbe68-7835-43b4-b460-123afb7052d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -161,9 +167,6 @@
     </ClCompile>
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp">
       <Filter>Source Files\ImGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\camera.cpp">
-      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\shader.cpp">
       <Filter>Source Files\Renderer</Filter>
@@ -273,11 +276,20 @@
     <ClCompile Include="src\scene\skybox\skyboxsystem.cpp">
       <Filter>Source Files\Scene\Skybox</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\lighting\lightingsystem.cpp">
+      <Filter>Source Files\Scene\Lighting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\exporter\terrainexporterservice.cpp">
+      <Filter>Source Files\Exporter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\camera\camera.cpp">
+      <Filter>Source Files\Core\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\camera\cameracontroller.cpp">
+      <Filter>Source Files\Core\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\core\camera.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="include\renderer\shader.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
@@ -363,9 +375,6 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="include\core\graphicscontext.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\icamera.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="include\renderer\ishader.h">
@@ -487,6 +496,36 @@
     </ClInclude>
     <ClInclude Include="include\scene\skybox\iskyboxsystem.h">
       <Filter>Header Files\Scene\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene\lighting\lightingsystem.h">
+      <Filter>Header Files\Scene\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene\lighting\ilightingsystem.h">
+      <Filter>Header Files\Scene\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="include\exporter\terrainexporterservice.h">
+      <Filter>Header Files\Exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\exporter\iterrainexporterservice.h">
+      <Filter>Header Files\Exporter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene\skybox\skyboxconfig.h">
+      <Filter>Header Files\Scene\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\camera\camera.h">
+      <Filter>Header Files\Core\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\camera\cameracontroller.h">
+      <Filter>Header Files\Core\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\camera\icamera.h">
+      <Filter>Header Files\Core\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\camera\icameracontroller.h">
+      <Filter>Header Files\Core\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene\iscene.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

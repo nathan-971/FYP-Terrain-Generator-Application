@@ -127,19 +127,24 @@ void TerrainMesh::buildMesh()
 	}
 }
 
-std::vector<Vertex>& TerrainMesh::GetVertices()
+const std::vector<Vertex>& TerrainMesh::GetVertices() const
 {
-	return this->vertices;
+	return vertices;
 }
 
-std::vector<unsigned int>& TerrainMesh::GetIndices()
+const std::vector<unsigned int>& TerrainMesh::GetIndices() const
 {
-	return this->indices;
+	return indices;
+}
+
+const Transform& TerrainMesh::getTransform() const
+{
+	return transform;
 }
 
 Transform& TerrainMesh::getTransform()
 {
-	return this->transform;
+	return transform;
 }
 
 int TerrainMesh::GetVertexXCount()
@@ -147,7 +152,17 @@ int TerrainMesh::GetVertexXCount()
 	return vertexCountX;
 }
 
+const int TerrainMesh::GetVertexXCount() const
+{
+	return vertexCountX;
+}
+
 int TerrainMesh::GetVertexZCount()
+{
+	return vertexCountZ;
+}
+
+const int TerrainMesh::GetVertexZCount() const
 {
 	return vertexCountZ;
 }

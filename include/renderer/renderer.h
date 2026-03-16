@@ -1,14 +1,17 @@
 #ifndef _RENDERER_H_
 #define _RENDERER_H_
 
-#include <memory>
-#include <glm/glm.hpp>
+#include "scene/iscene.h"
 
 #include "renderer/irenderer.h"
 #include "renderer/iviewportprovider.h"
 #include "renderer/ishader.h"
 #include "renderer/framedata.h"
+
 #include "ui/viewport/framebuffer.h"
+
+#include <memory>
+#include <glm/glm.hpp>
 
 class Renderer : public IRenderer, public IViewportProvider
 {
@@ -23,6 +26,7 @@ public:
 	~Renderer();
 
 	void RenderScene(const FrameData& frameData) override;
+	FrameData getFrameData(const ICamera& camera, const IScene& scene) override;
 
 	void ResizeViewport(int width, int height) override;
 	unsigned int getViewportTexture() const override;

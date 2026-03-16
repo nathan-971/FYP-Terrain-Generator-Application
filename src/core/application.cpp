@@ -4,15 +4,17 @@
 Application::Application(
 	std::unique_ptr<IWindow> window,
 	std::unique_ptr<ICamera> camera,
-	std::unique_ptr<Scene> scene,
+	std::unique_ptr<ICameraController> cameraController,
+	std::unique_ptr<IScene> scene,
 	std::unique_ptr<IRenderer> renderer,
 	std::unique_ptr<ImGuiLayer> imguiLayer,
 	std::unique_ptr<UIBase> ui
 ) :
 	window(std::move(window)),
+	camera(std::move(camera)),
+	cameraController(std::move(cameraController)),
 	scene(std::move(scene)),
 	renderer(std::move(renderer)),
-	camera(std::move(camera)),
 	imguiLayer(std::move(imguiLayer)),
 	ui(std::move(ui))
 { 
@@ -28,8 +30,7 @@ void Application::Init()
 {
 	imguiLayer->Init(*window);
 	lastFrameTime = window->getTime();
-	scene->Generate();
-	scene->positionAndOrientateCamera(*camera);
+	cameraController->PositionCamera(*camera, scene->Terrain().getTerrainPosition());
 }
 
 void Application::Run()
@@ -48,7 +49,7 @@ void Application::Run()
 		imguiLayer->BeginFrame();
 
 		ui->PreRender();
-		renderer->RenderScene(scene->getFrameData(*camera));
+		renderer->RenderScene(renderer->getFrameData(*camera, *scene));
 		ui->Render();
 
 		imguiLayer->EndFrame();

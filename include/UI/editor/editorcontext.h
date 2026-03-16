@@ -4,14 +4,17 @@
 #include "UI/editor/editorstate.h"
 #include "UI/editor/editorcommands.h"
 
+#include "scene/skybox/skyboxconfig.h"
 #include "terrain/terrainConfig.h"
 
-#include "scene/scene.h"
+#include "scene/iscene.h"
 
 struct EditorContext
 {
-	Scene& scene;
+	IScene& scene;
 	TerrainConfig& terrainConfig;
+	SkyboxConfig& skyboxConfig;
+
 	EditorState state;
 	EditorCommands commands;
 };

@@ -5,10 +5,13 @@
 #include "core/application.h"
 
 #include "core/window.h"
-#include "core/camera.h"
+#include "core/camera/camera.h"
+#include "core/camera/cameracontroller.h"
 
 #include "UI/imguilayer.h"
 #include "UI/uibase.h"
+
+#include "exporter/terrainexporterservice.h"
 
 #include "renderer/renderer.h"
 #include "renderer/shader.h"
@@ -16,6 +19,7 @@
 #include "scene/scene.h"
 #include "scene/terrain/terrainsystem.h"
 #include "scene/skybox/skyboxsystem.h"
+#include "scene/lighting/lightingsystem.h"
 
 #include "utils/terraingeneratorfactory.h"
 #include "utils/exporterfactory.h"
@@ -35,18 +39,20 @@ int main()
 		GraphicsContext graphics(*window);
 		graphics.Init();
 
-		// Initialize Camera
+		// Initialize Camera and Controller
 		std::unique_ptr<Camera> camera = std::make_unique<Camera>(
 			SCR_WIDTH,
 			SCR_HEIGHT,
 			WORLD_ORIGIN
 		);
 
+		std::unique_ptr<CameraController> camController = std::make_unique<CameraController>();
+
 		// Initialize Scene Systems and Scene Itself
 		std::unique_ptr<Scene> scene = std::make_unique<Scene>(
 			std::make_unique<TerrainSystem>(std::make_unique<TerrainGeneratorFactory>()),
 			std::make_unique<SkyboxSystem>(),
-			std::make_unique<ExporterFactory>()
+			std::make_unique<LightingSystem>()
 		);
 
 		// Initialize Shaders and Renderer
@@ -66,6 +72,11 @@ int main()
 			SCR_HEIGHT
 		);
 
+		// Initalize Exporter Service
+		std::unique_ptr<TerrainExporterService> exporterService = std::make_unique<TerrainExporterService>(
+			std::make_unique<ExporterFactory>()
+		);
+
 		// Initialize ImGUI
 		std::unique_ptr<ImGuiLayer> imguiLayer = std::make_unique<ImGuiLayer>();
 
@@ -73,12 +84,14 @@ int main()
 		std::unique_ptr<UIBase> ui = std::make_unique<UIBase>(
 			*scene,
 			*camera,
-			*renderer
+			*renderer,
+			*exporterService
 		);
 
         Application application(
             std::move(window),
             std::move(camera),
+			std::move(camController),
             std::move(scene),
             std::move(renderer),
             std::move(imguiLayer),

@@ -18,11 +18,14 @@ public:
 	void Create(unsigned int width, unsigned int depth, float resolution);
 	void RecalculateNormals();
 
-	std::vector<Vertex>& GetVertices();
-	std::vector<unsigned int>& GetIndices();
+	const std::vector<Vertex>& GetVertices() const;
+	const std::vector<unsigned int>& GetIndices() const;
+	const Transform& getTransform() const;
 	Transform& getTransform();
 	int GetVertexXCount();
+	const int GetVertexXCount() const;
 	int GetVertexZCount();
+	const int GetVertexZCount() const;
 
 private:
 	void buildMesh();

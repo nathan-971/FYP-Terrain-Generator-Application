@@ -14,13 +14,15 @@
 #include <memory>
 
 #include "core/iwindow.h"
-#include "core/icamera.h"
+#include "core/camera/icamera.h"
+#include "core/camera/icameracontroller.h"
+
+#include "scene/iscene.h"
+
+#include "renderer/irenderer.h"
 
 #include "UI/imguilayer.h"
 #include "UI/uibase.h"
-
-#include "renderer/irenderer.h"
-#include "scene/scene.h"
 
 class Application
 {
@@ -28,7 +30,8 @@ public:
 	Application(
 		std::unique_ptr<IWindow> window,
 		std::unique_ptr<ICamera> camera,
-		std::unique_ptr<Scene> scene,
+		std::unique_ptr<ICameraController> cameraController,
+		std::unique_ptr<IScene> scene,
 		std::unique_ptr<IRenderer> renderer,
 		std::unique_ptr<ImGuiLayer> imguiLayer,
 		std::unique_ptr<UIBase> ui
@@ -41,9 +44,10 @@ private:
 	void Shutdown();
 
 	std::unique_ptr<IWindow> window;
-	std::unique_ptr<Scene> scene; //IScene
+	std::unique_ptr<IScene> scene;
 	std::unique_ptr<IRenderer> renderer;
 	std::unique_ptr<ICamera> camera;
+	std::unique_ptr<ICameraController> cameraController;
 
 	std::unique_ptr<ImGuiLayer> imguiLayer; //IImGuiLayer
 	std::unique_ptr<UIBase> ui; //IUIBase

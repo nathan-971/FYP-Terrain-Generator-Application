@@ -31,7 +31,6 @@ struct TerrainConfig
 	//Enumerated Configurations
 	WarpMode warpMode;
 	NoiseConfiguration noiseConfig;
-	SkyboxOption skyboxOption;
 };
 
 #endif

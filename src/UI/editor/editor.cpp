@@ -13,9 +13,10 @@
 #include <filesystem>
 #include <vector>
 
-Editor::Editor(Scene& scene) : 
+Editor::Editor(IScene& scene, ITerrainExporterService& exporterService) :
 	scene(scene),
-    ctx{ scene, scene.getConfig() }
+    exporterService(exporterService),
+    ctx{ scene, scene.Terrain().getConfig(), scene.Skybox().getConfig() }
 {
     panels.push_back(std::make_unique<MeshPanel>());
     panels.push_back(std::make_unique<NoisePanel>());
@@ -65,19 +66,19 @@ void Editor::ApplyCommands()
 
     if (ctx.commands.startErosion && ctx.terrainConfig.erosionEnabled)
     {
-        scene.StartErosion();
+        scene.FlagForUpdate(UpdateSceneFlag::StartErosion);
         ctx.commands.startErosion = false;
     }
 
     if (ctx.commands.stopErosion)
     {
-        scene.StopErosion();
+        scene.FlagForUpdate(UpdateSceneFlag::StopErosion);
         ctx.commands.stopErosion = false;
     }
 
     if (ctx.commands.resetErosion)
     {
-        scene.ResetErosion();
+        scene.FlagForUpdate(UpdateSceneFlag::ResetErosion);
         scene.FlagForUpdate(UpdateSceneFlag::HeightMap);
         ctx.commands.resetErosion = false;
     }
@@ -104,7 +105,7 @@ void Editor::ApplyCommands()
 
     if (ctx.commands.changeSkybox)
     {
-        ctx.terrainConfig.skyboxOption = ctx.state.skyboxOption;
+        ctx.skyboxConfig.skyboxOption = ctx.state.skyboxOption;
         scene.FlagForUpdate(UpdateSceneFlag::ChangeSkybox);
 		ctx.commands.changeSkybox = false;
     }
@@ -124,7 +125,7 @@ void Editor::ApplyCommands()
 
     if (exportPathMade)
     {
-        scene.ExportTerrain(selectedExportType, exportPathString);
+        exporterService.ExportTerrain(scene.Terrain().getMesh(), selectedExportType, exportPathString);
         exportPathMade = false;
     }
 }

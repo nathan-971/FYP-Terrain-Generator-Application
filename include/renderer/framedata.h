@@ -8,33 +8,33 @@
 
 struct TerrainRenderData
 {
-	glm::mat4 modelMatrix;
-	TerrainMesh* terrainMesh;
+	glm::mat4 modelMatrix { };
+	const TerrainMesh* terrainMesh;
 };
 
 struct SkyboxRenderData
 {
-	SkyboxMesh* skyboxMesh;
-	unsigned int skyboxTexture;
+	const SkyboxMesh* skyboxMesh;
+	unsigned int skyboxTexture = 0;
 	bool enabled = false;
 };
 
 struct FrameData 
 {
-	glm::mat4 viewMatrix;
-	glm::mat4 projectionMatrix;
+	glm::mat4 viewMatrix { };
+	glm::mat4 projectionMatrix { };
 
-	glm::vec3 cameraPosition;
-	glm::vec3 cameraOrientation;
-	glm::vec3 cameraUp;
+	glm::vec3 cameraPosition { };
+	glm::vec3 cameraOrientation { };
+	glm::vec3 cameraUp { };
 
-	glm::mat4 lightSpaceMatrix;
-	glm::vec3 lightPosition;
-	glm::vec3 lightColor;
+	glm::mat4 lightSpaceMatrix { };
+	glm::vec3 lightPosition { };
+	glm::vec3 lightColor { };
 
-	float ambientStrength;
-	float specularStrength;
-	int shininess;
+	float ambientStrength { };
+	float specularStrength { };
+	int shininess { };
 
 	TerrainRenderData terrain;
 	SkyboxRenderData skybox;

@@ -5,15 +5,18 @@
 #include <memory>
 #include <filesystem>
 
+#include "exporter/iexporter.h"
+#include "exporter/iterrainexporterservice.h"
+
 #include "UI/panels/ipanel.h"
 #include "UI/editor/editorcontext.h"
 
-#include "scene/scene.h"
+#include "scene/iscene.h"
 
 class Editor
 {
 public:
-	Editor(Scene& scene);
+	Editor(IScene& scene, ITerrainExporterService& exporterService);
 
 	void Render();
 	void ApplyCommands();
@@ -22,7 +25,8 @@ private:
 	void renderFileDialog();
 	bool canAccessDirectory(const std::filesystem::path& path);
 
-	Scene& scene;
+	IScene& scene;
+	ITerrainExporterService& exporterService;
 
 	EditorContext ctx;
 	std::vector<std::unique_ptr<IPanel>> panels;

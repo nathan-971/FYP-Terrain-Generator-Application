@@ -15,8 +15,8 @@ public:
 
 	bool Change(SkyboxOption& option);
 	bool LoadTextures();
-	bool isDisabled();
-	unsigned int getActiveTextureId();
+	bool isDisabled() const;
+	unsigned int getActiveTextureId() const;
 
 private:
 	unsigned int loadSkyboxTexture(SkyboxOption& option);

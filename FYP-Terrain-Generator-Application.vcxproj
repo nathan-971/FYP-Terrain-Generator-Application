@@ -20,14 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\application.cpp" />
-    <ClCompile Include="src\core\camera.cpp" />
+    <ClCompile Include="src\core\camera\camera.cpp" />
+    <ClCompile Include="src\core\camera\cameracontroller.cpp" />
     <ClCompile Include="src\core\graphicscontext.cpp" />
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\exporter\FBXexporter.cpp" />
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
+    <ClCompile Include="src\exporter\terrainexporterservice.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\renderer\renderer.cpp" />
     <ClCompile Include="src\renderer\shader.cpp" />
+    <ClCompile Include="src\scene\lighting\lightingsystem.cpp" />
     <ClCompile Include="src\scene\mesh\meshbase.cpp" />
     <ClCompile Include="src\scene\scene.cpp" />
     <ClCompile Include="src\scene\skybox\skybox.cpp" />
@@ -69,27 +72,35 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core\application.h" />
-    <ClInclude Include="include\core\camera.h" />
+    <ClInclude Include="include\core\camera\camera.h" />
+    <ClInclude Include="include\core\camera\cameracontroller.h" />
+    <ClInclude Include="include\core\camera\icamera.h" />
+    <ClInclude Include="include\core\camera\icameracontroller.h" />
     <ClInclude Include="include\core\graphicscontext.h" />
-    <ClInclude Include="include\core\icamera.h" />
     <ClInclude Include="include\core\iwindow.h" />
     <ClInclude Include="include\core\window.h" />
     <ClInclude Include="include\exporter\FBXexporter.h" />
     <ClInclude Include="include\exporter\iexporter.h" />
+    <ClInclude Include="include\exporter\iterrainexporterservice.h" />
     <ClInclude Include="include\exporter\OBJexporter.h" />
+    <ClInclude Include="include\exporter\terrainexporterservice.h" />
     <ClInclude Include="include\renderer\framedata.h" />
     <ClInclude Include="include\renderer\irenderer.h" />
     <ClInclude Include="include\renderer\ishader.h" />
     <ClInclude Include="include\renderer\iviewportprovider.h" />
     <ClInclude Include="include\renderer\renderer.h" />
     <ClInclude Include="include\renderer\shader.h" />
+    <ClInclude Include="include\scene\iscene.h" />
+    <ClInclude Include="include\scene\lighting\ilightingsystem.h" />
     <ClInclude Include="include\scene\lighting\light.h" />
+    <ClInclude Include="include\scene\lighting\lightingsystem.h" />
     <ClInclude Include="include\scene\mesh\meshbase.h" />
     <ClInclude Include="include\scene\mesh\transform.h" />
     <ClInclude Include="include\scene\mesh\vertex.h" />
     <ClInclude Include="include\scene\scene.h" />
     <ClInclude Include="include\scene\skybox\iskyboxsystem.h" />
     <ClInclude Include="include\scene\skybox\skybox.h" />
+    <ClInclude Include="include\scene\skybox\skyboxconfig.h" />
     <ClInclude Include="include\scene\skybox\skyboxmesh.h" />
     <ClInclude Include="include\scene\skybox\skyboxoption.h" />
     <ClInclude Include="include\scene\skybox\skyboxsystem.h" />

@@ -4,7 +4,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
 
-#include "core/icamera.h"
+#include "core/camera/icamera.h"
 
 #include "ui/viewport/framebuffer.h"
 

@@ -57,7 +57,7 @@ bool Skybox::LoadTextures()
 	return true;
 }
 
-unsigned int Skybox::getActiveTextureId()
+unsigned int Skybox::getActiveTextureId() const
 {
 	return this->activeTexture;
 }
@@ -78,9 +78,9 @@ bool Skybox::Change(SkyboxOption& option)
 	return false;
 }
 
-bool Skybox::isDisabled()
+bool Skybox::isDisabled() const
 {
-	return activeTexture == skyboxCache[SkyboxOption::NONE];
+	return activeTexture == skyboxCache.at(SkyboxOption::NONE);
 }
 
 bool Skybox::ensureCached(SkyboxOption option)

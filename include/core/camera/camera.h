@@ -5,7 +5,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
-#include "core/icamera.h"
+#include "core/camera/icamera.h"
 
 class Camera : public ICamera
 {

@@ -1,4 +1,4 @@
-#include "core/camera.h"
+#include "core/camera/camera.h"
 
 Camera::Camera(int width, int height, const glm::vec3& position) :
 	width(width), 

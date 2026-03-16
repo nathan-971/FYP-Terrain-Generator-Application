@@ -14,7 +14,7 @@ class IExporter
 {
 public:
     virtual ~IExporter() = default;
-    virtual bool Export(TerrainMesh& mesh, std::string outputPath) = 0;
+    virtual bool Export(const TerrainMesh& mesh, std::string outputPath) = 0;
 };
 
 #endif

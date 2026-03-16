@@ -1,10 +1,10 @@
 #include "exporter/OBJexporter.h"
 #include <fstream>
 
-bool OBJExporter::Export(TerrainMesh& mesh, std::string outputPath)
+bool OBJExporter::Export(const TerrainMesh& mesh, std::string outputPath)
 {
-	std::vector<Vertex>& vertices = mesh.GetVertices();
-	std::vector<unsigned int>& indices = mesh.GetIndices();
+	const std::vector<Vertex>& vertices = mesh.GetVertices();
+	const std::vector<unsigned int>& indices = mesh.GetIndices();
 
 	std::ofstream objFile(outputPath);
 	if (objFile.is_open())
@@ -12,14 +12,14 @@ bool OBJExporter::Export(TerrainMesh& mesh, std::string outputPath)
 		objFile << "#Terrain OBJ Export\n";
 		objFile << "o Terrain\n";
 		
-		for (Vertex& vertex : vertices) //Write Vertices
+		for (const Vertex& vertex : vertices) //Write Vertices
 		{
 			objFile << "v " << vertex.position.x << " "
 				<< vertex.position.y << " " 
 				<< vertex.position.z << "\n";
 		}
 
-		for (Vertex& vertex : vertices) //Write Normals
+		for (const Vertex& vertex : vertices) //Write Normals
 		{
 			objFile << "vn " << vertex.normal.x << " "
 				<< vertex.normal.y << " " 

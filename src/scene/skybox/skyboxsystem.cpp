@@ -10,17 +10,17 @@ void SkyboxSystem::LoadTextures()
 	skybox.LoadTextures();
 }
 
-bool SkyboxSystem::Change(SkyboxOption option)
+bool SkyboxSystem::Change()
 {
-	return skybox.Change(option);
+	return skybox.Change(config.skyboxOption);
 }
 
-bool SkyboxSystem::isDisabled()
+const bool SkyboxSystem::isDisabled() const
 {
 	return skybox.isDisabled();
 }
 
-unsigned int SkyboxSystem::getActiveTexture()
+const unsigned int SkyboxSystem::getActiveTexture() const
 {
 	return skybox.getActiveTextureId();
 }
@@ -28,4 +28,14 @@ unsigned int SkyboxSystem::getActiveTexture()
 SkyboxMesh& SkyboxSystem::getMesh()
 {
 	return mesh;
+}
+
+const SkyboxMesh& SkyboxSystem::getMesh() const
+{
+	return mesh;
+}
+
+SkyboxConfig& SkyboxSystem::getConfig()
+{
+	return config;
 }

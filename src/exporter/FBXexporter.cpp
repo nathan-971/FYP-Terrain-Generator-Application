@@ -1,10 +1,10 @@
 #include <exporter/FBXexporter.h>
 #include <iostream>
 
-bool FBXExporter::Export(TerrainMesh& mesh, std::string outputPath)
+bool FBXExporter::Export(const TerrainMesh& mesh, std::string outputPath)
 {
-	std::vector<Vertex>& vertices = mesh.GetVertices();
-	std::vector<unsigned int>& indicies = mesh.GetIndices();
+	const std::vector<Vertex>& vertices = mesh.GetVertices();
+	const std::vector<unsigned int>& indicies = mesh.GetIndices();
 
 	FbxManager* manager = FbxManager::Create();
 	if (!manager)
@@ -42,7 +42,7 @@ bool FBXExporter::Export(TerrainMesh& mesh, std::string outputPath)
 
 	for (int i = 0; i < vertexCount; i++)
 	{
-		Vertex& v = vertices[i];
+		const Vertex& v = vertices[i];
 		controlPoints[i].Set(v.position.x, v.position.y, v.position.z);
 	}
 
@@ -66,7 +66,7 @@ bool FBXExporter::Export(TerrainMesh& mesh, std::string outputPath)
 	normals->SetMappingMode(FbxLayerElement::eByControlPoint);
 	normals->SetReferenceMode(FbxLayerElement::eDirect);
 
-	for (Vertex& v : vertices)
+	for (const Vertex& v : vertices)
 	{
 		normals->GetDirectArray().Add(
 			FbxVector4(v.normal.x, v.normal.y, v.normal.z)
@@ -78,7 +78,7 @@ bool FBXExporter::Export(TerrainMesh& mesh, std::string outputPath)
 	colors->SetMappingMode(FbxLayerElement::eByControlPoint);
 	colors->SetReferenceMode(FbxLayerElement::eDirect);
 
-	for (Vertex& v : vertices)
+	for (const Vertex& v : vertices)
 	{
 		colors->GetDirectArray().Add(
 			FbxVector4(v.color.x, v.color.y, v.color.z)
