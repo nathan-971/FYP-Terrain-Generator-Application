@@ -21,6 +21,7 @@ public:
 	bool shouldClose() const override;
 	double getTime() const override;
 
+	void setIcon(const std::string& iconpath) override;
 	void setUserPointer(void* object) const;
 	void getMousePosition(double &x, double &y);
 

@@ -49,8 +49,8 @@ private:
 	std::unique_ptr<ICamera> camera;
 	std::unique_ptr<ICameraController> cameraController;
 
-	std::unique_ptr<ImGuiLayer> imguiLayer; //IImGuiLayer
-	std::unique_ptr<UIBase> ui; //IUIBase
+	std::unique_ptr<ImGuiLayer> imguiLayer;
+	std::unique_ptr<UIBase> ui;
 
 	float lastFrameTime = 0.0f;
 	float deltaTime = 0.0f;

@@ -35,6 +35,7 @@ int main()
 			"Terrain Generator",
 			true
 		);
+		window->setIcon("assets/textures/icons/icon.png");
 
 		GraphicsContext graphics(*window);
 		graphics.Init();

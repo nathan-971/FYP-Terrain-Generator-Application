@@ -1,4 +1,5 @@
 #include "core/window.h"
+#include "stb/stb_image.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -31,6 +32,14 @@ void Window::initGLFW()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_VERSION_NUM);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_VERSION_NUM);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+}
+
+void Window::setIcon(const std::string& iconpath)
+{
+	GLFWimage images[1];
+	images[0].pixels = stbi_load(iconpath.c_str(), &images[0].width, &images[0].height, 0, 4);
+	glfwSetWindowIcon(nativeWindow, 1, images);
+	stbi_image_free(images->pixels);
 }
 
 int Window::getWidth() const
