@@ -3,13 +3,13 @@
 
 #include "exporter/iexporter.h"
 
-#include "scene/terrain/terrainmesh.h"
+#include "scene/mesh/iterrainmesh.h"
 
 class ITerrainExporterService
 {
 public:
 	virtual ~ITerrainExporterService() = default;
-	virtual bool ExportTerrain(const TerrainMesh& mesh, const FileType& type, const std::string& path) = 0;
+	virtual bool ExportTerrain(const ITerrainMesh& mesh, const FileType& type, const std::string& path) = 0;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef _TERRAIN_EXPORTER_SERVICE_H_
 #define _TERRAIN_EXPORTER_SERVICE_H_
 
-#include "scene/terrain/terrainmesh.h"
+#include "scene/mesh/iterrainmesh.h"
 
 #include "exporter/iterrainexporterservice.h"
 
@@ -15,7 +15,7 @@ public:
 	TerrainExporterService(std::unique_ptr<IExporterFactory> factory);
 	~TerrainExporterService();
 
-	bool ExportTerrain(const TerrainMesh& mesh, const FileType& type, const std::string& path) override;
+	bool ExportTerrain(const ITerrainMesh& mesh, const FileType& type, const std::string& path) override;
 
 private:
 	std::unique_ptr<IExporterFactory> factory;

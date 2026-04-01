@@ -1,7 +1,7 @@
 #include <exporter/FBXexporter.h>
 #include <iostream>
 
-bool FBXExporter::Export(const TerrainMesh& mesh, std::string outputPath)
+bool FBXExporter::Export(const ITerrainMesh& mesh, std::string outputPath)
 {
 	const std::vector<Vertex>& vertices = mesh.GetVertices();
 	const std::vector<unsigned int>& indicies = mesh.GetIndices();

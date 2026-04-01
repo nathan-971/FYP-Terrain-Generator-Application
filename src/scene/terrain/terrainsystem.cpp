@@ -18,7 +18,7 @@ TerrainSystem::TerrainSystem(std::unique_ptr<ITerrainGeneratorFactory> generator
 	config.frequency = 0.0f;
 	config.lacunarity = 0.0f;
 	config.persistence = 0.0f;
-	config.scale = 0.0f;
+	config.scale = 0.1f;
 	config.warpMultiplier = 0.0f;
 	config.warpFrequency = 0.0f;
 

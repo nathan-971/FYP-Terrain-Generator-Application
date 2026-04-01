@@ -157,7 +157,6 @@ void Renderer::renderSkyboxPass(const FrameData& frameData)
     glDepthFunc(GL_LESS);
 }
 
-
 void Renderer::createShadowFrameBuffer(int width, int height)
 {
     shadowMapFramebuffer.width = width;

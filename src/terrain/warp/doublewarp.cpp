@@ -11,18 +11,18 @@ void DoubleWarp::Apply(float& x, float& z, INoise& noise) const
 
 void DoubleWarp::warp(float& x, float& z, INoise& noise) const
 {
-	float eps = 0.001f;
+	float shift = 0.001f;
 
-	float noise_dx_plus = noise.Get((x + eps) * frequency, z * frequency);
-	float noise_dx_minus = noise.Get((x - eps) * frequency, z * frequency);
-	float dNoise_dx = (noise_dx_plus - noise_dx_minus) / (2.0f * eps);
+	float noiseXChangePlus = noise.Get((x + shift) * frequency, z * frequency);
+	float noiseXChangeMinus = noise.Get((x - shift) * frequency, z * frequency);
+	float noiseSlopeX = (noiseXChangePlus - noiseXChangeMinus) / (2.0f * shift);
 
-	float noise_dz_plus = noise.Get(x * frequency, (z + eps) * frequency);
-	float noise_dz_minus = noise.Get(x * frequency, (z - eps) * frequency);
-	float dNoise_dz = (noise_dz_plus - noise_dz_minus) / (2.0f * eps);
+	float noiseZChangePlus = noise.Get(x * frequency, (z + shift) * frequency);
+	float noiseZChangeMinus = noise.Get(x * frequency, (z - shift) * frequency);
+	float noiseSlopeZ = (noiseZChangePlus - noiseZChangeMinus) / (2.0f * shift);
 
-	x = x + (dNoise_dz * multiplier);
-	z = z + (-dNoise_dx * multiplier);
+	x = x + (noiseSlopeZ * multiplier);
+	z = z + (-noiseSlopeX * multiplier);
 }
 
 void DoubleWarp::UpdateParameters(float freq, float mult)

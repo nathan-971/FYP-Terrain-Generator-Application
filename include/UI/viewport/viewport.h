@@ -10,8 +10,6 @@
 
 #include "renderer/iviewportprovider.h"
 
-#include "scene/scene.h"
-
 class Viewport
 {
 public:

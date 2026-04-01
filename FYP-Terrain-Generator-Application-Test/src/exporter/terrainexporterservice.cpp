@@ -1,6 +1,9 @@
 #include "exporter/terrainexporterservice.h"
 #include "exporter/iexporter.h"
 
+#include "utils/iexporterfactory.h"
+#include "scene/mesh/iterrainmesh.h"
+
 #include <iostream>
 
 TerrainExporterService::TerrainExporterService(std::unique_ptr<IExporterFactory> factory)

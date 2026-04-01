@@ -527,6 +527,9 @@
     <ClInclude Include="include\scene\iscene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="include\scene\mesh\iterrainmesh.h">
+      <Filter>Header Files\Scene\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragment.glsl">

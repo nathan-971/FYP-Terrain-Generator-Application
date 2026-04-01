@@ -7,7 +7,7 @@
 class OBJExporter : public IExporter
 {
 public:
-	bool Export(const TerrainMesh& mesh, std::string outputPath) override;
+	bool Export(const ITerrainMesh& mesh, std::string outputPath) override;
 };
 
 #endif

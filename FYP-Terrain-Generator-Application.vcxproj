@@ -94,6 +94,7 @@
     <ClInclude Include="include\scene\lighting\ilightingsystem.h" />
     <ClInclude Include="include\scene\lighting\light.h" />
     <ClInclude Include="include\scene\lighting\lightingsystem.h" />
+    <ClInclude Include="include\scene\mesh\iterrainmesh.h" />
     <ClInclude Include="include\scene\mesh\meshbase.h" />
     <ClInclude Include="include\scene\mesh\transform.h" />
     <ClInclude Include="include\scene\mesh\vertex.h" />

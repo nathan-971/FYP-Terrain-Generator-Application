@@ -6,7 +6,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "IconsFontAwesome6.h"
 
-#include "core/window.h"
+#include "core/iwindow.h"
 
 class ImGuiLayer
 {
