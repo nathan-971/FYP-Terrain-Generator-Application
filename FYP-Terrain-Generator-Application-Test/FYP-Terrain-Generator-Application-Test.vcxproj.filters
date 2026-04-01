@@ -9,6 +9,25 @@
     <ClCompile Include="src\exporter\OBJexporter.cpp">
       <Filter>Source\Exporter</Filter>
     </ClCompile>
+    <ClCompile Include="TerrainGeneratorTests.cpp" />
+    <ClCompile Include="src\terrain\noise\perlinnoise.cpp">
+      <Filter>Source\Terrain\Noise</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\heightmap.cpp">
+      <Filter>Source\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\height\basenoisegenerator.cpp">
+      <Filter>Source\Terrain\Height</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\height\rigidnoisegenerator.cpp">
+      <Filter>Source\Terrain\Height</Filter>
+    </ClCompile>
+    <ClCompile Include="src\erosion\erosionhandler.cpp">
+      <Filter>Source\Terrain\Erosion</Filter>
+    </ClCompile>
+    <ClCompile Include="src\erosion\hydraulicerosion.cpp">
+      <Filter>Source\Terrain\Erosion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -19,6 +38,18 @@
     </Filter>
     <Filter Include="Source\Exporter">
       <UniqueIdentifier>{cf085665-d2e9-4be5-ba5d-21e56fd5e607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Terrain">
+      <UniqueIdentifier>{5480eca4-de14-4082-879f-09afdc221995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Terrain\Noise">
+      <UniqueIdentifier>{9b1ba848-3d4e-42f5-be39-1fd134e1ece0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Terrain\Height">
+      <UniqueIdentifier>{30e01734-4e35-4f2b-b980-ca2a38b79945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Terrain\Erosion">
+      <UniqueIdentifier>{cb7b878d-cf6e-47e7-b553-4d880ae80e67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

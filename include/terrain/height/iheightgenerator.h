@@ -2,6 +2,7 @@
 #define _I_HEIGHT_GENERATOR_H_
 
 #include "terrain/heightmap.h"
+#include "terrain/terrainconfig.h"
 
 class IHeightGenerator 
 {

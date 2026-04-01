@@ -72,11 +72,11 @@ TEST(TerrainExporterServiceTests, Export_Terrain_Success)
 
     auto service = std::make_unique<TerrainExporterService>(std::move(factory));
 
-    MockTerrainMesh mesh;
+    MockTerrainMesh mockMesh;
     FileType type = FileType::OBJ;
     std::string path = "test.obj";
 
-    bool result = service->ExportTerrain(mesh, type, path);
+    bool result = service->ExportTerrain(mockMesh, type, path);
 
     ASSERT_TRUE(result);
     ASSERT_TRUE(factoryPtr->exporterPtr->wasCalled);
@@ -84,19 +84,19 @@ TEST(TerrainExporterServiceTests, Export_Terrain_Success)
 
 TEST(OBJExporterTests, Exporter_Correctly_Writes_Vertices_Indices_Data)
 {
-    MockTerrainMesh mesh;
-    mesh.vertices = {
+    MockTerrainMesh mockMesh;
+    mockMesh.vertices = {
         {{0,0,0}, {0,1,0}, {1,0,0}},
         {{1,0,0}, {0,1,0}, {0,1,0}},
         {{0,0,1}, {0,1,0}, {0,0,1}}
     };
-    mesh.indices = { 0, 1, 2 };
+    mockMesh.indices = { 0, 1, 2 };
     
     std::string path = "test.obj";
 
     std::unique_ptr<IExporter> exporter = std::make_unique<OBJExporter>();
-    bool exportResult = exporter->Export(mesh, path);
 
+    bool exportResult = exporter->Export(mockMesh, path);
     EXPECT_TRUE(exportResult);
 
     std::ifstream file(path);

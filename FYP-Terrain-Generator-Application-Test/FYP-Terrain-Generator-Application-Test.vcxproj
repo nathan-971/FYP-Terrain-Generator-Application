@@ -109,8 +109,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\erosion\erosionhandler.cpp" />
+    <ClCompile Include="src\erosion\hydraulicerosion.cpp" />
     <ClCompile Include="src\exporter\OBJexporter.cpp" />
     <ClCompile Include="src\exporter\terrainexporterservice.cpp" />
+    <ClCompile Include="src\terrain\heightmap.cpp" />
+    <ClCompile Include="src\terrain\height\basenoisegenerator.cpp" />
+    <ClCompile Include="src\terrain\height\rigidnoisegenerator.cpp" />
+    <ClCompile Include="src\terrain\noise\perlinnoise.cpp" />
+    <ClCompile Include="TerrainGeneratorTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FYP-Terrain-Generator-Application.vcxproj">
