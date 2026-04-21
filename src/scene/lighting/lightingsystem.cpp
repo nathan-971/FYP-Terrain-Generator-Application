@@ -2,7 +2,7 @@
 
 LightingSystem::LightingSystem() : light()
 { 
-	light.position = glm::vec3(-150.0f, 150.0f, -150.0f);
+	light.position = glm::vec3(150.0f, 150.0f, 150.0f);
 	light.color = glm::vec3(1.0f);
 	light.ambient = 0.1f;
 	light.specular = 0.1f;

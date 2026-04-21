@@ -77,6 +77,8 @@ FrameData Renderer::getFrameData(const ICamera& camera, const IScene& scene)
 
     frame.terrain.modelMatrix = terrain.getMeshTransform().getMatrix();
     frame.terrain.terrainMesh = &terrain.getMesh();
+    frame.terrain.grass = &terrain.getGrassMaterial();
+    frame.terrain.stone = &terrain.getStoneMaterial();
 
     frame.skybox.skyboxMesh = &skybox.getMesh();
     frame.skybox.enabled = !skybox.isDisabled();
@@ -124,11 +126,16 @@ void Renderer::renderLightPass(const FrameData& frameData)
     terrainShader->setUniformVec3("lightColor", frameData.lightColor);
     terrainShader->setUniformFloat("ambientStrength", frameData.ambientStrength);
     terrainShader->setUniformFloat("specularStrength", frameData.specularStrength);
-    terrainShader->setUniformInt("shininess", frameData.shininess);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, shadowMapFramebuffer.depth);
     terrainShader->setUniformInt("shadowMap", 0);
+
+    frameData.terrain.grass->albedo->Bind(1);
+    terrainShader->setUniformInt("grassAlbedo", 1);
+
+    frameData.terrain.stone->albedo->Bind(2);
+    terrainShader->setUniformInt("stoneAlbedo", 2);
 
     terrainShader->setUniformMat("model", model);
     frameData.terrain.terrainMesh->Draw();
@@ -142,7 +149,6 @@ void Renderer::renderSkyboxPass(const FrameData& frameData)
     glDepthMask(GL_FALSE);
     
     skyboxShader->Activate();
-
     skyboxShader->setUniformMat("view", view);
     skyboxShader->setUniformMat("projection", frameData.projectionMatrix);
 

@@ -136,6 +136,12 @@
     <Filter Include="Source Files\Core\Camera">
       <UniqueIdentifier>{2e8fbe68-7835-43b4-b460-123afb7052d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scene\Texture">
+      <UniqueIdentifier>{af2c52c8-2bf9-41aa-ac19-80c0d16799fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Texture">
+      <UniqueIdentifier>{d7db910b-d141-427b-be1f-c668f2bc60a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -287,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="src\core\camera\cameracontroller.cpp">
       <Filter>Source Files\Core\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\texture\texture.cpp">
+      <Filter>Source Files\Scene\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +538,12 @@
     </ClInclude>
     <ClInclude Include="include\scene\mesh\iterrainmesh.h">
       <Filter>Header Files\Scene\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene\texture\texture.h">
+      <Filter>Header Files\Scene\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\scene\texture\material.h">
+      <Filter>Header Files\Scene\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

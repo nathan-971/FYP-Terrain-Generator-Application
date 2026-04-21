@@ -38,6 +38,7 @@
     <ClCompile Include="src\scene\skybox\skyboxsystem.cpp" />
     <ClCompile Include="src\scene\terrain\terrainmesh.cpp" />
     <ClCompile Include="src\scene\terrain\terrainsystem.cpp" />
+    <ClCompile Include="src\scene\texture\texture.cpp" />
     <ClCompile Include="src\terrain\erosion\erosionhandler.cpp" />
     <ClCompile Include="src\terrain\erosion\hydraulicerosion.cpp" />
     <ClCompile Include="src\terrain\heightmap.cpp" />
@@ -108,6 +109,8 @@
     <ClInclude Include="include\scene\terrain\iterrainsystem.h" />
     <ClInclude Include="include\scene\terrain\terrainmesh.h" />
     <ClInclude Include="include\scene\terrain\terrainsystem.h" />
+    <ClInclude Include="include\scene\texture\material.h" />
+    <ClInclude Include="include\scene\texture\texture.h" />
     <ClInclude Include="include\scene\updatesceneflag.h" />
     <ClInclude Include="include\terrain\erosion\droplet.h" />
     <ClInclude Include="include\terrain\erosion\erosionhandler.h" />

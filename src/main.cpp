@@ -20,6 +20,8 @@
 #include "scene/terrain/terrainsystem.h"
 #include "scene/skybox/skyboxsystem.h"
 #include "scene/lighting/lightingsystem.h"
+#include "scene/texture/texture.h"
+#include "scene/texture/material.h"
 
 #include "utils/terraingeneratorfactory.h"
 #include "utils/exporterfactory.h"

@@ -1,15 +1,20 @@
 #ifndef _FRAME_DATA_H_
 #define _FRAME_DATA_H_
 
-#include <glm/glm.hpp>
+#include "scene/texture/material.h"
 
 #include "scene/terrain/terrainmesh.h"
+
 #include "scene/skybox/skyboxmesh.h"
+
+#include <glm/glm.hpp>
 
 struct TerrainRenderData
 {
 	glm::mat4 modelMatrix { };
 	const TerrainMesh* terrainMesh;
+	const Material* grass;
+	const Material* stone;
 };
 
 struct SkyboxRenderData

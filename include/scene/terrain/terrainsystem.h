@@ -4,6 +4,8 @@
 #include "scene/terrain/iterrainsystem.h"
 #include "scene/terrain/terrainmesh.h"
 
+#include "scene/texture/material.h"
+
 #include "terrain/terrainconfig.h"
 #include "terrain/iterraingenerator.h"
 
@@ -33,8 +35,14 @@ public:
     const TerrainMesh& getMesh() const override;
     const Transform& getMeshTransform() const override;
 
+    const Material& getGrassMaterial() const override;
+    const Material& getStoneMaterial() const override;
+
 private:
     TerrainMesh mesh;
+    Material matGrass;
+    Material matStone;
+
     TerrainConfig config;
     std::unique_ptr<ITerrainGenerator> generator;
     std::unique_ptr<ITerrainGeneratorFactory> generatorFactory;

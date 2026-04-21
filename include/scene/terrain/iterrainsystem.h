@@ -3,6 +3,8 @@
 
 #include "scene/mesh/transform.h"
 #include "scene/terrain/terrainmesh.h"
+#include "scene/texture/material.h"
+
 #include "terrain/terrainconfig.h"
 
 #include <glm/glm.hpp>
@@ -27,6 +29,9 @@ public:
     virtual glm::vec3 getTerrainPosition() const = 0;
     virtual const TerrainMesh& getMesh() const = 0;
     virtual const Transform& getMeshTransform() const = 0;
+
+    virtual const Material& getGrassMaterial() const = 0;
+    virtual const Material& getStoneMaterial() const = 0;
 };
 
 #endif

@@ -75,7 +75,7 @@ void TerrainMesh::UpdateBuffers()
 
 	enableAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, position));
 	enableAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, normal));
-	enableAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, color));
+	enableAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), offsetof(Vertex, uv));
 }
 
 void TerrainMesh::buildMesh()
@@ -102,7 +102,10 @@ void TerrainMesh::buildMesh()
 				z * zSpacing - (depth * 0.5f)
 			);
 			v.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-			v.color = glm::vec3(0.0f, 0.0f, 1.0f);
+			v.uv = glm::vec2(
+				x / float(vertCountX - 1),
+				z / float(vertCountZ - 1)
+			);
 			vertices.push_back(v);
 		}
 	}

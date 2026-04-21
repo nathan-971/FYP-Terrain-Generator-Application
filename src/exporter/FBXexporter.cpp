@@ -74,17 +74,17 @@ bool FBXExporter::Export(const ITerrainMesh& mesh, std::string outputPath)
 	}
 	layer->SetNormals(normals);
 
-	auto* colors = FbxLayerElementVertexColor::Create(fbxMesh, "VertexColors");
-	colors->SetMappingMode(FbxLayerElement::eByControlPoint);
-	colors->SetReferenceMode(FbxLayerElement::eDirect);
+	//auto* colors = FbxLayerElementVertexColor::Create(fbxMesh, "VertexColors");
+	//colors->SetMappingMode(FbxLayerElement::eByControlPoint);
+	//colors->SetReferenceMode(FbxLayerElement::eDirect);
 
-	for (const Vertex& v : vertices)
-	{
-		colors->GetDirectArray().Add(
-			FbxVector4(v.color.x, v.color.y, v.color.z)
-		);
-	}
-	layer->SetVertexColors(colors);
+	//for (const Vertex& v : vertices)
+	//{
+	//	colors->GetDirectArray().Add(
+	//		FbxVector4(v.color.x, v.color.y, v.color.z)
+	//	);
+	//}
+	//layer->SetVertexColors(colors);
 
 	FbxExporter* exporter = FbxExporter::Create(manager, "");
 	if (!exporter->Initialize(outputPath.c_str(), -1, manager->GetIOSettings()))

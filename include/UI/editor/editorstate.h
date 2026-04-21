@@ -12,6 +12,8 @@ struct EditorState
     WarpMode warpMode = WarpMode::None;
 	SkyboxOption skyboxOption = SkyboxOption::NOON;
     bool erosionEnabled = false;
+    bool erosionRunning = false;
+    bool warpEnabled = false;
     int seed = 0;
     int fps = 0;
 };

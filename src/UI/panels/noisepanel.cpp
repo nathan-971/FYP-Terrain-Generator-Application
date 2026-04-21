@@ -80,6 +80,7 @@ void NoisePanel::Display(EditorContext& ctx)
             if (ImGui::Selectable(warpModeNames[i], isSelected))
             {
                 state.warpMode = static_cast<WarpMode>(i);
+                state.warpEnabled = state.warpMode != WarpMode::None;
                 commands.changeWarpMode = true;
             }
             if (isSelected)
@@ -90,6 +91,7 @@ void NoisePanel::Display(EditorContext& ctx)
         ImGui::EndCombo();
     }
 
+    ImGui::BeginDisabled(!state.warpEnabled);
     float warpMultiplier = config.warpMultiplier;
     if (ImGui::SliderFloat("Warp Multiplier", &warpMultiplier, 0.0f, 200.0f))
     {
@@ -103,6 +105,7 @@ void NoisePanel::Display(EditorContext& ctx)
         config.warpFrequency = warpFrequency;
         commands.updateHeightMap = true;
     }
+    ImGui::EndDisabled();
 
     ImGui::BeginDisabled();
     ImGui::InputInt("Seed", &state.seed);

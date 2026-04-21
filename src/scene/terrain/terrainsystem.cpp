@@ -26,6 +26,18 @@ TerrainSystem::TerrainSystem(std::unique_ptr<ITerrainGeneratorFactory> generator
 	config.noiseConfig = NoiseConfiguration::BaseNoise;
 
 	config.erosionEnabled = false;
+
+	matGrass = {
+		std::make_shared<Texture>("assets/textures/terrain/grass/grassAlbedo.png"),
+		nullptr, //PBR Textures not supported for this version
+		nullptr
+	};
+
+	matStone = {
+		std::make_shared<Texture>("assets/textures/terrain/stone/stoneAlbedo.png"),
+		nullptr, //PBR Textures not supported for this version
+		nullptr
+	};
 }
 
 TerrainSystem::~TerrainSystem() { }
@@ -98,4 +110,14 @@ const TerrainMesh& TerrainSystem::getMesh() const
 const Transform& TerrainSystem::getMeshTransform() const
 {
 	return mesh.getTransform();
+}
+
+const Material& TerrainSystem::getGrassMaterial() const
+{
+	return matGrass;
+}
+
+const Material& TerrainSystem::getStoneMaterial() const
+{
+	return matStone;
 }

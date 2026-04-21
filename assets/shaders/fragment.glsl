@@ -1,17 +1,25 @@
 #version 330 core
 out vec4 FragColor;
 
-in vec3 color;
+in vec2 uv;
+
 in vec3 normal;
 in vec3 fragPos;
+
 in vec4 fragPosLight;
 
 uniform sampler2D shadowMap;
+
+uniform sampler2D grassAlbedo;
+uniform sampler2D stoneAlbedo;
+
 uniform vec3 viewPos;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+
 uniform float ambientStrength;
 uniform float specularStrength;
+
 uniform int shininess;
 
 vec3 getAmbient(vec3 lightColor)
@@ -72,33 +80,30 @@ float getSlope(vec3 normalVector)
 	return slopeDegrees;
 }
 
-vec3 getTerrainColor(float slope)
-{
-	vec3 grass = vec3(0.18, 0.32, 0.15);
-	vec3 stone  = vec3(0.35, 0.36, 0.38);
-
-	float grassToStone = smoothstep(30.0, 55.0, slope);
-	return mix(grass, stone, grassToStone);
-}
-
 void main()
 {
     vec3 norm = normalize(normal);
     vec3 lightDir = normalize(lightPos - fragPos);
     vec3 viewDir = normalize(viewPos - fragPos);
 
-	//Slope Coloring
-	float slope = getSlope(norm);
-	vec3 terrainColor = getTerrainColor(slope);
+    // Texturing
+    vec3 grass = texture(grassAlbedo, uv * 5).rgb;
+    vec3 stone = texture(stoneAlbedo, uv * 5).rgb;
 
-	//Shadows
+    float slope = getSlope(norm);
+    float blend = smoothstep(30.0, 55.0, slope);
+
+    vec3 albedo = mix(grass, stone, blend);
+
+    //Shadow
     float shadow = calculateShadow(fragPosLight, norm, lightDir);
 
-	//Phong Lighting
+    //Lighting
     vec3 ambient = getAmbient(lightColor);
     float diffuseFactor = getDiffuse(norm, lightDir);
     vec3 specular = getSpecular(norm, lightDir, viewDir);
+    vec3 lighting = ambient + diffuseFactor * (1.0 - shadow);
 
-    vec3 result = ((diffuseFactor * (1.0 - shadow) + ambient) + specular * (1.0 - shadow)) * terrainColor;
+    vec3 result = albedo * lighting + specular * (1.0 - shadow);
     FragColor = vec4(result, 1.0);
 }

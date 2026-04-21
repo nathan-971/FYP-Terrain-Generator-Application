@@ -23,7 +23,7 @@ void ErosionHandler::Reset()
 	}
 
 	erosionMap = originalMap;
-
+	running = false;
 	if (simulatedErosion)
 	{
 		simulatedErosion->Reset();

@@ -86,9 +86,9 @@ TEST(OBJExporterTests, Exporter_Correctly_Writes_Vertices_Indices_Data)
 {
     MockTerrainMesh mockMesh;
     mockMesh.vertices = {
-        {{0,0,0}, {0,1,0}, {1,0,0}},
-        {{1,0,0}, {0,1,0}, {0,1,0}},
-        {{0,0,1}, {0,1,0}, {0,0,1}}
+        {{0,0,0}, {0,1,0}, {1,0}},
+        {{1,0,0}, {0,1,0}, {0,1}},
+        {{0,0,1}, {0,1,0}, {0,0}}
     };
     mockMesh.indices = { 0, 1, 2 };
     
