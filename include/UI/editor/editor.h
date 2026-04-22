@@ -13,10 +13,12 @@
 
 #include "scene/iscene.h"
 
+#include "renderer/ibakedalbedoprovider.h"
+
 class Editor
 {
 public:
-	Editor(IScene& scene, ITerrainExporterService& exporterService);
+	Editor(IScene& scene, ITerrainExporterService& exporterService, IBakedAlbedoProvider& bakedAlbedoProvider);
 
 	void Render();
 	void ApplyCommands();
@@ -27,6 +29,7 @@ private:
 
 	IScene& scene;
 	ITerrainExporterService& exporterService;
+	IBakedAlbedoProvider& bakedAlbedoProvider;
 
 	EditorContext ctx;
 	std::vector<std::unique_ptr<IPanel>> panels;

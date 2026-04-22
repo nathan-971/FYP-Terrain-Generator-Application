@@ -20,8 +20,6 @@
 #include "scene/terrain/terrainsystem.h"
 #include "scene/skybox/skyboxsystem.h"
 #include "scene/lighting/lightingsystem.h"
-#include "scene/texture/texture.h"
-#include "scene/texture/material.h"
 
 #include "utils/terraingeneratorfactory.h"
 #include "utils/exporterfactory.h"
@@ -62,15 +60,18 @@ int main()
 		std::unique_ptr<Shader> depthShader = std::make_unique<Shader>();
 		std::unique_ptr<Shader> terrainShader = std::make_unique<Shader>();
 		std::unique_ptr<Shader> skyboxShader = std::make_unique<Shader>();
+		std::unique_ptr<Shader> bakeAlbedoShader = std::make_unique<Shader>();
 
 		terrainShader->Load("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 		depthShader->Load("assets/shaders/depthVertex.glsl", "assets/shaders/depthFragment.glsl");
 		skyboxShader->Load("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
+		bakeAlbedoShader->Load("assets/shaders/bakeAlbedoVertex.glsl", "assets/shaders/bakeAlbedoFragment.glsl");
 
 		std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(
 			std::move(depthShader),
 			std::move(terrainShader),
 			std::move(skyboxShader),
+			std::move(bakeAlbedoShader),
 			SCR_WIDTH,
 			SCR_HEIGHT
 		);
@@ -87,6 +88,7 @@ int main()
 		std::unique_ptr<UIBase> ui = std::make_unique<UIBase>(
 			*scene,
 			*camera,
+			*renderer,
 			*renderer,
 			*exporterService
 		);

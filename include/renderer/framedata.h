@@ -37,9 +37,9 @@ struct FrameData
 	glm::vec3 lightPosition { };
 	glm::vec3 lightColor { };
 
-	float ambientStrength { };
-	float specularStrength { };
-	int shininess { };
+	float ambientStrength = 0;
+	float specularStrength = 0;
+	int shininess = 0;
 
 	TerrainRenderData terrain;
 	SkyboxRenderData skybox;

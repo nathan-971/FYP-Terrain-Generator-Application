@@ -69,7 +69,9 @@
     <ClCompile Include="thirdparty\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui_tables.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="thirdparty\stb\stb.cpp" />
+    <ClCompile Include="thirdparty\stb\stb.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core\application.h" />
@@ -86,6 +88,7 @@
     <ClInclude Include="include\exporter\OBJexporter.h" />
     <ClInclude Include="include\exporter\terrainexporterservice.h" />
     <ClInclude Include="include\renderer\framedata.h" />
+    <ClInclude Include="include\renderer\ibakedalbedoprovider.h" />
     <ClInclude Include="include\renderer\irenderer.h" />
     <ClInclude Include="include\renderer\ishader.h" />
     <ClInclude Include="include\renderer\iviewportprovider.h" />

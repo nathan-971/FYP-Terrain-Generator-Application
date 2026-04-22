@@ -16,6 +16,7 @@ public:
 	~TerrainExporterService();
 
 	bool ExportTerrain(const ITerrainMesh& mesh, const FileType& type, const std::string& path) override;
+	void ExportAlbedoTexture(const std::string& path, int framebufferWidth, int framebufferHeight, unsigned int framebuffer) override;
 
 private:
 	std::unique_ptr<IExporterFactory> factory;

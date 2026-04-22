@@ -5,7 +5,6 @@
 #include "scene/iscene.h"
 #include "renderer/framedata.h"
 
-
 class IRenderer
 {
 public:

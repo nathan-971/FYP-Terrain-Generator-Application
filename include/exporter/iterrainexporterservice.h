@@ -10,6 +10,7 @@ class ITerrainExporterService
 public:
 	virtual ~ITerrainExporterService() = default;
 	virtual bool ExportTerrain(const ITerrainMesh& mesh, const FileType& type, const std::string& path) = 0;
+	virtual void ExportAlbedoTexture(const std::string& path, int framebufferWidth, int framebufferHeight, unsigned int framebuffer) = 0;
 };
 
 #endif

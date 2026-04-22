@@ -1,6 +1,7 @@
 #include "renderer/renderer.h"
 
 #include <utility>
+#include <iostream>
 
 #define SHADOWMAP_HEIGHT 2048
 #define SHADOWMAP_WIDTH 2048
@@ -9,15 +10,18 @@ Renderer::Renderer(
     std::unique_ptr<IShader> depthShader,
     std::unique_ptr<IShader> terrainShader,
     std::unique_ptr<IShader> skyboxShader,
+    std::unique_ptr<IShader> bakeAlbedoShader,
     int initiaWidth,
     int initiaHeight
 ) :
 	depthShader(std::move(depthShader)),
 	terrainShader(std::move(terrainShader)),
-	skyboxShader(std::move(skyboxShader))
+	skyboxShader(std::move(skyboxShader)),
+    bakeAlbedoShader(std::move(bakeAlbedoShader))
 { 
     createShadowFrameBuffer(SHADOWMAP_WIDTH, SHADOWMAP_HEIGHT);
 	createViewportFrameBuffer(initiaWidth, initiaHeight);
+    createBakeAlbedoFrameBuffer(2048, 2048);
 }
 
 Renderer::~Renderer() 
@@ -98,6 +102,44 @@ void Renderer::ResizeViewport(int width, int height)
 	createViewportFrameBuffer(width, height);
 }
 
+void Renderer::RenderFinishedAlbedoToTexture(const IScene& scene)
+{
+    auto& terrain = scene.Terrain();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, bakeAlbedoFrameBuffer.fbo);
+    glViewport(0, 0, bakeAlbedoFrameBuffer.width, bakeAlbedoFrameBuffer.height);
+
+    glClearColor(0, 0, 0, 1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    float size = 50.0f;
+    glm::mat4 view = glm::lookAt(
+        glm::vec3(0, 200, 0),
+        glm::vec3(0, 0, 0),
+        glm::vec3(0, 0, 1)
+    );
+
+    glm::mat4 projection = glm::ortho(
+        -size, size,
+        -size, size,
+        0.1f, 500.0f
+    );
+
+    bakeAlbedoShader->Activate();
+    bakeAlbedoShader->setUniformMat("model", glm::mat4(1.0f));
+    bakeAlbedoShader->setUniformMat("view", view);
+    bakeAlbedoShader->setUniformMat("projection", projection);
+    
+    terrain.getGrassMaterial().albedo->Bind(0);
+    bakeAlbedoShader->setUniformInt("grassAlbedo", 0);
+
+    terrain.getStoneMaterial().albedo->Bind(1);
+    bakeAlbedoShader->setUniformInt("stoneAlbedo", 1);
+
+    terrain.getMesh().Draw();
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void Renderer::renderDepthPass(const FrameData& frameData)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFramebuffer.fbo);
@@ -114,8 +156,6 @@ void Renderer::renderDepthPass(const FrameData& frameData)
 
 void Renderer::renderLightPass(const FrameData& frameData)
 {
-    glm::mat4 model = frameData.terrain.modelMatrix;
-
     terrainShader->Activate();
     terrainShader->setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
     terrainShader->setUniformMat("view", frameData.viewMatrix);
@@ -137,7 +177,7 @@ void Renderer::renderLightPass(const FrameData& frameData)
     frameData.terrain.stone->albedo->Bind(2);
     terrainShader->setUniformInt("stoneAlbedo", 2);
 
-    terrainShader->setUniformMat("model", model);
+    terrainShader->setUniformMat("model", frameData.terrain.modelMatrix);
     frameData.terrain.terrainMesh->Draw();
 }
 
@@ -211,6 +251,35 @@ void Renderer::createViewportFrameBuffer(int width, int height)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void Renderer::createBakeAlbedoFrameBuffer(int width, int height)
+{
+    bakeAlbedoFrameBuffer.width = width;
+    bakeAlbedoFrameBuffer.height = height;
+
+    glGenFramebuffers(1, &bakeAlbedoFrameBuffer.fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, bakeAlbedoFrameBuffer.fbo);
+
+    glGenTextures(1, &bakeAlbedoFrameBuffer.color);
+    glBindTexture(GL_TEXTURE_2D, bakeAlbedoFrameBuffer.color);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, bakeAlbedoFrameBuffer.color, 0);
+    glGenRenderbuffers(1, &bakeAlbedoFrameBuffer.depthRenderBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, bakeAlbedoFrameBuffer.depthRenderBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
+    {
+        std::cout << "Framebuffer is not complete!" << std::endl;
+    }
+
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, bakeAlbedoFrameBuffer.depthRenderBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void Renderer::destroyFramebuffer(Framebuffer& framebuffer)
 {
     if (framebuffer.depth)
@@ -249,4 +318,19 @@ int Renderer::getViewportWidth() const
 int Renderer::getViewportHeight() const
 {
     return viewportFramebuffer.height;
+}
+
+unsigned int Renderer::getBakedAlbedoTexture() const
+{
+    return bakeAlbedoFrameBuffer.fbo;
+}
+
+int Renderer::getBakedAlbedoWidth() const
+{
+    return bakeAlbedoFrameBuffer.width;
+}
+
+int Renderer::getBakedAlbedoHeight() const
+{
+    return bakeAlbedoFrameBuffer.height;
 }

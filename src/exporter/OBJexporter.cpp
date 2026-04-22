@@ -26,6 +26,11 @@ bool OBJExporter::Export(const ITerrainMesh& mesh, std::string outputPath)
 				<< vertex.normal.z << "\n";
 		}
 
+		for (const Vertex& vertex : vertices) //Write UVs
+		{
+			objFile << "vT " << vertex.uv.x << " " << vertex.uv.y << "\n";
+		}
+
 		objFile << "s 1\n"; //Use Smoothing
 
 		for (unsigned int i = 0; i < indices.size(); i += 3) //Write Faces From Indices

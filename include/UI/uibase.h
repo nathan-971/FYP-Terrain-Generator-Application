@@ -11,6 +11,7 @@
 #include "scene/iscene.h"
 
 #include "renderer/iviewportprovider.h"
+#include "renderer/ibakedalbedoprovider.h"
 
 class UIBase
 {
@@ -18,7 +19,8 @@ public:
 	UIBase(
 		IScene& scene,
 		ICamera& camera,
-		IViewportProvider& viewportProvider, 
+		IViewportProvider& viewportProvider,
+		IBakedAlbedoProvider& bakedAlbedoProvider,
 		ITerrainExporterService& exporterService
 	);
 	~UIBase();
@@ -32,8 +34,6 @@ private:
 
 	IScene& scene;
 	ICamera& camera;
-	IViewportProvider& viewportProvider;
-	ITerrainExporterService& exporterService;
 
 	Viewport viewport;
 	Editor editor;

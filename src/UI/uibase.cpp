@@ -3,15 +3,14 @@
 UIBase::UIBase(
 	IScene& scene,
 	ICamera& camera,
-	IViewportProvider& viewportProvider, 
+	IViewportProvider& viewportProvider,
+	IBakedAlbedoProvider& bakedAlbedoProvider,
 	ITerrainExporterService& exporterService
 ) :
 	scene(scene), 
 	camera(camera), 
-	viewportProvider(viewportProvider),
-	exporterService(exporterService),
 	viewport(camera, viewportProvider),
-	editor(scene, exporterService) { }
+	editor(scene, exporterService, bakedAlbedoProvider) { }
 
 UIBase::~UIBase() { }
 

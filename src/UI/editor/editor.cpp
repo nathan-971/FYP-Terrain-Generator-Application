@@ -12,10 +12,12 @@
 #include <iostream>
 #include <filesystem>
 #include <vector>
+#include <string>
 
-Editor::Editor(IScene& scene, ITerrainExporterService& exporterService) :
+Editor::Editor(IScene& scene, ITerrainExporterService& exporterService, IBakedAlbedoProvider& bakedAlbedoProvider) :
 	scene(scene),
     exporterService(exporterService),
+    bakedAlbedoProvider(bakedAlbedoProvider),
     ctx{ scene, scene.Terrain().getConfig(), scene.Skybox().getConfig() }
 {
     panels.push_back(std::make_unique<MeshPanel>());
@@ -125,7 +127,22 @@ void Editor::ApplyCommands()
 
     if (exportPathMade)
     {
-        exporterService.ExportTerrain(scene.Terrain().getMesh(), selectedExportType, exportPathString);
+        bakedAlbedoProvider.RenderFinishedAlbedoToTexture(scene);
+        exporterService.ExportTerrain(
+            scene.Terrain().getMesh(), 
+            selectedExportType, 
+            exportPathString
+        );
+
+        std::filesystem::path modelPath(exportPathString);
+        std::filesystem::path albedoPath = modelPath.parent_path() / "albedo.png";
+
+        exporterService.ExportAlbedoTexture(
+            albedoPath.string(),
+            bakedAlbedoProvider.getBakedAlbedoWidth(),
+            bakedAlbedoProvider.getBakedAlbedoHeight(),
+            bakedAlbedoProvider.getBakedAlbedoTexture()
+        );
         exportPathMade = false;
     }
 }
@@ -228,7 +245,6 @@ void Editor::renderFileDialog()
             }
 
             std::string exportPath = exportDir + '\\' + exportFile;
-            std::cout << "EXPORT PATH: " + exportPath;
 
             exportPathString = std::filesystem::path(exportPath).string();
             exportPathString = exportPathString + (selectedExportType == FileType::FBX ? ".fbx" : ".obj");

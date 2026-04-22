@@ -8,7 +8,7 @@ Scene::Scene(
     skybox(std::move(skyboxSystem)),
     terrain(std::move(terrainSystem)),
     lighting(std::move(lightingSystem)),
-    flags(0) 
+    flags(0)
 { 
     terrain->Initalize();
     skybox->LoadTextures();

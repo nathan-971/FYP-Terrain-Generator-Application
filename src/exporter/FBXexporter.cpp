@@ -43,7 +43,11 @@ bool FBXExporter::Export(const ITerrainMesh& mesh, std::string outputPath)
 	for (int i = 0; i < vertexCount; i++)
 	{
 		const Vertex& v = vertices[i];
-		controlPoints[i].Set(v.position.x, v.position.y, v.position.z);
+		controlPoints[i].Set(
+			v.position.x, 
+			v.position.y, 
+			v.position.z
+		);
 	}
 
 	for (int i = 0; i < indicies.size(); i += 3)
@@ -65,26 +69,30 @@ bool FBXExporter::Export(const ITerrainMesh& mesh, std::string outputPath)
 	auto* normals = FbxLayerElementNormal::Create(fbxMesh, "Normals");
 	normals->SetMappingMode(FbxLayerElement::eByControlPoint);
 	normals->SetReferenceMode(FbxLayerElement::eDirect);
-
 	for (const Vertex& v : vertices)
 	{
 		normals->GetDirectArray().Add(
-			FbxVector4(v.normal.x, v.normal.y, v.normal.z)
+			FbxVector4(
+				v.normal.x,
+				v.normal.y, 
+				v.normal.z
+			)
 		);
 	}
 	layer->SetNormals(normals);
 
-	//auto* colors = FbxLayerElementVertexColor::Create(fbxMesh, "VertexColors");
-	//colors->SetMappingMode(FbxLayerElement::eByControlPoint);
-	//colors->SetReferenceMode(FbxLayerElement::eDirect);
-
-	//for (const Vertex& v : vertices)
-	//{
-	//	colors->GetDirectArray().Add(
-	//		FbxVector4(v.color.x, v.color.y, v.color.z)
-	//	);
-	//}
-	//layer->SetVertexColors(colors);
+	auto* uvs = FbxLayerElementUV::Create(fbxMesh, "UVs");
+	uvs->SetMappingMode(FbxLayerElement::eByControlPoint);
+	uvs->SetReferenceMode(FbxLayerElement::eDirect);
+	for (const Vertex& v : vertices)
+	{
+		uvs->GetDirectArray().Add(
+			FbxVector2(
+				v.uv.x, 
+				v.uv.y
+			)
+		);
+	}
 
 	FbxExporter* exporter = FbxExporter::Create(manager, "");
 	if (!exporter->Initialize(outputPath.c_str(), -1, manager->GetIOSettings()))

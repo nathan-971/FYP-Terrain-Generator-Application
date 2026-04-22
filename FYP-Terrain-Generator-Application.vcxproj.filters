@@ -545,6 +545,9 @@
     <ClInclude Include="include\scene\texture\material.h">
       <Filter>Header Files\Scene\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="include\renderer\ibakedalbedoprovider.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\fragment.glsl">
