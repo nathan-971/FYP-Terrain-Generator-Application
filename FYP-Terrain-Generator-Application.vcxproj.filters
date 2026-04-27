@@ -297,6 +297,9 @@
     <ClCompile Include="src\scene\texture\texture.cpp">
       <Filter>Source Files\Scene\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\resources.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\renderer\shader.h">
@@ -547,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="include\renderer\ibakedalbedoprovider.h">
       <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils\resources.h">
+      <Filter>Header Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

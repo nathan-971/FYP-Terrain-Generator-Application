@@ -1,4 +1,7 @@
 #include "scene/skybox/skybox.h"
+
+#include "utils/resources.h"
+
 #include <glad/glad.h>
 #include "stb/stb_image.h"
 
@@ -6,30 +9,30 @@ Skybox::Skybox()
 	: activeTexture(0)
 {
 	skyboxTexturePaths[SkyboxOption::MORNING] = {
-		"assets/textures/skybox/morningRight.jpg",
-		"assets/textures/skybox/morningLeft.jpg",
-		"assets/textures/skybox/morningTop.jpg",
-		"assets/textures/skybox/morningBottom.jpg",
-		"assets/textures/skybox/morningFront.jpg",
-		"assets/textures/skybox/morningBack.jpg"
+		Resources::AssetPath("textures\\skybox\\morningRight.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\morningLeft.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\morningTop.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\morningBottom.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\morningFront.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\morningBack.jpg").string()
 	};
 
 	skyboxTexturePaths[SkyboxOption::NOON] = {
-		"assets/textures/skybox/noonRight.jpg",
-		"assets/textures/skybox/noonLeft.jpg",
-		"assets/textures/skybox/noonTop.jpg",
-		"assets/textures/skybox/noonBottom.jpg",
-		"assets/textures/skybox/noonFront.jpg",
-		"assets/textures/skybox/noonBack.jpg"
+		Resources::AssetPath("textures\\skybox\\noonRight.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\noonLeft.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\noonTop.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\noonBottom.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\noonFront.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\noonBack.jpg").string()
 	};
 
 	skyboxTexturePaths[SkyboxOption::NIGHT] = {
-		"assets/textures/skybox/nightRight.jpg",
-		"assets/textures/skybox/nightLeft.jpg",
-		"assets/textures/skybox/nightTop.jpg",
-		"assets/textures/skybox/nightBottom.jpg",
-		"assets/textures/skybox/nightFront.jpg",
-		"assets/textures/skybox/nightBack.jpg"
+		Resources::AssetPath("textures\\skybox\\nightRight.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\nightLeft.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\nightTop.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\nightBottom.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\nightFront.jpg").string(),
+		Resources::AssetPath("textures\\skybox\\nightBack.jpg").string()
 	};
 
 	stbi_set_flip_vertically_on_load(false);

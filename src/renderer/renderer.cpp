@@ -61,9 +61,9 @@ FrameData Renderer::getFrameData(const ICamera& camera, const IScene& scene)
     frame.cameraPosition = camera.getPosition();
 
     glm::mat4 lightProjection = glm::ortho(
-        -80.0f, 80.0f,
-        -80.0f, 80.0f,
-        1.0f, 120.0f
+        -50.0f, 50.0f,
+        -50.0f, 50.0f,
+        5.0f, 80.0f
     );
 
     glm::mat4 lightView = glm::lookAt(
@@ -145,12 +145,15 @@ void Renderer::renderDepthPass(const FrameData& frameData)
     glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFramebuffer.fbo);
     glViewport(0, 0, shadowMapFramebuffer.width, shadowMapFramebuffer.height);
     glClear(GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
 
     depthShader->Activate();
     depthShader->setUniformMat("lightSpaceMatrix", frameData.lightSpaceMatrix);
     depthShader->setUniformMat("model", frameData.terrain.modelMatrix);
 
     frameData.terrain.terrainMesh->Draw();
+    glCullFace(GL_BACK);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -212,11 +215,11 @@ void Renderer::createShadowFrameBuffer(int width, int height)
 
     glGenTextures(1, &shadowMapFramebuffer.depth);
     glBindTexture(GL_TEXTURE_2D, shadowMapFramebuffer.depth);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapFramebuffer.width, shadowMapFramebuffer.height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, shadowMapFramebuffer.width, shadowMapFramebuffer.height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);

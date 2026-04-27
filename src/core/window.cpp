@@ -36,10 +36,16 @@ void Window::initGLFW()
 
 void Window::setIcon(const std::string& iconpath)
 {
-	GLFWimage images[1];
-	images[0].pixels = stbi_load(iconpath.c_str(), &images[0].width, &images[0].height, 0, 4);
-	glfwSetWindowIcon(nativeWindow, 1, images);
-	stbi_image_free(images->pixels);
+	GLFWimage image{};
+	image.pixels = stbi_load(iconpath.c_str(), &image.width, &image.height, 0, 4);
+
+	if (!image.pixels)
+	{
+		std::cerr << "Failed to load window icon: " << iconpath << std::endl;
+		return;
+	}
+	glfwSetWindowIcon(nativeWindow, 1, &image);
+	stbi_image_free(image.pixels);
 }
 
 int Window::getWidth() const

@@ -60,6 +60,7 @@
     <ClCompile Include="src\UI\uibase.cpp" />
     <ClCompile Include="src\UI\viewport\viewport.cpp" />
     <ClCompile Include="src\utils\exporterfactory.cpp" />
+    <ClCompile Include="src\utils\resources.cpp" />
     <ClCompile Include="src\utils\terraingeneratorfactory.cpp" />
     <ClCompile Include="thirdparty\glad\glad.c" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="include\utils\iexporterfactory.h" />
     <ClInclude Include="include\utils\iterraingeneratorfactory.h" />
     <ClInclude Include="include\utils\parallelutils.h" />
+    <ClInclude Include="include\utils\resources.h" />
     <ClInclude Include="include\utils\terraingeneratorfactory.h" />
   </ItemGroup>
   <ItemGroup>
@@ -263,7 +265,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)lib\libfbxsdk\fbx-debug\libfbxsdk.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)lib\libfbxsdk\fbx-debug\libfbxsdk.dll" "$(OutDir)"
+xcopy /E /I /Y "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -284,7 +287,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)lib\libfbxsdk\fbx-release\libfbxsdk.dll" "$(OutDir)"</Command>
+      <Command>xcopy /E /I /Y "$(ProjectDir)assets" "$(ProjectDir)dist\assets"
+xcopy /Y "$(ProjectDir)lib\libfbxsdk\fbx-release\libfbxsdk.dll" "$(ProjectDir)dist"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -23,6 +23,7 @@
 
 #include "utils/terraingeneratorfactory.h"
 #include "utils/exporterfactory.h"
+#include "utils/resources.h"
 
 int main()
 {
@@ -35,7 +36,7 @@ int main()
 			"Terrain Generator",
 			true
 		);
-		window->setIcon("assets/textures/icons/icon.png");
+		window->setIcon(Resources::AssetPath("textures\\icons\\icon.png").string());
 
 		GraphicsContext graphics(*window);
 		graphics.Init();
@@ -62,10 +63,22 @@ int main()
 		std::unique_ptr<Shader> skyboxShader = std::make_unique<Shader>();
 		std::unique_ptr<Shader> bakeAlbedoShader = std::make_unique<Shader>();
 
-		terrainShader->Load("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-		depthShader->Load("assets/shaders/depthVertex.glsl", "assets/shaders/depthFragment.glsl");
-		skyboxShader->Load("assets/shaders/skyboxVertex.glsl", "assets/shaders/skyboxFragment.glsl");
-		bakeAlbedoShader->Load("assets/shaders/bakeAlbedoVertex.glsl", "assets/shaders/bakeAlbedoFragment.glsl");
+		terrainShader->Load(
+			Resources::AssetPath("shaders\\vertex.glsl").string().c_str(), 
+			Resources::AssetPath("shaders\\fragment.glsl").string().c_str()
+		);
+		depthShader->Load(
+			Resources::AssetPath("shaders\\depthVertex.glsl").string().c_str(),
+			Resources::AssetPath("shaders\\depthFragment.glsl").string().c_str()
+		);
+		skyboxShader->Load(
+			Resources::AssetPath("shaders\\skyboxVertex.glsl").string().c_str(),
+			Resources::AssetPath("shaders\\skyboxFragment.glsl").string().c_str()
+		);
+		bakeAlbedoShader->Load(
+			Resources::AssetPath("shaders\\bakeAlbedoVertex.glsl").string().c_str(),
+			Resources::AssetPath("shaders\\bakeAlbedoFragment.glsl").string().c_str()
+		);
 
 		std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(
 			std::move(depthShader),

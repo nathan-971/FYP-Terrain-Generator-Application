@@ -2,6 +2,8 @@
 
 #include "scene/mesh/transform.h"
 
+#include "utils/resources.h"
+
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
@@ -28,13 +30,13 @@ TerrainSystem::TerrainSystem(std::unique_ptr<ITerrainGeneratorFactory> generator
 	config.erosionEnabled = false;
 
 	matGrass = {
-		std::make_shared<Texture>("assets/textures/terrain/grass/grassAlbedo.png"),
+		std::make_shared<Texture>(Resources::AssetPath("textures\\terrain\\grass\\grassAlbedo.png").string().c_str()),
 		nullptr, //PBR Textures not supported for this version
 		nullptr
 	};
 
 	matStone = {
-		std::make_shared<Texture>("assets/textures/terrain/stone/stoneAlbedo.png"),
+		std::make_shared<Texture>(Resources::AssetPath("textures\\terrain\\stone\\stoneAlbedo.png").string().c_str()),
 		nullptr, //PBR Textures not supported for this version
 		nullptr
 	};
