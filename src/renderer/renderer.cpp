@@ -169,6 +169,7 @@ void Renderer::renderLightPass(const FrameData& frameData)
     terrainShader->setUniformVec3("lightColor", frameData.lightColor);
     terrainShader->setUniformFloat("ambientStrength", frameData.ambientStrength);
     terrainShader->setUniformFloat("specularStrength", frameData.specularStrength);
+    terrainShader->setUniformInt("shininess", frameData.shininess);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, shadowMapFramebuffer.depth);
